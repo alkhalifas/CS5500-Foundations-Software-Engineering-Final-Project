@@ -12,6 +12,19 @@ Detailed instructions with all relevant commands go here.
 
 ## Team Member 2 Contribution
 
+## Backlog
+- [ ] Create Account
+- [ ] Login
+- [ ] Logout
+- [ ] Homepage
+- [ ] Searching
+- [ ] All Tags
+- [ ] New Question
+- [ ] New Answer
+- [ ] Answers
+- [ ] Comments
+- [ ] User Profile
+
 
 ## Test cases
 
