@@ -10,12 +10,15 @@ Detailed instructions with all relevant commands go here.
 ## Team Member 1 Contribution
 
 
+
 ## Team Member 2 Contribution
 
 ## Backlog
+- [ ] Welcome Page
 - [ ] Create Account
 - [ ] Login
 - [ ] Logout
+- [ ] Create Account
 - [ ] Homepage
 - [ ] Searching
 - [ ] All Tags
