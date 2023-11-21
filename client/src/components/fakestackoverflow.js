@@ -6,8 +6,10 @@ import QuestionsList from "./main/questionList/questionsList";
 import TagsList from "./main/tagsList/tagsList";
 import TagQuestionsList from "./main/TagQuestionsList/TagQuestionsList";
 import SearchResultsList from './main/searchResults/searchResultsList';
+import Welcome from "../components/welcome/welcome"
 
 export default function FakeStackOverflow() {
+    const [userStatus, setUserStatus] = useState(null);
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [selectedTag, setSelectedTag] = useState(null);
     const [searchInput, setSearchInput] = useState('');
@@ -24,6 +26,7 @@ export default function FakeStackOverflow() {
         setComponentKey(prevKey => prevKey + 1);
     };
 
+
     const renderComponent = () => {
         return searchActive
             ? <SearchResultsList key={componentKey} searchInput={searchInput} />
@@ -37,11 +40,20 @@ export default function FakeStackOverflow() {
 
     return (
         <div className="app-container">
-            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive} />
+            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive}/>
             <div className="content-container">
-                <Menubar onSelect={handleComponentSelect} />
-                <div className="main-content">{renderComponent()}</div>
+                {
+                    userStatus ? (
+                        <>
+                            <Menubar onSelect={handleComponentSelect} />
+                            <div className="main-content">{renderComponent()}</div>
+                        </>
+                    ) : (
+                        <Welcome setUserStatus={setUserStatus} />
+                    )
+                }
             </div>
         </div>
     );
+
 }
