@@ -8,7 +8,7 @@ export default function Welcome({ setUserStatus }) {
 
     return (
         <div className="app-container">
-            <h1>Welcome</h1>
+            <h1>Welcome, Please Select a Login Method</h1>
             <button onClick={() => handleUserChoice('logged_in')}>Log In</button>
             <button onClick={() => handleUserChoice('registered')}>Register</button>
             <button onClick={() => handleUserChoice('guest')}>Proceed as Guest</button>
