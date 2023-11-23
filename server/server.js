@@ -149,11 +149,10 @@ app.post('/register', async (req, res) => {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).send('Email already in use');
+            return res.status(400).send('Email or Username already in use');
         }
 
         // Create new user with hashed password
-        // Note: Hashing is assumed to be handled in the User model's pre-save hook
         const user = new User({ username, email, password });
         await user.save();
 
