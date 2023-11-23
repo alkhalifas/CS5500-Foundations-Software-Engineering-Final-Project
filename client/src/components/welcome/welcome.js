@@ -2,7 +2,6 @@ import React from 'react';
 
 export default function Welcome({ setUserStatus }) {
     const handleUserChoice = (status) => {
-        // Calling the setUserStatus function passed from the parent component
         setUserStatus(status);
     };
 

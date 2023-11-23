@@ -23,6 +23,12 @@ export default function Menubar({ onSelect }) {
             >
                 Tags
             </button>
+            <button
+                className={selectedButton === "profile" ? "menu-btn dark-active" : "menu-btn"}
+                onClick={() => handleButtonClick("profile")}
+            >
+                Profile
+            </button>
         </aside>
     );
 }

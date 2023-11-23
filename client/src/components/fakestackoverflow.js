@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Header from "./header/header";
 import Menubar from "./menubar/menubar";
-import "./fakestackoverflow.css"
+import "./fakestackoverflow.css";
 import QuestionsList from "./main/questionList/questionsList";
 import TagsList from "./main/tagsList/tagsList";
 import TagQuestionsList from "./main/TagQuestionsList/TagQuestionsList";
 import SearchResultsList from './main/searchResults/searchResultsList';
-import Welcome from "../components/welcome/welcome"
-
+import Welcome from "../components/welcome/welcome";
+import Profile from "./profile/profile"
 export default function FakeStackOverflow() {
     const [userStatus, setUserStatus] = useState(null);
     const [selectedComponent, setSelectedComponent] = useState('questions');
@@ -22,38 +22,46 @@ export default function FakeStackOverflow() {
             setSelectedTag(tagId);
         }
         setSearchActive(false);
-        // Increment the componentKey to trigger a re-render
         setComponentKey(prevKey => prevKey + 1);
     };
 
+    const renderSelectedComponent = () => {
+        switch (selectedComponent) {
+            case 'questions':
+                return <QuestionsList key={componentKey} />;
+            case 'tags':
+                return <TagsList key={componentKey} onSelect={tagId => handleComponentSelect('tagQuestions', tagId)} />;
+            case 'tagQuestions':
+                return selectedTag && <TagQuestionsList key={componentKey} tagId={selectedTag} />;
+            case 'profile':
+                return <Profile />;
+            default:
+                return null;
+        }
+    };
 
-    const renderComponent = () => {
-        return searchActive
-            ? <SearchResultsList key={componentKey} searchInput={searchInput} />
-            : (
-                selectedComponent === 'questions' ? <QuestionsList key={componentKey} />
-                    : selectedComponent === 'tags' ? <TagsList key={componentKey} onSelect={tagId => handleComponentSelect('tagQuestions', tagId)} />
-                        : selectedComponent === 'tagQuestions' && selectedTag ? <TagQuestionsList key={componentKey} tagId={selectedTag} />
-                            : null
+    const renderContent = () => {
+        if (userStatus) {
+            return (
+                <>
+                    <Menubar onSelect={handleComponentSelect} />
+                    <div className="main-content">
+                        {searchActive ? <SearchResultsList key={componentKey} searchInput={searchInput} />
+                            : renderSelectedComponent()}
+                    </div>
+                </>
             );
+        } else {
+            return <Welcome setUserStatus={setUserStatus} />;
+        }
     };
 
     return (
         <div className="app-container">
-            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive}/>
+            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive} />
             <div className="content-container">
-                {
-                    userStatus ? (
-                        <>
-                            <Menubar onSelect={handleComponentSelect} />
-                            <div className="main-content">{renderComponent()}</div>
-                        </>
-                    ) : (
-                        <Welcome setUserStatus={setUserStatus} />
-                    )
-                }
+                {renderContent()}
             </div>
         </div>
     );
-
 }
