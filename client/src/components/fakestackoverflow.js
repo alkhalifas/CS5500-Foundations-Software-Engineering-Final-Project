@@ -11,28 +11,53 @@ import Profile from "./profile/profile"
 
 export default function FakeStackOverflow() {
     const [userSession, setUserSession] = useState(null);
+    const [userProfile, setUserProfile] = useState({"username": "Guest"});
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [selectedTag, setSelectedTag] = useState(null);
     const [searchInput, setSearchInput] = useState('');
     const [searchActive, setSearchActive] = useState(false);
     const [componentKey, setComponentKey] = useState(0);
 
-    useEffect(() => {
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) return;
 
+        try {
+            const response = await fetch('http://localhost:8000/user', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const userData = await response.json();
+            setUserProfile(userData);
+
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
         const checkUserSession = () => {
             const token = localStorage.getItem('token');
-            setUserSession(token);
+            if (token) {
+                setUserSession(token);
+                fetchUserData();
+            }
         };
 
         checkUserSession();
-
-
         window.addEventListener('storage', checkUserSession);
 
         return () => {
             window.removeEventListener('storage', checkUserSession);
         };
-
     }, []);
 
     const handleComponentSelect = (component, tagId = null) => {
@@ -77,7 +102,14 @@ export default function FakeStackOverflow() {
 
     return (
         <div className="app-container">
-            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive} setUserSession={setUserSession} userSession={userSession}/>
+            <Header
+                key={userProfile} // Forced update to ensure username renders
+                setSearchInput={setSearchInput}
+                setSearchActive={setSearchActive}
+                setUserSession={setUserSession}
+                userSession={userSession}
+                userProfile={userProfile}
+            />
             <div className="content-container">
                 {renderContent()}
             </div>

@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function Header({ setSearchInput, setSearchActive, setUserSession, userSession }) {
+export default function Header({
+                                   setSearchInput,
+                                   setSearchActive,
+                                   setUserSession,
+                                   userSession,
+                                   userProfile
+}) {
     const [searchInput, setSearchInputState] = useState('');
-    // const [currentUser, setCurrentUser] = useState('');
 
-    useEffect(() => {
-
-        const checkUserSession = () => {
-            const token = localStorage.getItem('token');
-            console.log("checkUserSession storage", token)
-            setUserSession(token);
-        };
-
-        checkUserSession();
-
-        window.addEventListener('storage', checkUserSession);
-
-        return () => {
-            window.removeEventListener('storage', checkUserSession);
-        };
-
-    }, []);
+    // useEffect(() => {
+    //
+    //     const checkUserSession = () => {
+    //         const token = localStorage.getItem('token');
+    //         console.log("checkUserSession storage", token)
+    //         setUserSession(token);
+    //     };
+    //
+    //     checkUserSession();
+    //
+    //     window.addEventListener('storage', checkUserSession);
+    //
+    //     return () => {
+    //         window.removeEventListener('storage', checkUserSession);
+    //     };
+    //
+    // }, []);
 
     const handleSearch = () => {
         setSearchInput(searchInput);
@@ -54,7 +59,8 @@ export default function Header({ setSearchInput, setSearchActive, setUserSession
                 {
                     userSession &&
                     <>
-                        <p style={{"fontSize":"16px"}}>Token: {userSession.slice(0,20)}</p>
+                        {/*<p style={{"fontSize":"16px"}}>Token: {userSession.slice(0,20)}</p>*/}
+                        <p style={{"fontSize":"16px"}}>Welcome, {userProfile.username}</p>
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
                     </>
                 }
@@ -67,5 +73,6 @@ Header.propTypes = {
     setSearchInput: PropTypes.func.isRequired,
     setSearchActive: PropTypes.func.isRequired,
     setUserSession: PropTypes.func.isRequired,
-    userSession: PropTypes.func.isRequired
+    userSession: PropTypes.string,
+    userProfile: PropTypes.object
 };
