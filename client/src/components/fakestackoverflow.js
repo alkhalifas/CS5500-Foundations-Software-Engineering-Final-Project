@@ -8,6 +8,7 @@ import TagQuestionsList from "./main/TagQuestionsList/TagQuestionsList";
 import SearchResultsList from './main/searchResults/searchResultsList';
 import Welcome from "../components/welcome/welcome";
 import Profile from "./profile/profile"
+
 export default function FakeStackOverflow() {
     const [userStatus, setUserStatus] = useState(null);
     const [selectedComponent, setSelectedComponent] = useState('questions');
