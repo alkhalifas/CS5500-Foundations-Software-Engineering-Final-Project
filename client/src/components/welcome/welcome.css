@@ -1,0 +1,60 @@
+.welcome-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 50vh; /* Use the full height of the viewport */
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 20px; /* Add some space between the welcome message and the buttons */
+}
+
+.button-row {
+    width: 100%; /* Full width */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+}
+
+/*.button-container {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    gap: 20px; !* Space between buttons *!*/
+/*}*/
+
+/*.welcome-button {*/
+/*    width: 100%;*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 15px 30px;*/
+/*    border-radius: 0;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease;*/
+/*    font-size: 1em;*/
+/*}*/
+
+/*.welcome-button:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between links */
+}
+
+.welcome-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+.welcome-link:hover {
+    color: #0056b3;
+}

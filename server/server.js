@@ -193,6 +193,44 @@ app.post('/login', async (req, res) => {
     }
 });
 
+const verifyUserSessionToken = (req, res, next) => {
+    const token = req.header('Authorization')?.split(' ')[1];
+
+    console.log("token: ", token)
+
+    if (!token) {
+        return res.status(401).send('Access Denied: No token provided');
+    }
+
+    try {
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+
+        console.log("verified: ", verified)
+        req.user = verified;
+        next();
+    } catch (error) {
+        console.log("error: ", error)
+        res.status(400).send('Invalid Token');
+    }
+};
+
+app.get('/user', verifyUserSessionToken, async (req, res) => {
+    try {
+        // Get profile without password field
+        const user = await User.findById(req.user.userId).select('-password');
+        if (!user) {
+            // If user not found
+            return res.status(404).send('User not found');
+        }
+        // If usser found:
+        res.json(user);
+    } catch (error) {
+        res.status(500).send('Error fetching user data');
+        console.error("User data error: ", error);
+    }
+});
+
+
 
 // Display the specified message when disconnected
 process.on('SIGINT', () => {
