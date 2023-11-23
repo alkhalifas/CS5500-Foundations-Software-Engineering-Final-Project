@@ -7,6 +7,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 let bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Import Route Methods
 const home_function = require("./routes/get_home");
@@ -20,6 +22,9 @@ const get_questions_by_tag_id_function = require("./routes/get_questions_by_tag_
 const get_tags_with_count_function = require("./routes/get_tags_with_count");
 const post_increment_question_view_function = require("./routes/post_increment_question_view")
 const post_answer_function = require("./routes/post_answer");
+
+const User = require("./models/users");
+
 
 // Provision App
 const app = express();
@@ -135,6 +140,59 @@ app.get('/tags/tag-id/:tagId', async (req, res) => {
     const { tagId } = req.params;
     await get_tag_name_by_tag_id_function.get_tag_name_by_tag_id(res, tagId);
 });
+
+/*
+method that lets user register account
+ */
+app.post('/register', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({'message': 'Email or Username already in use'});
+        }
+
+        // Create new user with hashed password
+        const user = new User({ username, email, password });
+        await user.save();
+
+        // Create JWT token
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(201).json({ message: 'User created successfully', token });
+    } catch (error) {
+        res.status(500).send('Error registering new user');
+        console.error("Registration error: ", error);
+    }
+});
+
+/*
+Method that lets user log in
+ */
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).send('Invalid email or password');
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).send('Invalid email or password');
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.json({ token });
+    } catch (error) {
+        res.status(500).send('Error during login');
+        console.error("Login error: ", error);
+    }
+});
+
 
 // Display the specified message when disconnected
 process.on('SIGINT', () => {
