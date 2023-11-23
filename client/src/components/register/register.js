@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './register.css';
+import PropTypes from 'prop-types';
 
-export default function Register() {
+export default function Register({setUserSession}) {
     const [formRegisterData, setFormRegisterData] = useState({
         username: '',
         email: '',
@@ -16,8 +17,14 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/register', formRegisterData);
+            const response = await axios.post('http://localhost:8000/register', formRegisterData);
             console.log(response.data);
+            localStorage.setItem('token', response.data.token)
+
+            const token = localStorage.getItem('token');
+            console.log("localStorage.getItem('token'): ", token)
+
+            setUserSession(token)
         } catch (error) {
             console.error('Registration error:', error.response?.data?.message || error.message);
         }
@@ -35,3 +42,7 @@ export default function Register() {
         </div>
     );
 }
+
+Register.propTypes = {
+    setUserSession: PropTypes.func.isRequired
+};

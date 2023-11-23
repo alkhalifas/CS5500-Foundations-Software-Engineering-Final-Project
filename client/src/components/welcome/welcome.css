@@ -19,24 +19,42 @@
     justify-content: center; /* Center horizontally */
 }
 
+/*.button-container {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    gap: 20px; !* Space between buttons *!*/
+/*}*/
+
+/*.welcome-button {*/
+/*    width: 100%;*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 15px 30px;*/
+/*    border-radius: 0;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease;*/
+/*    font-size: 1em;*/
+/*}*/
+
+/*.welcome-button:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 20px; /* Space between buttons */
+    gap: 20px; /* Space between links */
 }
 
-.welcome-button {
-    width: 100%;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 0;
+.welcome-link {
+    color: #007bff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    text-decoration: underline;
     font-size: 1em;
+    transition: color 0.3s ease;
 }
 
-.welcome-button:hover {
-    background-color: #0056b3;
+.welcome-link:hover {
+    color: #0056b3;
 }

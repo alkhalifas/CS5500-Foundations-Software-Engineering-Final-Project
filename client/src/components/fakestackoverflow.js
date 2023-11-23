@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Header from "./header/header";
 import Menubar from "./menubar/menubar";
 import "./fakestackoverflow.css";
@@ -10,12 +10,30 @@ import Welcome from "../components/welcome/welcome";
 import Profile from "./profile/profile"
 
 export default function FakeStackOverflow() {
-    const [userStatus, setUserStatus] = useState(null);
+    const [userSession, setUserSession] = useState(null);
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [selectedTag, setSelectedTag] = useState(null);
     const [searchInput, setSearchInput] = useState('');
     const [searchActive, setSearchActive] = useState(false);
     const [componentKey, setComponentKey] = useState(0);
+
+    useEffect(() => {
+
+        const checkUserSession = () => {
+            const token = localStorage.getItem('token');
+            setUserSession(token);
+        };
+
+        checkUserSession();
+
+
+        window.addEventListener('storage', checkUserSession);
+
+        return () => {
+            window.removeEventListener('storage', checkUserSession);
+        };
+
+    }, []);
 
     const handleComponentSelect = (component, tagId = null) => {
         if (selectedComponent !== component) {
@@ -35,14 +53,14 @@ export default function FakeStackOverflow() {
             case 'tagQuestions':
                 return selectedTag && <TagQuestionsList key={componentKey} tagId={selectedTag} />;
             case 'profile':
-                return <Profile />;
+                return <Profile userSession={userSession}/>;
             default:
                 return null;
         }
     };
 
     const renderContent = () => {
-        if (userStatus) {
+        if (userSession) {
             return (
                 <>
                     <Menubar onSelect={handleComponentSelect} />
@@ -53,13 +71,13 @@ export default function FakeStackOverflow() {
                 </>
             );
         } else {
-            return <Welcome setUserStatus={setUserStatus} />;
+            return <Welcome setUserSession={setUserSession} />;
         }
     };
 
     return (
         <div className="app-container">
-            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive} />
+            <Header setSearchInput={setSearchInput} setSearchActive={setSearchActive} setUserSession={setUserSession} userSession={userSession}/>
             <div className="content-container">
                 {renderContent()}
             </div>
