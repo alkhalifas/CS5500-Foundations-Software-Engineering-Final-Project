@@ -141,7 +141,9 @@ app.get('/tags/tag-id/:tagId', async (req, res) => {
     await get_tag_name_by_tag_id_function.get_tag_name_by_tag_id(res, tagId);
 });
 
-
+/*
+method that lets user register account
+ */
 app.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -149,7 +151,7 @@ app.post('/register', async (req, res) => {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).send('Email or Username already in use');
+            return res.status(400).json({'message': 'Email or Username already in use'});
         }
 
         // Create new user with hashed password
@@ -165,6 +167,31 @@ app.post('/register', async (req, res) => {
     }
 });
 
+/*
+Method that lets user log in
+ */
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).send('Invalid email or password');
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).send('Invalid email or password');
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.json({ token });
+    } catch (error) {
+        res.status(500).send('Error during login');
+        console.error("Login error: ", error);
+    }
+});
 
 
 // Display the specified message when disconnected
