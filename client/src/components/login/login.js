@@ -3,7 +3,7 @@ import axios from 'axios';
 import './login.css';
 import PropTypes from 'prop-types';
 
-export default function Login({setUserSession}) {
+export default function Login({setUserSession, registerSuccess}) {
     const [credentials, setCredentials] = useState({
         email: '',
         password: ''
@@ -35,6 +35,10 @@ export default function Login({setUserSession}) {
                 <h1>Login</h1>
                 <input type="email" name="email" placeholder="Email" value={credentials.email} onChange={handleChange} required />
                 <input type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange} required />
+                {
+                    registerSuccess &&
+                    <p>Successfully created account. Please Log in.</p>
+                }
                 <button type="submit">Log In</button>
             </form>
         </div>
@@ -42,5 +46,6 @@ export default function Login({setUserSession}) {
 }
 
 Login.propTypes = {
-    setUserSession: PropTypes.func.isRequired
+    setUserSession: PropTypes.func.isRequired,
+    registerSuccess: PropTypes.object
 };

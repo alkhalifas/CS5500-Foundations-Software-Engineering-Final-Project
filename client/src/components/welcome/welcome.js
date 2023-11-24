@@ -4,13 +4,20 @@ import './welcome.css';
 import Register from "../register/register"
 import Login from "../login/login"
 
-export default function Welcome({setUserSession}) {
+export default function Welcome({setUserSession, setUserProfile}) {
     const [userSelection, setUserSelection] = useState("log-in");
+    const [registerSuccess, setRegisterSuccess] = useState(false);
 
 
     const handleUserChoice = (status) => {
         setUserSelection(status);
+        console.log("userSelection: ", userSelection)
     };
+
+    const handleGuestUser = () => {
+        setUserProfile({"username":"Guest"})
+        setUserSession("0")
+    }
 
     return (
         <div className="welcome-container">
@@ -20,20 +27,20 @@ export default function Welcome({setUserSession}) {
             {
                 userSelection==="log-in" &&
                 <>
-                    <Login setUserSession={setUserSession}/>
+                    <Login setUserSession={setUserSession} registerSuccess={registerSuccess}/>
                 </>
             }
             {
                 userSelection==="register" &&
                 <>
-                    <Register setUserSession={setUserSession} />
+                    <Register setUserSession={setUserSession} setRegisterSuccess={setRegisterSuccess} setUserSelection={setUserSelection}/>
                 </>
             }
             <div className="button-row">
                 <div className="button-container">
                     <span className="welcome-link" onClick={() => handleUserChoice('log-in')}>Log In</span>
                     <span className="welcome-link" onClick={() => handleUserChoice('register')}>Register</span>
-                    <span className="welcome-link" onClick={() => handleUserChoice('guest')}>Proceed as Guest</span>
+                    <span className="welcome-link" onClick={() => handleGuestUser()}>Proceed as Guest</span>
                 </div>
             </div>
             {/*<div className="button-row">*/}
@@ -48,5 +55,6 @@ export default function Welcome({setUserSession}) {
 }
 
 Welcome.propTypes = {
-    setUserSession: PropTypes.func.isRequired
+    setUserSession: PropTypes.func.isRequired,
+    setUserProfile: PropTypes.func.isRequired
 };
