@@ -11,7 +11,7 @@ import Profile from "./profile/profile"
 
 export default function FakeStackOverflow() {
     const [userSession, setUserSession] = useState(null);
-    const [userProfile, setUserProfile] = useState({"username": "Guest"});
+    const [userProfile, setUserProfile] = useState({"username": ""});
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [selectedTag, setSelectedTag] = useState(null);
     const [searchInput, setSearchInput] = useState('');
@@ -96,7 +96,7 @@ export default function FakeStackOverflow() {
                 </>
             );
         } else {
-            return <Welcome setUserSession={setUserSession} />;
+            return <Welcome setUserSession={setUserSession} setUserProfile={setUserProfile}/>;
         }
     };
 
