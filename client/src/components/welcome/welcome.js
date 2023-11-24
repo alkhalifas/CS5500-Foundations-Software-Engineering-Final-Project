@@ -6,6 +6,7 @@ import Login from "../login/login"
 
 export default function Welcome({setUserSession}) {
     const [userSelection, setUserSelection] = useState("log-in");
+    const [registerSuccess, setRegisterSuccess] = useState(false);
 
 
     const handleUserChoice = (status) => {
@@ -20,13 +21,13 @@ export default function Welcome({setUserSession}) {
             {
                 userSelection==="log-in" &&
                 <>
-                    <Login setUserSession={setUserSession}/>
+                    <Login setUserSession={setUserSession} registerSuccess={registerSuccess}/>
                 </>
             }
             {
                 userSelection==="register" &&
                 <>
-                    <Register setUserSession={setUserSession} />
+                    <Register setUserSession={setUserSession} setRegisterSuccess={setRegisterSuccess} setUserSelection={setUserSelection}/>
                 </>
             }
             <div className="button-row">

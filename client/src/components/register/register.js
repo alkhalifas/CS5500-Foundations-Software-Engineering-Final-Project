@@ -3,7 +3,7 @@ import axios from 'axios';
 import './register.css';
 import PropTypes from 'prop-types';
 
-export default function Register({setUserSession}) {
+export default function Register({setUserSession, setRegisterSuccess, setUserSelection}) {
     const [formRegisterData, setFormRegisterData] = useState({
         username: '',
         email: '',
@@ -19,7 +19,9 @@ export default function Register({setUserSession}) {
         try {
             const response = await axios.post('http://localhost:8000/register', formRegisterData);
             console.log(response.data);
-            localStorage.setItem('token', response.data.token)
+            setRegisterSuccess(true)
+            setUserSelection("log-in")
+            // localStorage.setItem('token', response.data.token)
 
             const token = localStorage.getItem('token');
             console.log("localStorage.getItem('token'): ", token)
@@ -44,5 +46,7 @@ export default function Register({setUserSession}) {
 }
 
 Register.propTypes = {
-    setUserSession: PropTypes.func.isRequired
+    setUserSession: PropTypes.func.isRequired,
+    setRegisterSuccess: PropTypes.func.isRequired,
+    setUserSelection: PropTypes.func.isRequired,
 };
