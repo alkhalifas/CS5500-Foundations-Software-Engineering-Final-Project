@@ -59,7 +59,6 @@ export default function Header({
                 {
                     userSession &&
                     <>
-                        {/*<p style={{"fontSize":"16px"}}>Token: {userSession.slice(0,20)}</p>*/}
                         <p style={{"fontSize":"16px"}}>Welcome, {userProfile.username}</p>
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
                     </>
