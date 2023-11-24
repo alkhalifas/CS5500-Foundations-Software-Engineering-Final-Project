@@ -8,25 +8,25 @@ Add design docs in *images/*
 Detailed instructions with all relevant commands go here.
 
 ## Team Member 1 Contribution
-
-
+- [X] Create Account
+- [X] Welcome Page
+- [X] Login
+- [X] Logout
+- [ ] User Profile
+- [ ] All Tags
+- [X] User Schema
 
 ## Team Member 2 Contribution
-
-## Backlog
-- [ ] Welcome Page
-- [ ] Create Account
-- [ ] Login
-- [ ] Logout
-- [ ] Create Account
 - [ ] Homepage
 - [ ] Searching
-- [ ] All Tags
 - [ ] New Question
 - [ ] New Answer
 - [ ] Answers
 - [ ] Comments
-- [ ] User Profile
+
+## Backlog
+
+
 
 
 ## Test cases
