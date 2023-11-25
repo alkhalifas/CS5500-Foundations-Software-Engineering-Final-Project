@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./questionForm.css"
+import PropTypes from 'prop-types';
 
 export default function QuestionForm({ onSubmit }) {
 
@@ -9,9 +10,37 @@ export default function QuestionForm({ onSubmit }) {
         tags: '',
         asked_by: '',
     };
-
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [formData, setFormData] = useState(initialFormData);
     const [validationErrors, setValidationErrors] = useState({});
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const response = await fetch('http://localhost:8000/user', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setUserData(data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -113,16 +142,35 @@ export default function QuestionForm({ onSubmit }) {
                     <div className="error-message">{validationErrors.text}</div>
                 )}
             </label>
+            {
+                (userData.reputation >= 50 )&&
+                <label>
+                    Tags*
+                    <input
+                        type="text"
+                        id="formTagInput"
+                        name="tags"
+                        value={formData.tags}
+                        onChange={handleInputChange}
+                        placeholder="Add keywords separated by whitespace"
+                        //required
+                    />
+                    {validationErrors.tags && (
+                        <div className="error-message">{validationErrors.tags}</div>
+                    )}
+                </label>
+            }
+
             <label>
                 Tags*
                 <input
                     type="text"
                     id="formTagInput"
                     name="tags"
-                    value={formData.tags}
-                    onChange={handleInputChange}
-                    placeholder="Add keywords separated by whitespace"
-                    //required
+                    // value={formData.tags}
+                    // onChange={handleInputChange}
+                    placeholder={`50 Reputation points required to add tags (You have: ${userData.reputation})`}
+                    disabled
                 />
                 {validationErrors.tags && (
                     <div className="error-message">{validationErrors.tags}</div>
@@ -134,9 +182,10 @@ export default function QuestionForm({ onSubmit }) {
                     type="text"
                     id="formUsernameInput"
                     name="asked_by"
-                    value={formData.asked_by}
+                    value={userData.username}
                     onChange={handleInputChange}
                     placeholder="Add username"
+                    disabled
                 />
                 {validationErrors.asked_by && (
                     <div className="error-message">{validationErrors.asked_by}</div>
@@ -151,3 +200,7 @@ export default function QuestionForm({ onSubmit }) {
         </form>
     );
 }
+
+QuestionForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};

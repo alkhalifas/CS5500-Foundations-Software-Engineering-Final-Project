@@ -154,6 +154,11 @@ app.post('/register', async (req, res) => {
             return res.status(400).json({'message': 'Email or Username already in use'});
         }
 
+        // Pass cannot contain username or email
+        if (password.includes(username) || password.includes(email)) {
+            return res.status(400).json({ message: 'Password must not contain username or email' });
+        }
+
         // Create new user with hashed password
         const user = new User({ username, email, password });
         await user.save();
@@ -162,12 +167,8 @@ app.post('/register', async (req, res) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({ message: 'User created successfully', token });
     } catch (error) {
-        if (error.code === 11000) { // MongoDB duplicate key error
-            return res.status(409).json({ message: 'Username already taken' });
-        } else {
-            // Handle other types of errors
-            return res.status(500).json({ message: 'Internal server error' });
-        }
+        res.status(500).send('Error registering new user');
+        console.error("Registration error: ", error);
     }
 });
 
@@ -178,21 +179,24 @@ app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Search for user and return if not found
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).send('Invalid email or password');
+            return res.status(401).json({'message': 'Email address not found.'});
         }
 
+        // Check combo
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).send('Invalid email or password');
+            return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
+        // Login
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token });
     } catch (error) {
-        res.status(500).send('Error during login');
+        res.status(500).json({'message': 'Unknown error. Please contact admin.'});
         console.error("Login error: ", error);
     }
 });

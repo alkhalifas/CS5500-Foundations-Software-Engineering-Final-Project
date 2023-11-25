@@ -12,19 +12,20 @@ Detailed instructions with all relevant commands go here.
 - [X] Welcome Page
 - [X] Login
 - [X] Logout
-- [ ] User Profile
-- [ ] All Tags
+- [ ] Server Routes
+- [X] All Tags
 - [X] User Schema
 
 ## Team Member 2 Contribution
 - [ ] Homepage
-- [ ] Searching
 - [ ] New Question
+- [ ] Searching
 - [ ] New Answer
 - [ ] Answers
 - [ ] Comments
 
 ## Backlog
+- [ ] User Profile
 
 
 
