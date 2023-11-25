@@ -31,6 +31,14 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    posted_questions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Question'
+    }],
+    posted_answers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Answer'
+    }]
 });
 
 
