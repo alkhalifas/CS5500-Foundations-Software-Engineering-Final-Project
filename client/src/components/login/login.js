@@ -40,7 +40,7 @@ export default function Login({setUserSession, registerSuccess}) {
                 <p style={{"color":"red"}}>{feedbackMessage}</p>
                 {
                     registerSuccess &&
-                    <p style={{"color":"royalblue"}}>Successfully created account. Please Log in.</p>
+                    <p style={{"color":"royalblue"}}>Successfully created account!</p>
                 }
                 <button type="submit">Log In</button>
             </form>
