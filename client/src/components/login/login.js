@@ -50,5 +50,5 @@ export default function Login({setUserSession, registerSuccess}) {
 
 Login.propTypes = {
     setUserSession: PropTypes.func.isRequired,
-    registerSuccess: PropTypes.object
+    registerSuccess: PropTypes.bool
 };

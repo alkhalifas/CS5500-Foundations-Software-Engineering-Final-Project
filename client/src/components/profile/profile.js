@@ -53,6 +53,15 @@ export default function Profile() {
                         disabled
                     />
                 </div>
+                <div className="form-group">
+                    <label htmlFor="reputation">Reputation:</label>
+                    <input
+                        type="text"
+                        id="reputation"
+                        value={userData.reputation}
+                        disabled
+                    />
+                </div>
             </form>
         </div>
     );
