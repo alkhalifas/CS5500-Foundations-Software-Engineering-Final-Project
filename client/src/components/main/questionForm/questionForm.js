@@ -182,9 +182,10 @@ export default function QuestionForm({ onSubmit }) {
                     type="text"
                     id="formUsernameInput"
                     name="asked_by"
-                    value={formData.asked_by}
+                    value={userData.username}
                     onChange={handleInputChange}
                     placeholder="Add username"
+                    disabled
                 />
                 {validationErrors.asked_by && (
                     <div className="error-message">{validationErrors.asked_by}</div>

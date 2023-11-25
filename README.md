@@ -15,10 +15,10 @@ Detailed instructions with all relevant commands go here.
 - [ ] Server Routes
 - [X] All Tags
 - [X] User Schema
-- [ ] New Question
 
 ## Team Member 2 Contribution
 - [ ] Homepage
+- [ ] New Question
 - [ ] Searching
 - [ ] New Answer
 - [ ] Answers
