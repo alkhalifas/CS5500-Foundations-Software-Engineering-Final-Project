@@ -8,6 +8,7 @@ export default function Login({setUserSession, registerSuccess}) {
         email: '',
         password: ''
     });
+    const [feedbackMessage, setFeedbackMessage] = useState('');
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -25,6 +26,7 @@ export default function Login({setUserSession, registerSuccess}) {
 
             setUserSession(token)
         } catch (error) {
+            setFeedbackMessage(error.response?.data?.message || 'Registration failed');
             console.error('Login error:', error.response?.data?.message || error.message);
         }
     };
@@ -35,9 +37,10 @@ export default function Login({setUserSession, registerSuccess}) {
                 <h1>Login</h1>
                 <input type="email" name="email" placeholder="Email" value={credentials.email} onChange={handleChange} required />
                 <input type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange} required />
+                <p style={{"color":"red"}}>{feedbackMessage}</p>
                 {
                     registerSuccess &&
-                    <p>Successfully created account. Please Log in.</p>
+                    <p style={{"color":"royalblue"}}>Successfully created account. Please Log in.</p>
                 }
                 <button type="submit">Log In</button>
             </form>
