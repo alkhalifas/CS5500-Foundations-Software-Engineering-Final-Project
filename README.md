@@ -13,19 +13,19 @@ Detailed instructions with all relevant commands go here.
 - [X] Login
 - [X] Logout
 - [ ] Server Routes
-- [ ] User Profile
 - [X] All Tags
 - [X] User Schema
+- [ ] New Question
 
 ## Team Member 2 Contribution
 - [ ] Homepage
 - [ ] Searching
-- [ ] New Question
 - [ ] New Answer
 - [ ] Answers
 - [ ] Comments
 
 ## Backlog
+- [ ] User Profile
 
 
 
