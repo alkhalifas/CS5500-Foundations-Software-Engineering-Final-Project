@@ -12,8 +12,9 @@ Detailed instructions with all relevant commands go here.
 - [X] Welcome Page
 - [X] Login
 - [X] Logout
+- [ ] Server Routes
 - [ ] User Profile
-- [ ] All Tags
+- [X] All Tags
 - [X] User Schema
 
 ## Team Member 2 Contribution

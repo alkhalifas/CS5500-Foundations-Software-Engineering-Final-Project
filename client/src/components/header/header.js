@@ -6,7 +6,7 @@ export default function Header({
                                    setSearchActive,
                                    setUserSession,
                                    userSession,
-                                   userProfile
+                                   // userProfile
 }) {
     const [searchInput, setSearchInputState] = useState('');
 
@@ -59,7 +59,7 @@ export default function Header({
                 {
                     userSession &&
                     <>
-                        <p style={{"fontSize":"16px"}}>Welcome, {userProfile.username}</p>
+                        {/*<p style={{"fontSize":"16px"}}>Welcome, {userProfile.username}</p>*/}
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
                     </>
                 }

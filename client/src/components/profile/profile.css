@@ -36,3 +36,27 @@
 .profile-container button:hover {
     background-color: #0056b3;
 }
+
+.cards-container {
+    display: flex;
+    justify-content: space-around; /* Adjust as needed */
+}
+
+.card {
+    width: 25%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 10px;
+}
+
+.card-value {
+    font-size: 40px; /* Larger font size for the value */
+    margin-bottom: 5px;
+}
+
+.card-description {
+    font-size: 14px; /* Smaller font size for the description */
+}
+

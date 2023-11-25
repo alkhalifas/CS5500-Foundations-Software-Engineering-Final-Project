@@ -154,6 +154,11 @@ app.post('/register', async (req, res) => {
             return res.status(400).json({'message': 'Email or Username already in use'});
         }
 
+        // Pass cannot contain username or email
+        if (password.includes(username) || password.includes(email)) {
+            return res.status(400).json({ message: 'Password must not contain username or email' });
+        }
+
         // Create new user with hashed password
         const user = new User({ username, email, password });
         await user.save();
