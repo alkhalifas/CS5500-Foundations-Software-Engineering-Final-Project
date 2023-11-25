@@ -13,7 +13,11 @@ const answerSchema = new mongoose.Schema({
     ans_date_time: {
         type: Date,
         default: Date.now
-    }
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 });
 
 module.exports = mongoose.model('Answer', answerSchema);
