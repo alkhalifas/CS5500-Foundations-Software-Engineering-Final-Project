@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question'
     }],
+    posted_tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
     posted_answers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Answer'
