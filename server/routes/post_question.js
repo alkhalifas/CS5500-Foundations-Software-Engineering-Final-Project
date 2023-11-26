@@ -1,6 +1,7 @@
 const Tag = require("../models/tags");
 const Question = require("../models/questions");
 const elementFactory = require("../models/elementFactory");
+const User = require("../models/users");
 
 async function questionCreate(title, text, tags, answers, asked_by, ask_date_time, views) {
     try {
@@ -22,7 +23,7 @@ async function questionCreate(title, text, tags, answers, asked_by, ask_date_tim
     }
 }
 
-async function tagCreate(name) {
+async function tagCreate(name, userId) {
     try {
         let tag = await Tag.findOne({ name: name.toLowerCase() });
 
@@ -30,6 +31,9 @@ async function tagCreate(name) {
             // Create a new tag if it doesn't exist
             tag = elementFactory.create_element('Tag', { name: name.toLowerCase() });
             await tag.save();
+
+            // Add this tag to the user's posted_tags array to accomodate requirement
+            await User.findByIdAndUpdate(userId, { $addToSet: { posted_tags: tag._id } });
         }
 
         return tag;
@@ -41,29 +45,21 @@ async function tagCreate(name) {
 
 exports.post_question = async function (res, title, text, tags, asked_by) {
     const tagNames = tags.split(/\s+/).map(tagName => tagName.trim());
-    
-    // Normalize tags to lowercase for case-insensitivity to avoid react being the same as REACT
     const normalizedTags = tagNames.map(tag => tag.toLowerCase());
 
     try {
         const tagIds = [];
+        const user = await User.findOne({ username: asked_by }); // Assuming asked_by is the username
 
-        // Check if each tag exists or create it if it doesn't
         for (const tagText of normalizedTags) {
-            // Chek if exists
             let existingTag = await Tag.findOne({ name: tagText });
-            // If does not exist
             if (!existingTag) {
-                // Create a new tag if it doesn't exist
-                existingTag = await tagCreate(tagText);
+                existingTag = await tagCreate(tagText, user._id);
             }
-            // Add tag
             tagIds.push(existingTag._id);
         }
 
-        // Create the question with the tag IDs
         const newQuestion = await questionCreate(title, text, tagIds, [], asked_by, new Date(), 0);
-
         res.status(201).json(newQuestion);
     } catch (error) {
         console.error(error);
