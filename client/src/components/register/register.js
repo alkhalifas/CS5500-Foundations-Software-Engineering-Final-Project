@@ -17,10 +17,6 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
         setFormRegisterData({ ...formRegisterData, [e.target.name]: e.target.value });
     };
 
-    // const handleSetFeedbackMessage = (e) => {
-    //     setFeedbackMessage(e)
-    //     console.log(e)
-    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,7 +59,7 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
                     onChange={handleChange}
                     required
                 />
-                <p>{feedbackMessage}</p>
+                <p style={{"color":"red"}}>{feedbackMessage}</p>
                 {
                     (formRegisterData.password !== formRegisterData.confirmPassword || formRegisterData.password.length <= 5) &&
                     <button style={{"backgroundColor":"gray", "cursor":"not-allowed"}} type="submit" disabled={true}>Register </button>

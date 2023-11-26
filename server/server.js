@@ -25,7 +25,6 @@ const post_answer_function = require("./routes/post_answer");
 
 const User = require("./models/users");
 
-
 // Provision App
 const app = express();
 const PORT = 8000;
@@ -148,10 +147,22 @@ app.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
+        // Validate email format
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({'message': 'Invalid email format. Email must be of the form local-part@domain.com'});
+        }
+
         // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({'message': 'Email or Username already in use'});
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({'message': 'Username already in use'});
+        }
+
+        // Check if email exists
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({'message': 'Email already in use'});
         }
 
         // Pass cannot contain username or email
@@ -177,21 +188,21 @@ Method that lets user log in
  */
 app.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
 
-        // Search for user and return if not found
-        const user = await User.findOne({ email });
+        // Search for user by username and return if not found
+        const user = await User.findOne({ username });
         if (!user) {
-            return res.status(401).json({'message': 'Email address not found.'});
+            return res.status(401).json({'message': 'Username not found.'});
         }
 
-        // Check combo
+        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
-        // Login
+        // Login successful, create token
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token });
@@ -200,6 +211,37 @@ app.post('/login', async (req, res) => {
         console.error("Login error: ", error);
     }
 });
+
+
+app.post('/update-reputation', async (req, res) => {
+    try {
+        const { username, reputationChange } = req.body;
+
+        // Find user by username, from body of request
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({'message': 'User not found.'});
+        }
+
+        // Calculate new reputation
+        let newReputation = user.reputation + reputationChange;
+        if (newReputation < 0) {
+            // Account for negative
+            newReputation = 0;
+        }
+
+        // Update user
+        user.reputation = newReputation;
+        await user.save();
+
+        res.json({ 'message': 'Reputation update success', 'newReputation': newReputation });
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating reputation'});
+        console.error("Reputation update error: ", error);
+    }
+});
+
+
 
 const verifyUserSessionToken = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1];
