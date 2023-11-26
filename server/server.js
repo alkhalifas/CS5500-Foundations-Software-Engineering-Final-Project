@@ -202,6 +202,36 @@ app.post('/login', async (req, res) => {
 });
 
 
+app.post('/update-reputation', async (req, res) => {
+    try {
+        const { username, reputationChange } = req.body;
+
+        // Find user by username, from body of request
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({'message': 'User not found.'});
+        }
+
+        // Calculate new reputation
+        let newReputation = user.reputation + reputationChange;
+        if (newReputation < 0) {
+            // Account for negative
+            newReputation = 0;
+        }
+
+        // Update user
+        user.reputation = newReputation;
+        await user.save();
+
+        res.json({ 'message': 'Reputation update success', 'newReputation': newReputation });
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating reputation'});
+        console.error("Reputation update error: ", error);
+    }
+});
+
+
+
 const verifyUserSessionToken = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1];
 
