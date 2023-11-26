@@ -9,6 +9,8 @@ export default function SearchResultsList({ searchInput }) {
     const [showForm, setShowForm] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [searchResults, setSearchResults] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const questionsPerPage = 5;
 
     const handleAskQuestion = () => {
         setShowForm(true);
@@ -40,8 +42,28 @@ export default function SearchResultsList({ searchInput }) {
             });
     }, [searchInput]);
 
+    const shouldShowPagination = searchResults.length > questionsPerPage;
+    const indexOfLastQuestion = currentPage * questionsPerPage;
+    const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+    const currentQuestions = searchResults.slice(indexOfFirstQuestion, indexOfLastQuestion);
+
+    const handleNextPage = () => {
+        if (indexOfLastQuestion < searchResults.length) {
+            setCurrentPage(currentPage + 1);
+        } else {
+            setCurrentPage(1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     useEffect(() => {
         handleSort('newest');
+        setCurrentPage(1); // Reset page to 1 when sorting changes
     }, [searchInput, handleSort]);
 
     return (
@@ -55,7 +77,6 @@ export default function SearchResultsList({ searchInput }) {
                         <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
                     </div>
                     <AnswersPage question={selectedQuestion} />
-
                 </div>
             ) : (
                 <>
@@ -73,34 +94,42 @@ export default function SearchResultsList({ searchInput }) {
                     </div>
                     {searchResults.length === 0 ? (
                         <div className="no-questions-found-message">
-                            <h3>No Questions Found</h3>
+                            <h3>No Results Found</h3>
                         </div>
                     ) : (
-                        <div className="question-cards scrollable-container">
-                            {searchResults.map((question, index) => (
-                                <div key={question.qid}>
-                                    <div key={question.qid} className="question-card">
-                                        <div className={"question-left postStats"}>
-                                            <p>{question.views} views</p>
-                                            <p>{question.answers.length} answers</p>
-                                        </div>
-                                        <div className={"question-mid"}>
-                                            <h4 className={"postTitle"} onClick={() => handleQuestionClick(question)}>{question.title}</h4>
-                                            <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
-                                            <div className="tags">
-                                                {question.tags.map(tag => (
-                                                    <span key={tag} className="badge">{tag}</span>
-                                                ))}
+                        <>
+                            <div className="question-cards scrollable-container">
+                                {currentQuestions.map((question, index) => (
+                                    <div key={question.qid}>
+                                        <div key={question.qid} className="question-card">
+                                            <div className={"question-left postStats"}>
+                                                <p>{question.views} views</p>
+                                                <p>{question.answers.length} answers</p>
+                                            </div>
+                                            <div className={"question-mid"}>
+                                                <h4 className={"postTitle"} onClick={() => handleQuestionClick(question)}>{question.title}</h4>
+                                                <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
+                                                <div className="tags">
+                                                    {question.tags.map(tag => (
+                                                        <span key={tag} className="badge">{tag}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className={"question-right lastActivity"}>
+                                                <QuestionCardTiming question={question} />
                                             </div>
                                         </div>
-                                        <div className={"question-right lastActivity"}>
-                                            <QuestionCardTiming question={question} />
-                                        </div>
+                                        {index !== searchResults.length - 1 && <div className="dotted-line" />}
                                     </div>
-                                    {index !== searchResults.length - 1 && <div className="dotted-line" />}
+                                ))}
+                            </div>
+                            {shouldShowPagination && (
+                                <div className="pagination-buttons">
+                                    <button onClick={handlePrevPage} disabled={currentPage === 1}>Prev</button>
+                                    <button onClick={handleNextPage}>Next</button>
                                 </div>
-                            ))}
-                        </div>
+                            )}
+                        </>
                     )}
                 </>
             )}
