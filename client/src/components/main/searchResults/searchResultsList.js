@@ -4,6 +4,7 @@ import formatQuestionText from "../utils"
 import QuestionForm from "../questionForm/questionForm";
 import AnswersPage from "../Answers/AnswersPage";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 export default function SearchResultsList({ searchInput }) {
     const [showForm, setShowForm] = useState(false);
@@ -136,3 +137,7 @@ export default function SearchResultsList({ searchInput }) {
         </div>
     );
 }
+
+SearchResultsList.propTypes = {
+    searchInput: PropTypes.func.isRequired
+};

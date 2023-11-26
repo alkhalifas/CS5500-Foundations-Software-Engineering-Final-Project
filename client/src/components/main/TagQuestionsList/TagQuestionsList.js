@@ -3,6 +3,7 @@ import QuestionCardTiming from "../questionList/QuestionCardTiming";
 import formatQuestionText from "../utils";
 import AnswersPage from "../Answers/AnswersPage";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 export default function TagQuestionsList({ tag }) {
     const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -102,3 +103,7 @@ export default function TagQuestionsList({ tag }) {
         </>
     );
 }
+
+TagQuestionsList.propTypes = {
+    tag: PropTypes.func.isRequired
+};
