@@ -177,21 +177,21 @@ Method that lets user log in
  */
 app.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
 
-        // Search for user and return if not found
-        const user = await User.findOne({ email });
+        // Search for user by username and return if not found
+        const user = await User.findOne({ username });
         if (!user) {
-            return res.status(401).json({'message': 'Email address not found.'});
+            return res.status(401).json({'message': 'Username not found.'});
         }
 
-        // Check combo
+        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
-        // Login
+        // Login successful, create token
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token });
@@ -200,6 +200,7 @@ app.post('/login', async (req, res) => {
         console.error("Login error: ", error);
     }
 });
+
 
 const verifyUserSessionToken = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1];

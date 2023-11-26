@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export default function Login({setUserSession, registerSuccess}) {
     const [credentials, setCredentials] = useState({
-        email: '',
+        username: '',
         password: ''
     });
     const [feedbackMessage, setFeedbackMessage] = useState('');
@@ -35,7 +35,7 @@ export default function Login({setUserSession, registerSuccess}) {
         <div className="login-container">
             <form onSubmit={handleSubmit}>
                 <h1>Login</h1>
-                <input type="email" name="email" placeholder="Email" value={credentials.email} onChange={handleChange} required />
+                <input type="text" name="username" placeholder="Username" value={credentials.username} onChange={handleChange} required />
                 <input type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange} required />
                 <p style={{"color":"red"}}>{feedbackMessage}</p>
                 {
