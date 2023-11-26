@@ -26,7 +26,7 @@ export default function Login({setUserSession, registerSuccess}) {
 
             setUserSession(token)
         } catch (error) {
-            setFeedbackMessage(error.response?.data?.message || 'Registration failed');
+            setFeedbackMessage(error.response?.data?.message || 'Unknown Error. Contact Admin.');
             console.error('Login error:', error.response?.data?.message || error.message);
         }
     };

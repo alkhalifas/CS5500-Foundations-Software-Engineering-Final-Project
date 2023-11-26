@@ -149,9 +149,15 @@ app.post('/register', async (req, res) => {
         const { username, email, password } = req.body;
 
         // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({'message': 'Email or Username already in use'});
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({'message': 'Username already in use'});
+        }
+
+        // Check if email exists
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({'message': 'Email already in use'});
         }
 
         // Pass cannot contain username or email
