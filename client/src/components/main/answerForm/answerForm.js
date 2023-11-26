@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./answerForm.css"
+import PropTypes from 'prop-types';
 
 export default function AnswerForm({ onSubmit }) {
 
@@ -8,6 +9,7 @@ export default function AnswerForm({ onSubmit }) {
         text: '',
     };
 
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [formData, setFormData] = useState(initialFormData);
     const [validationErrors, setValidationErrors] = useState({});
 
@@ -18,11 +20,41 @@ export default function AnswerForm({ onSubmit }) {
         setValidationErrors({ ...validationErrors, [name]: null });
     };
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const response = await fetch('http://localhost:8000/user', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setUserData(data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const errors = validateForm(formData);
         if (Object.keys(errors).length === 0) {
-            onSubmit(formData);
+            // Set ans_by to userData.username before submitting
+            const formDataWithUser = { ...formData, ans_by: userData.username };
+            onSubmit(formDataWithUser);
             setFormData(initialFormData);
         } else {
             setValidationErrors(errors);
@@ -31,11 +63,6 @@ export default function AnswerForm({ onSubmit }) {
 
     const validateForm = (data) => {
         const errors = {};
-
-        // Username validation
-        if (!data.ans_by.trim()) {
-            errors.ans_by = "Username cannot be empty";
-        }
 
         // Text validation
         if (!data.text.trim()) {
@@ -61,20 +88,6 @@ export default function AnswerForm({ onSubmit }) {
     return (
         <form id="newAnswerForm" onSubmit={handleSubmit}>
             <label>
-                Username*
-                <input
-                    type="text"
-                    id="answerUsernameInput"
-                    name="ans_by"
-                    value={formData.ans_by}
-                    onChange={handleInputChange}
-                    placeholder="Add username"
-                />
-                {validationErrors.ans_by && (
-                    <div className="error-message">{validationErrors.ans_by}</div>
-                )}
-            </label>
-            <label>
                 Answer Text*
                 <textarea
                     id="answerTextInput"
@@ -97,3 +110,7 @@ export default function AnswerForm({ onSubmit }) {
         </form>
     );
 }
+
+AnswerForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};

@@ -53,7 +53,9 @@ export default function QuestionForm({ onSubmit }) {
         e.preventDefault();
         const errors = validateForm(formData);
         if (Object.keys(errors).length === 0) {
-            onSubmit(formData);
+            // Set asked_by to userData.username before submitting
+            const formDataWithUser = { ...formData, asked_by: userData.username };
+            onSubmit(formDataWithUser);
             setFormData(initialFormData);
         } else {
             setValidationErrors(errors);
@@ -104,11 +106,6 @@ export default function QuestionForm({ onSubmit }) {
             }
         }
 
-        // Username validation
-        if (!data.asked_by.trim()) {
-            errors.asked_by = "Username cannot be empty";
-        }
-
         return errors;
     };
 
@@ -142,53 +139,19 @@ export default function QuestionForm({ onSubmit }) {
                     <div className="error-message">{validationErrors.text}</div>
                 )}
             </label>
-            {
-                (userData.reputation >= 50 )&&
-                <label>
-                    Tags*
-                    <input
-                        type="text"
-                        id="formTagInput"
-                        name="tags"
-                        value={formData.tags}
-                        onChange={handleInputChange}
-                        placeholder="Add keywords separated by whitespace"
-                        //required
-                    />
-                    {validationErrors.tags && (
-                        <div className="error-message">{validationErrors.tags}</div>
-                    )}
-                </label>
-            }
-
             <label>
                 Tags*
                 <input
                     type="text"
                     id="formTagInput"
                     name="tags"
-                    // value={formData.tags}
-                    // onChange={handleInputChange}
-                    placeholder={`50 Reputation points required to add tags (You have: ${userData.reputation})`}
-                    disabled
+                    value={formData.tags}
+                    onChange={handleInputChange}
+                    placeholder="Add keywords separated by whitespace"
+                    //required
                 />
                 {validationErrors.tags && (
                     <div className="error-message">{validationErrors.tags}</div>
-                )}
-            </label>
-            <label>
-                Username*
-                <input
-                    type="text"
-                    id="formUsernameInput"
-                    name="asked_by"
-                    value={userData.username}
-                    onChange={handleInputChange}
-                    placeholder="Add username"
-                    disabled
-                />
-                {validationErrors.asked_by && (
-                    <div className="error-message">{validationErrors.asked_by}</div>
                 )}
             </label>
 
