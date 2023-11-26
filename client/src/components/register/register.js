@@ -17,10 +17,6 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
         setFormRegisterData({ ...formRegisterData, [e.target.name]: e.target.value });
     };
 
-    // const handleSetFeedbackMessage = (e) => {
-    //     setFeedbackMessage(e)
-    //     console.log(e)
-    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();

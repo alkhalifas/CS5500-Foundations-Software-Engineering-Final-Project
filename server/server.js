@@ -148,6 +148,12 @@ app.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
+        // Validate email format
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({'message': 'Invalid email format. Email must be of the form local-part@domain.com'});
+        }
+
         // Check if user already exists
         const existingUsername = await User.findOne({ username });
         if (existingUsername) {
