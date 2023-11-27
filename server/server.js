@@ -83,6 +83,30 @@ app.get('/question/:id', async (req, res) => {
     }
 });
 
+/*
+Method that gets a questions accepted answer
+ */
+app.get('/questions/:id/accepted-answer', async (req, res) => {
+    try {
+        const questionId = req.params.id;
+
+        const question = await Question.findById(questionId).populate('accepted');
+
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        if (!question.accepted) {
+            return res.status(404).json({'message': 'No accepted answer for this question'});
+        }
+
+        res.json(question.accepted);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching accepted answer'});
+        console.error("Error in fetching accepted answer: ", error);
+    }
+});
+
 
 /*
 Method that returns all questions and associated fields
