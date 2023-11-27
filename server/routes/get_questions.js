@@ -38,9 +38,8 @@ const getSearchResultsList = (questions, tags, searchInput) => {
     return filteredSearchResults.concat(tagSearchResults);
 };
 
-exports.questions = async function (res, sortType, searchInput) {
+exports.questions = async function (res, sortType, searchInput, page) {
     try {
-
         let questions = await Question.find().populate('tags');
 
         // Map the tags to their names in each question
@@ -54,6 +53,11 @@ exports.questions = async function (res, sortType, searchInput) {
             const searchResults = getSearchResultsList(questions, tags, searchInput);
             questions = searchResults;
         }
+
+        // Determine the start and end indices based on the page number
+        const questionsPerPage = 5;
+        const startIndex = (page - 1) * questionsPerPage;
+        const endIndex = startIndex + questionsPerPage;
 
         if (sortType === 'newest') {
             questions.sort((a, b) => b.ask_date_time - a.ask_date_time);
@@ -88,7 +92,15 @@ exports.questions = async function (res, sortType, searchInput) {
             ).sort((a, b) => b.ask_date_time - a.ask_date_time);
         }
 
-        res.json(questions);
+        // Extract the subset of questions for the specified page
+        const paginatedQuestions = questions.slice(startIndex, endIndex);
+
+        res.json({
+            totalQuestions: questions.length,
+            questions: paginatedQuestions,
+            currentPage: page,
+            totalPages: Math.ceil(questions.length / questionsPerPage)
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error getting list of questions' });

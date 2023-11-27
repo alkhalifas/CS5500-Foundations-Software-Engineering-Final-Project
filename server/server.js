@@ -65,7 +65,8 @@ Method that returns all questions and associated fields
 app.get('/questions', async (req, res) => {
     const sortType = req.query.sort || 'newest'; // Default to 'newest' if no sort parameter is provided
     const searchInput = req.query.searchInput;
-    await questions_function.questions(res, sortType, searchInput);
+    const page = req.query.page || 1;
+    await questions_function.questions(res, sortType, searchInput, page);
 });
 
 /*
@@ -80,7 +81,8 @@ Method that returns the answers to a given question
  */
 app.get('/questions/:questionId/answers', async (req, res) => {
     const { questionId } = req.params;
-    await answers_function.answers(res, questionId);
+    const page = req.query.page || 1;
+    await answers_function.answers(res, questionId, page);
 });
 
 /*
@@ -113,7 +115,8 @@ Method that returns questions for a given tan id
  */
 app.get('/questions/tag-id/:tagId', async (req, res) => {
     const { tagId } = req.params;
-    await get_questions_by_tag_id_function.get_questions_by_tag_id(res, tagId);
+    const page = req.query.page || 1;
+    await get_questions_by_tag_id_function.get_questions_by_tag_id(res, tagId, page);
 });
 
 
