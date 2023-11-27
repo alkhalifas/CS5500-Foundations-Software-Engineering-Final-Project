@@ -344,7 +344,38 @@ app.post('/vote/answer', async (req, res) => {
 });
 
 
+app.post('/accept-answer', async (req, res) => {
+    try {
+        const { questionId, answerId } = req.body;
 
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        if (question.accepted && question.accepted.toString() === answerId) {
+            return res.status(400).json({'message': 'This answer is already the accepted answer'});
+        }
+
+        if (!question.answers.includes(answerId)) {
+            return res.status(400).json({'message': 'Answer is not part of the question'});
+        }
+
+        if (question.accepted && !question.answers.includes(question.accepted)) {
+            question.answers.push(question.accepted);
+        }
+
+        question.answers = question.answers.filter(aId => aId.toString() !== answerId.toString());
+
+        question.accepted = answerId;
+
+        await question.save();
+        res.json({'message': 'Accepted answer updated successfully'});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating accepted answer'});
+        console.error("Error in updating accepted answer: ", error);
+    }
+});
 
 
 // Display the specified message when disconnected
