@@ -61,6 +61,30 @@ app.get('/questions/all', async (req, res) => {
 });
 
 /*
+Method that provides a question and all its stuff
+ */
+app.get('/question/:id', async (req, res) => {
+    try {
+        const questionId = req.params.id;
+
+        const question = await Question.findById(questionId)
+            .populate('tags')
+            .populate('answers')
+            .populate('accepted');
+
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        res.json(question);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching question'});
+        console.error("Error in fetching question: ", error);
+    }
+});
+
+
+/*
 Method that returns all questions and associated fields
  */
 app.get('/questions', async (req, res) => {
