@@ -7,29 +7,40 @@
     margin-bottom: 10px;
 }
 
-.views-column {
+.views-column,
+.votes-column,
+.asked-by-column,
+.answer-votes-column {
     width: 15%;
     text-align: center;
 }
 
-.views-count {
+.views-count,
+.votes-count,
+.answer-votes-count {
     font-weight: bold;
 }
 
-.question-text-column {
+.question-text-column,
+.answer-text-column {
     width: 75%;
     padding: 0 10px;
     padding-right: 3%;
 }
 
-.asked-by-column {
-    width: 15%;
-    text-align: left;
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Optional: Add more styles as needed */
-.question-text {
+.answer-text {
     font-size: 16px;
+}
+
+.answerText {
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .answer-card {
@@ -63,23 +74,4 @@
 
 .answer-question:hover {
   background-color: #83beff;
-}
-
-.question-detail {
-  background-color: dodgerblue;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.question-detail:hover {
-  background-color: #83beff;
-}
-
-.answerText {
-    max-height: 400px;
-    overflow-y: auto;
 }

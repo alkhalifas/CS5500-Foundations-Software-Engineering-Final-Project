@@ -10,12 +10,9 @@ export default function QuestionsList() {
     const [showForm, setShowForm] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [sortedQuestions, setSortedQuestions] = useState([]);
+    const [totalResults, setTotalResults] = useState([]);
+    const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
-    const questionsPerPage = 5;
-
-    useEffect(() => {
-        handleSort('newest');
-    }, []);
 
     const handleAskQuestion = () => {
         setShowForm(true);
@@ -39,36 +36,40 @@ export default function QuestionsList() {
         setSelectedQuestion(question);
     };
 
-    const handleSort = async (sortType) => {
-        const apiUrl = `http://localhost:8000/questions?sort=${sortType}`;
+    const fetchQuestions = async (sortType, page) => {
+        const apiUrl = `http://localhost:8000/questions?sort=${sortType}&page=${page}`;
         try {
             const response = await axios.get(apiUrl);
-            setSortedQuestions(response.data);
-            setCurrentPage(1); // Reset to first page when sorting
+            setSortedQuestions(response.data.questions);
+            setCurrentPage(response.data.currentPage);
+            setTotalResults(response.data.totalQuestions);
+            setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('Error fetching questions:', error);
         }
     };
 
-
-    const indexOfLastQuestion = currentPage * questionsPerPage;
-    const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
-    const currentQuestions = sortedQuestions.slice(
-        indexOfFirstQuestion,
-        indexOfLastQuestion
-    );
-
-    const totalPages = Math.ceil(sortedQuestions.length / questionsPerPage);
+    const handleSort = async (sortType) => {
+        fetchQuestions(sortType, 1);
+    };
 
     const handleNextPage = () => {
-        setCurrentPage((prevPage) =>
-            prevPage === totalPages ? 1 : prevPage + 1
-        );
+        if (currentPage < totalPages) {
+            fetchQuestions('newest', parseInt(currentPage) + 1);
+        } else if (currentPage == totalPages) {
+            fetchQuestions('newest', 1);
+        }
     };
 
     const handlePrevPage = () => {
-        setCurrentPage((prevPage) => (prevPage === 1 ? totalPages : prevPage - 1));
+        if (currentPage > 1) {
+            fetchQuestions('newest', parseInt(currentPage) - 1);
+        }
     };
+
+    useEffect(() => {
+        fetchQuestions('newest', 1);
+    }, []);
 
     return (
         <div>
@@ -91,7 +92,7 @@ export default function QuestionsList() {
                     </div>
 
                     <div className="header-container">
-                        <h3>{sortedQuestions.length} questions</h3>
+                        <h3>{totalResults} questions</h3>
                         <div className="sorting-buttons">
                             <button className={"sort-button"} onClick={() => handleSort('newest')}>Newest</button>
                             <button className={"sort-button"} onClick={() => handleSort('active')}>Active</button>
@@ -100,7 +101,7 @@ export default function QuestionsList() {
                     </div>
 
                     <div className="question-cards scrollable-container">
-                        {currentQuestions.map((question, index) => (
+                        {sortedQuestions.map((question, index) => (
                             <div key={question.qid}>
                                 <div
                                     key={question.qid}
@@ -132,12 +133,8 @@ export default function QuestionsList() {
                     </div>
                     {totalPages > 1 && (
                         <div className="pagination-buttons">
-                            <button onClick={handlePrevPage} disabled={currentPage === 1}>
-                                Prev
-                            </button>
-                            <button onClick={handleNextPage}>
-                                Next
-                            </button>
+                            <button onClick={handlePrevPage} disabled={currentPage === 1}>Prev</button>
+                            <button onClick={handleNextPage}>Next</button>
                         </div>
                     )}
                 </>
