@@ -60,7 +60,7 @@ exports.post_question = async function (res, title, text, tags, asked_by) {
         }
 
         const newQuestion = await questionCreate(title, text, tagIds, [], asked_by, new Date(), 0);
-        res.status(201).json(newQuestion);
+        res.status(200).json(newQuestion);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error adding new question' });
