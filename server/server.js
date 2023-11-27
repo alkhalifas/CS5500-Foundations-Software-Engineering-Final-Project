@@ -24,6 +24,7 @@ const post_increment_question_view_function = require("./routes/post_increment_q
 const post_answer_function = require("./routes/post_answer");
 
 const User = require("./models/users");
+const Question = require("./models/questions");
 
 // Provision App
 const app = express();
@@ -58,6 +59,54 @@ Method that returns everything
 app.get('/questions/all', async (req, res) => {
     await all_questions_function.allQuestions(res);
 });
+
+/*
+Method that provides a question and all its stuff
+ */
+app.get('/question/:id', async (req, res) => {
+    try {
+        const questionId = req.params.id;
+
+        const question = await Question.findById(questionId)
+            .populate('tags')
+            .populate('answers')
+            .populate('accepted');
+
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        res.json(question);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching question'});
+        console.error("Error in fetching question: ", error);
+    }
+});
+
+/*
+Method that gets a questions accepted answer
+ */
+app.get('/questions/:id/accepted-answer', async (req, res) => {
+    try {
+        const questionId = req.params.id;
+
+        const question = await Question.findById(questionId).populate('accepted');
+
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        if (!question.accepted) {
+            return res.status(404).json({'message': 'No accepted answer for this question'});
+        }
+
+        res.json(question.accepted);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching accepted answer'});
+        console.error("Error in fetching accepted answer: ", error);
+    }
+});
+
 
 /*
 Method that returns all questions and associated fields
@@ -163,6 +212,11 @@ app.post('/register', async (req, res) => {
         const existingEmail = await User.findOne({ email });
         if (existingEmail) {
             return res.status(400).json({'message': 'Email already in use'});
+        }
+
+        // Check password length
+        if (password.length < 6) {
+            return res.status(400).json({ message: 'Password must be greater than 5 characters' });
         }
 
         // Pass cannot contain username or email
@@ -280,6 +334,96 @@ app.get('/user', verifyUserSessionToken, async (req, res) => {
     }
 });
 
+/*
+Method to upvote or downvote a question
+ */
+app.post('/vote/question', async (req, res) => {
+    try {
+        const { questionId, voteType } = req.body; // voteType: 'upvote' || 'downvote'
+
+        // Find question
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        // Update the vote field
+        if (voteType === 'upvote') {
+            question.votes += 1;
+        } else if (voteType === 'downvote') {
+            question.votes -= 1;
+        }
+
+        await question.save();
+        res.json({'message': 'Vote updated successfully', 'newVotes': question.votes});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating vote'});
+        console.error("Vote error: ", error);
+    }
+});
+
+/*
+Method to upvote or downvote a answer
+ */
+app.post('/vote/answer', async (req, res) => {
+    try {
+        const { answerId, voteType } = req.body;
+
+        // Find answer
+        const answer = await Answer.findById(answerId);
+        if (!answer) {
+            return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        // Update
+        if (voteType === 'upvote') {
+            answer.votes += 1;
+        } else if (voteType === 'downvote') {
+            answer.votes -= 1;
+        }
+
+        // Save and return
+        await answer.save();
+        res.json({'message': 'Vote updated successfully', 'newVotes': answer.votes});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating vote'});
+        console.error("Vote error: ", error);
+    }
+});
+
+
+app.post('/accept-answer', async (req, res) => {
+    try {
+        const { questionId, answerId } = req.body;
+
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        if (question.accepted && question.accepted.toString() === answerId) {
+            return res.status(400).json({'message': 'This answer is already the accepted answer'});
+        }
+
+        if (!question.answers.includes(answerId)) {
+            return res.status(400).json({'message': 'Answer is not part of the question'});
+        }
+
+        if (question.accepted && !question.answers.includes(question.accepted)) {
+            question.answers.push(question.accepted);
+        }
+
+        question.answers = question.answers.filter(aId => aId.toString() !== answerId.toString());
+
+        question.accepted = answerId;
+
+        await question.save();
+        res.json({'message': 'Accepted answer updated successfully'});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating accepted answer'});
+        console.error("Error in updating accepted answer: ", error);
+    }
+});
 
 
 // Display the specified message when disconnected

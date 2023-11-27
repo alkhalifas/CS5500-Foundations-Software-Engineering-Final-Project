@@ -50,11 +50,11 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
                 <h1>Register</h1>
                 <input type="text" name="username" placeholder="Username" value={formRegisterData.username} onChange={handleChange} required />
                 <input type="email" name="email" placeholder="Email" value={formRegisterData.email} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" value={formRegisterData.password} onChange={handleChange} required />
+                <input type="password" name="password" placeholder="Password (min 6 digits)" value={formRegisterData.password} onChange={handleChange} required />
                 <input
                     type="password"
                     name="confirmPassword"
-                    placeholder="Confirm Password"
+                    placeholder="Confirm Password (min 6 digits)"
                     value={formRegisterData.confirmPassword}
                     onChange={handleChange}
                     required
