@@ -24,6 +24,7 @@ const post_increment_question_view_function = require("./routes/post_increment_q
 const post_answer_function = require("./routes/post_answer");
 
 const User = require("./models/users");
+const Question = require("./models/questions");
 
 // Provision App
 const app = express();
@@ -165,6 +166,11 @@ app.post('/register', async (req, res) => {
             return res.status(400).json({'message': 'Email already in use'});
         }
 
+        // Check password length
+        if (password.length < 6) {
+            return res.status(400).json({ message: 'Password must be greater than 5 characters' });
+        }
+
         // Pass cannot contain username or email
         if (password.includes(username) || password.includes(email)) {
             return res.status(400).json({ message: 'Password must not contain username or email' });
@@ -279,6 +285,65 @@ app.get('/user', verifyUserSessionToken, async (req, res) => {
         console.error("User data error: ", error);
     }
 });
+
+/*
+Method to upvote or downvote a question
+ */
+app.post('/vote/question', async (req, res) => {
+    try {
+        const { questionId, voteType } = req.body; // voteType: 'upvote' || 'downvote'
+
+        // Find question
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        // Update the vote field
+        if (voteType === 'upvote') {
+            question.votes += 1;
+        } else if (voteType === 'downvote') {
+            question.votes -= 1;
+        }
+
+        await question.save();
+        res.json({'message': 'Vote updated successfully', 'newVotes': question.votes});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating vote'});
+        console.error("Vote error: ", error);
+    }
+});
+
+/*
+Method to upvote or downvote a answer
+ */
+app.post('/vote/answer', async (req, res) => {
+    try {
+        const { answerId, voteType } = req.body;
+
+        // Find answer
+        const answer = await Answer.findById(answerId);
+        if (!answer) {
+            return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        // Update
+        if (voteType === 'upvote') {
+            answer.votes += 1;
+        } else if (voteType === 'downvote') {
+            answer.votes -= 1;
+        }
+
+        // Save and return
+        await answer.save();
+        res.json({'message': 'Vote updated successfully', 'newVotes': answer.votes});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating vote'});
+        console.error("Vote error: ", error);
+    }
+});
+
+
 
 
 
