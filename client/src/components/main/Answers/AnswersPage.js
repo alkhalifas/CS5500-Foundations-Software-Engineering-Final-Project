@@ -12,7 +12,7 @@ export default function AnswersPage({question}) {
     const [views, setViews] = useState(0);
     const [votes, setVotes] = useState();
     const [showAnswerForm, setShowAnswerForm] = useState(false);
-    const [totalResults, setTotalResults] = useState([]);
+    const [totalResults, setTotalResults] = useState();
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -93,6 +93,19 @@ export default function AnswersPage({question}) {
         }
     };
 
+    const updateAnswerVote = (answerId, voteType) => {
+        const updatedAnswers = answers.map((answer) => {
+            if (answer._id === answerId) {
+                return {
+                    ...answer,
+                    votes: voteType === 'upvote' ? answer.votes + 1 : answer.votes - 1,
+                };
+            }
+            return answer;
+        });
+        setAnswers(updatedAnswers);
+    };
+
     const handleVoteAnswer = async (answerId, voteType) => {
         const apiUrl = `http://localhost:8000/vote/answer`;
         try {
@@ -101,7 +114,7 @@ export default function AnswersPage({question}) {
                 voteType: voteType
             });
             console.log('Answer voted successfully:', response.data);
-            setVotes(response.data.newVotes);
+            updateAnswerVote(answerId, voteType);
         } catch (error) {
             console.error('Error voting the question:', error);
         }
