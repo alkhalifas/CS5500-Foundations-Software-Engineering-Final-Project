@@ -15,6 +15,31 @@ export default function AnswersPage({question}) {
     const [totalResults, setTotalResults] = useState();
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+
+    const fetchUserData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const response = await fetch('http://localhost:8000/user', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUserData(data);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
 
     const updateSortedAnswers = useCallback((page) => {
         const answerUrl = `http://localhost:8000/questions/${question._id}/answers?page=${page}`;
@@ -44,6 +69,7 @@ export default function AnswersPage({question}) {
             });
 
         updateSortedAnswers(1);
+        fetchUserData();
 
     }, [question._id, question.views, updateSortedAnswers]);
 
@@ -185,9 +211,11 @@ export default function AnswersPage({question}) {
                             <button onClick={handleNextPage} className="next">Next</button>
                         </div>
                     )}
-                    <div className="button-container">
-                        <button type="submit" onClick={handleAnswerQuestion} className="answer-question" >Answer Question</button>
-                    </div>
+                    {userData.username != "" && (
+                        <div className="button-container">
+                            <button type="submit" onClick={handleAnswerQuestion} className="answer-question" >Answer Question</button>
+                        </div>
+                    )}
                 </>
             ) : (
                 <AnswerForm onSubmit={handleFormSubmit} />

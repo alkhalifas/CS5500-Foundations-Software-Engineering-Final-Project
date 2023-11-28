@@ -13,6 +13,31 @@ export default function QuestionsList() {
     const [totalResults, setTotalResults] = useState([]);
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+
+    const fetchUserData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const response = await fetch('http://localhost:8000/user', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUserData(data);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
 
     const handleAskQuestion = () => {
         setShowForm(true);
@@ -68,6 +93,7 @@ export default function QuestionsList() {
 
     useEffect(() => {
         fetchQuestions('newest', 1);
+        fetchUserData();
     }, []);
 
     return (
@@ -87,7 +113,9 @@ export default function QuestionsList() {
                 <>
                     <div className="header-container">
                         <h1>All Questions</h1>
-                        <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        {userData.username != "" && (
+                            <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        )}
                     </div>
 
                     <div className="header-container">
