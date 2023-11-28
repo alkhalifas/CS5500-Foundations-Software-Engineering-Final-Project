@@ -25,6 +25,7 @@ const post_answer_function = require("./routes/post_answer");
 
 const User = require("./models/users");
 const Question = require("./models/questions");
+const Answer = require("./models/answers");
 
 // Provision App
 const app = express();

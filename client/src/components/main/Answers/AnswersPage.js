@@ -117,11 +117,13 @@ export default function AnswersPage({question}) {
                         <h3> </h3>
                     </div>
                     <div className="question-container" id={"questionBody"}>
-                        <div className="views-column">
-                            <span className="views-count">{views} views</span>
-                        </div>
-                        <div className="votes-column">
-                            <span className="votes-count">{votes} votes</span>
+                        <div className={"stacked-items"}>
+                            <div className="views-column">
+                                <span className="views-count">{views} views</span>
+                            </div>
+                            <div className="votes-column">
+                                <span className="votes-count">{votes} votes</span>
+                            </div>
                         </div>
                         <div className="question-text-column">
                             <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />

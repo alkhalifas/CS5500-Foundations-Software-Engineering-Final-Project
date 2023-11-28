@@ -7,8 +7,19 @@
     margin-bottom: 10px;
 }
 
+.stacked-items {
+    display: flex;
+    width: 10%;
+    margin-left: 3%;
+    flex-direction: column; /* Stack children vertically */
+}
+
 .views-column,
-.votes-column,
+.votes-column{
+    display: flex;
+}
+
+
 .asked-by-column,
 .answer-votes-column {
     width: 15%;
