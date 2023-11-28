@@ -406,24 +406,32 @@ app.post('/vote/answer', async (req, res) => {
     try {
         const { answerId, voteType } = req.body;
 
-        // Find answer
-        const answer = await Answer.findById(answerId);
+        const answer = await Answer.findById(answerId).populate('ans_by');
         if (!answer) {
             return res.status(404).json({'message': 'Answer not found'});
         }
 
-        // Update
+        let reputationChange = 0;
         if (voteType === 'upvote') {
             answer.votes += 1;
+            reputationChange = 5;
         } else if (voteType === 'downvote') {
             answer.votes -= 1;
+            reputationChange = -10;
         }
 
-        // Save and return
         await answer.save();
+
+        const author = await User.findOne({username: answer.ans_by});
+
+        if (author) {
+            author.reputation += reputationChange;
+            await author.save();
+        }
+
         res.json({'message': 'Vote updated successfully', 'newVotes': answer.votes});
     } catch (error) {
-        res.status(500).json({'message': 'Error updating vote'});
+        res.status(500).json({'message': 'Error updating answer vote'});
         console.error("Vote error: ", error);
     }
 });
