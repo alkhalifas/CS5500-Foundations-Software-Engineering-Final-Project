@@ -97,7 +97,14 @@ export default function TagQuestionsList({ tag }) {
                     </div>
                     {totalPages > 1 && (
                         <div className="pagination-buttons">
-                            <button onClick={handlePrevPage} className="prev" disabled={currentPage === 1}>Prev</button>
+                            {
+                                (parseInt(currentPage) === 1) &&
+                                <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="prev" disabled={true}>Prev</button>
+                            }
+                            {
+                                (parseInt(currentPage) != 1) &&
+                                <button onClick={handlePrevPage} className="prev">Prev</button>
+                            }
                             <button onClick={handleNextPage} className="next">Next</button>
                         </div>
                     )}
