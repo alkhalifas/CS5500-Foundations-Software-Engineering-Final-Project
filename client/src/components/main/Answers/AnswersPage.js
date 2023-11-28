@@ -12,9 +12,34 @@ export default function AnswersPage({question}) {
     const [views, setViews] = useState(0);
     const [votes, setVotes] = useState();
     const [showAnswerForm, setShowAnswerForm] = useState(false);
-    const [totalResults, setTotalResults] = useState([]);
+    const [totalResults, setTotalResults] = useState();
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+
+    const fetchUserData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const response = await fetch('http://localhost:8000/user', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUserData(data);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
 
     const updateSortedAnswers = useCallback((page) => {
         const answerUrl = `http://localhost:8000/questions/${question._id}/answers?page=${page}`;
@@ -44,6 +69,7 @@ export default function AnswersPage({question}) {
             });
 
         updateSortedAnswers(1);
+        fetchUserData();
 
     }, [question._id, question.views, updateSortedAnswers]);
 
@@ -58,7 +84,7 @@ export default function AnswersPage({question}) {
             const response = await axios.post(apiUrl, formData);
             console.log('Answer added successfully:', response.data);
 
-            await updateSortedAnswers();
+            await updateSortedAnswers(1);
             setShowAnswerForm(false);
         } catch (error) {
             console.error('Error adding answer:', error);
@@ -93,6 +119,19 @@ export default function AnswersPage({question}) {
         }
     };
 
+    const updateAnswerVote = (answerId, voteType) => {
+        const updatedAnswers = answers.map((answer) => {
+            if (answer._id === answerId) {
+                return {
+                    ...answer,
+                    votes: voteType === 'upvote' ? answer.votes + 1 : answer.votes - 1,
+                };
+            }
+            return answer;
+        });
+        setAnswers(updatedAnswers);
+    };
+
     const handleVoteAnswer = async (answerId, voteType) => {
         const apiUrl = `http://localhost:8000/vote/answer`;
         try {
@@ -101,7 +140,7 @@ export default function AnswersPage({question}) {
                 voteType: voteType
             });
             console.log('Answer voted successfully:', response.data);
-            setVotes(response.data.newVotes);
+            updateAnswerVote(answerId, voteType);
         } catch (error) {
             console.error('Error voting the question:', error);
         }
@@ -168,13 +207,22 @@ export default function AnswersPage({question}) {
                     </div>
                     {totalPages > 1 && (
                         <div className="pagination-buttons">
-                            <button onClick={handlePrevPage} className="prev" disabled={currentPage === 1}>Prev</button>
+                            {
+                                (parseInt(currentPage) === 1) &&
+                                <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="prev" disabled={true}>Prev</button>
+                            }
+                            {
+                                (parseInt(currentPage) != 1) &&
+                                <button onClick={handlePrevPage} className="prev">Prev</button>
+                            }
                             <button onClick={handleNextPage} className="next">Next</button>
                         </div>
                     )}
-                    <div className="button-container">
-                        <button type="submit" onClick={handleAnswerQuestion} className="answer-question" >Answer Question</button>
-                    </div>
+                    {userData.username != "" && (
+                        <div className="button-container">
+                            <button type="submit" onClick={handleAnswerQuestion} className="answer-question" >Answer Question</button>
+                        </div>
+                    )}
                 </>
             ) : (
                 <AnswerForm onSubmit={handleFormSubmit} />

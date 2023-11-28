@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import "./questionForm.css"
 import PropTypes from 'prop-types';
+import axios from "axios";
 
 export default function QuestionForm({ onSubmit }) {
 
@@ -13,6 +14,7 @@ export default function QuestionForm({ onSubmit }) {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [formData, setFormData] = useState(initialFormData);
     const [validationErrors, setValidationErrors] = useState({});
+    const [existingTags, setExistingTags] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -40,6 +42,7 @@ export default function QuestionForm({ onSubmit }) {
         };
 
         fetchUserData();
+        fetchExistingTags();
     }, []);
 
     const handleInputChange = (e) => {
@@ -59,6 +62,17 @@ export default function QuestionForm({ onSubmit }) {
             setFormData(initialFormData);
         } else {
             setValidationErrors(errors);
+        }
+    };
+
+    const fetchExistingTags = async () => {
+        const apiUrl = `http://localhost:8000/tags`;
+        try {
+            const response = await axios.get(apiUrl);
+            const tagNames = response.data.map(tag => tag.name);
+            setExistingTags(tagNames);
+        } catch (error) {
+            console.error('Error fetching tags:', error);
         }
     };
 
@@ -93,16 +107,26 @@ export default function QuestionForm({ onSubmit }) {
         // Tags validation
         if (!data.tags.trim()) {
             errors.tags = "Tags cannot be empty";
-        }
-
-        const tagNames = data.tags.trim().split(/\s+/);
-        if (tagNames.length > 5) {
-            errors.tags = "Cannot have more than 5 tags";
-        }
-        for (const tag of tagNames) {
-            if (tag.length > 20) {
-                errors.tags = "New tag length cannot be more than 20";
-                break;
+        } else {
+            const tagNames = data.tags.trim().split(/\s+/);
+            if (tagNames.length > 5) {
+                errors.tags = "Cannot have more than 5 tags";
+            }
+            // Check if the tags already exists
+            if (userData.reputation < 50) {
+                for (const tag of tagNames) {
+                    if (!existingTags.includes(tag.toLowerCase())) {
+                        errors.tags = "Only a user with reputation of 50 or more can create a new tag";
+                        break;
+                    }
+                }
+            } else {
+                for (const tag of tagNames) {
+                    if (tag.length > 20) {
+                        errors.tags = "Tag length cannot be more than 20";
+                        break;
+                    }
+                }
             }
         }
 
