@@ -343,28 +343,61 @@ Method to upvote or downvote a question
  */
 app.post('/vote/question', async (req, res) => {
     try {
-        const { questionId, voteType } = req.body; // voteType: 'upvote' || 'downvote'
+        const { questionId, voteType } = req.body;
 
-        // Find question
         const question = await Question.findById(questionId);
         if (!question) {
             return res.status(404).json({'message': 'Question not found'});
         }
 
-        // Update the vote field
+        let reputationChange = 0;
         if (voteType === 'upvote') {
             question.votes += 1;
+            reputationChange = 5;
         } else if (voteType === 'downvote') {
             question.votes -= 1;
+            reputationChange = -10;
         }
 
         await question.save();
-        res.json({'message': 'Vote updated successfully', 'newVotes': question.votes});
+
+        const author = await User.findOne({ username: question.asked_by });
+        if (author) {
+            author.reputation += reputationChange;
+            await author.save();
+        }
+
+        res.json({'message': 'Vote and reputation updated successfully', 'newVotes': question.votes});
     } catch (error) {
-        res.status(500).json({'message': 'Error updating vote'});
-        console.error("Vote error: ", error);
+        res.status(500).json({'message': 'Error updating vote and reputation'});
+        console.error("Vote and reputation update error: ", error);
     }
 });
+
+// app.post('/vote/question', async (req, res) => {
+//     try {
+//         const { questionId, voteType } = req.body; // voteType: 'upvote' || 'downvote'
+//
+//         // Find question
+//         const question = await Question.findById(questionId);
+//         if (!question) {
+//             return res.status(404).json({'message': 'Question not found'});
+//         }
+//
+//         // Update the vote field
+//         if (voteType === 'upvote') {
+//             question.votes += 1;
+//         } else if (voteType === 'downvote') {
+//             question.votes -= 1;
+//         }
+//
+//         await question.save();
+//         res.json({'message': 'Vote updated successfully', 'newVotes': question.votes});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error updating vote'});
+//         console.error("Vote error: ", error);
+//     }
+// });
 
 /*
 Method to upvote or downvote a answer
