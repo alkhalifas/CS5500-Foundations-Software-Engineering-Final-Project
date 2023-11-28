@@ -25,7 +25,6 @@ export default function QuestionsList() {
             console.log('Question added successfully:', response.data);
 
             await handleSort('newest');
-
             setShowForm(false);
         } catch (error) {
             console.error('Error adding question:', error);

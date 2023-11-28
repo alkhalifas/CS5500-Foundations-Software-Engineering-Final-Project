@@ -58,7 +58,7 @@ export default function AnswersPage({question}) {
             const response = await axios.post(apiUrl, formData);
             console.log('Answer added successfully:', response.data);
 
-            await updateSortedAnswers();
+            await updateSortedAnswers(1);
             setShowAnswerForm(false);
         } catch (error) {
             console.error('Error adding answer:', error);
