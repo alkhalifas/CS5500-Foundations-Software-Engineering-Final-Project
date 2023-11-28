@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
 
 export default function AnswersPage({question}) {
     const [answers, setAnswers] = useState([]);
-    const [views, setViews] = useState([]);
-    const [votes, setVotes] = useState([]);
+    const [views, setViews] = useState(0);
+    const [votes, setVotes] = useState();
     const [showAnswerForm, setShowAnswerForm] = useState(false);
     const [totalResults, setTotalResults] = useState([]);
     const [totalPages, setTotalPages] = useState();
@@ -37,7 +37,7 @@ export default function AnswersPage({question}) {
             .then(response => {
                 console.log('Views incremented successfully:', response.data);
                 setViews(question.views + 1);
-                setVotes(question.votes); // Increment it when a question is voted // Pending
+                setVotes(question.votes);
             })
             .catch(error => {
                 console.error('Error incrementing views:', error);
@@ -79,6 +79,34 @@ export default function AnswersPage({question}) {
         }
     };
 
+    const handleVoteQuestion = async (voteType) => {
+        const apiUrl = `http://localhost:8000/vote/question`;
+        try {
+            const response = await axios.post(apiUrl, {
+                questionId: question._id,
+                voteType: voteType
+            });
+            console.log('Question voted successfully:', response.data);
+            setVotes(response.data.newVotes);
+        } catch (error) {
+            console.error('Error voting the question:', error);
+        }
+    };
+
+    const handleVoteAnswer = async (answerId, voteType) => {
+        const apiUrl = `http://localhost:8000/vote/answer`;
+        try {
+            const response = await axios.post(apiUrl, {
+                answerId: answerId,
+                voteType: voteType
+            });
+            console.log('Answer voted successfully:', response.data);
+            setVotes(response.data.newVotes);
+        } catch (error) {
+            console.error('Error voting the question:', error);
+        }
+    };
+
     return (
         <div>
             {!showAnswerForm ? (
@@ -105,13 +133,17 @@ export default function AnswersPage({question}) {
                         </div>
                         <div className="asked-by-column">
                             <span className="asked-data"><QuestionCardTiming question={question} /></span>
+                            <div className="vote-buttons">
+                                <button onClick={() => handleVoteQuestion("upvote")} className="up">Up</button>
+                                <button onClick={() => handleVoteQuestion("downvote")} className="down">Down</button>
+                            </div>
                         </div>
                     </div>
                     <div className="dotted-line" />
                     <div className="answerText">
                         {answers.map((answer, index) => (
-                            <div key={answer.aid}>
-                                <div key={answer.aid} className="answer-card" id={"questionBody"}>
+                            <div key={answer._id}>
+                                <div key={answer._id} className="answer-card" id={"questionBody"}>
                                     <div className="answer-votes-column centered">
                                         <span className="answer-votes-count">{answer.votes} votes</span>
                                     </div>
@@ -122,6 +154,10 @@ export default function AnswersPage({question}) {
                                     </div>
                                     <div className="asked-by-column answerAuthor">
                                         <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
+                                        <div className="vote-buttons">
+                                            <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                            <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                        </div>
                                     </div>
                                 </div>
                                 {index !== answers.length - 1 && <div className="dotted-line" />}
@@ -130,8 +166,8 @@ export default function AnswersPage({question}) {
                     </div>
                     {totalPages > 1 && (
                         <div className="pagination-buttons">
-                            <button onClick={handlePrevPage} disabled={currentPage === 1}>Prev</button>
-                            <button onClick={handleNextPage}>Next</button>
+                            <button onClick={handlePrevPage} className="prev" disabled={currentPage === 1}>Prev</button>
+                            <button onClick={handleNextPage} className="next">Next</button>
                         </div>
                     )}
                     <div className="button-container">
@@ -147,4 +183,4 @@ export default function AnswersPage({question}) {
 
 AnswersPage.propTypes = {
     question: PropTypes.func.isRequired
-};
+}

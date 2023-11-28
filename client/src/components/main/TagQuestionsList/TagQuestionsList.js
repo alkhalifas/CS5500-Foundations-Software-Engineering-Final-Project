@@ -97,8 +97,8 @@ export default function TagQuestionsList({ tag }) {
                     </div>
                     {totalPages > 1 && (
                         <div className="pagination-buttons">
-                            <button onClick={handlePrevPage} disabled={currentPage === 1}>Prev</button>
-                            <button onClick={handleNextPage}>Next</button>
+                            <button onClick={handlePrevPage} className="prev" disabled={currentPage === 1}>Prev</button>
+                            <button onClick={handleNextPage} className="next">Next</button>
                         </div>
                     )}
                 </>
