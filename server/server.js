@@ -26,6 +26,7 @@ const post_answer_function = require("./routes/post_answer");
 const User = require("./models/users");
 const Question = require("./models/questions");
 const Answer = require("./models/answers");
+const Comment = require("./models/comment")
 
 // Provision App
 const app = express();
@@ -70,8 +71,20 @@ app.get('/question/:id', async (req, res) => {
 
         const question = await Question.findById(questionId)
             .populate('tags')
-            .populate('answers')
-            .populate('accepted');
+            .populate({
+                path: 'answers',
+                populate: {
+                    path: 'comments',
+                    model: 'Comment',
+                    populate: {
+                        path: 'commented_by',
+                        model: 'User',
+                        select: '-password'
+                    }
+                }
+            })
+            .populate('accepted')
+            .populate('comments');
 
         if (!question) {
             return res.status(404).json({'message': 'Question not found'});
@@ -261,7 +274,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Login successful, create token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
 
         res.json({ token });
     } catch (error) {
@@ -437,6 +450,35 @@ app.post('/vote/answer', async (req, res) => {
 });
 
 
+/*
+Method to upvote or downvote a comment
+ */
+app.post('/vote/comment', async (req, res) => {
+    try {
+        const { commentId, voteType } = req.body;
+
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json({'message': 'Comment not found'});
+        }
+
+        if (voteType === 'upvote') {
+            comment.votes += 1;
+        } else if (voteType === 'downvote') {
+            return res.status(404).json({'message': 'Comment cannot be downvoted'});
+        }
+
+        await comment.save();
+
+        res.status(200).json({'message': 'Vote updated successfully', 'newVotes': comment.votes});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating answer vote'});
+        console.error("Vote error: ", error);
+    }
+});
+
+
+
 app.post('/accept-answer', async (req, res) => {
     try {
         const { questionId, answerId } = req.body;
@@ -467,6 +509,93 @@ app.post('/accept-answer', async (req, res) => {
     } catch (error) {
         res.status(500).json({'message': 'Error updating accepted answer'});
         console.error("Error in updating accepted answer: ", error);
+    }
+});
+
+/*
+Method to add comment to question
+ */
+app.post('/questions/:questionId/comments', async (req, res) => {
+    try {
+        const { questionId } = req.params;
+        const { text, commented_by } = req.body;
+
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        if (text.length > 140) {
+            return res.status(400).json({'message': 'Comment must be less than 140 characters'});
+        }
+
+        const user = await User.findOne({username: commented_by});
+        if (!user) {
+            return res.status(404).json({'message': 'User not found'});
+        }
+
+        if (user.reputation < 50) {
+            return res.status(403).json({'message': 'User does not have enough reputation'});
+        }
+
+        const newComment = new Comment({
+            text: text,
+            commented_by: user,
+            question: questionId
+        });
+
+        await newComment.save();
+
+        question.comments.push(newComment._id);
+        await question.save();
+
+        res.status(200).json({'message': 'Comment added to question successfully', 'comment': newComment});
+    } catch (error) {
+        res.status(500).json({'message': 'Error adding comment to question'});
+        console.error("Error in adding comment to question: ", error);
+    }
+});
+
+
+app.post('/answers/:answerId/comments', async (req, res) => {
+    try {
+        const { answerId } = req.params;
+        const { text, commented_by } = req.body;
+
+        const answer = await Answer.findById(answerId);
+        if (!answer) {
+            return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        if (text.length > 140) {
+            return res.status(400).json({'message': 'Comment must be less than 140 characters'});
+        }
+
+        const user = await User.findOne({username: commented_by});
+        if (!user) {
+            return res.status(404).json({'message': 'User not found'});
+        }
+
+        if (user.reputation < 50) {
+            return res.status(403).json({'message': 'User does not have enough reputation'});
+        }
+
+
+        const newComment = new Comment({
+            text: text,
+            commented_by: user,
+            answer: answerId
+        });
+
+        await newComment.save();
+
+        answer.comments.push(newComment._id);
+        await answer.save();
+
+        res.status(200).json({'message': 'Comment added to answer successfully', 'comment': newComment});
+    } catch (error) {
+        res.status(500).json({'message': 'Error adding comment to answer'});
+        console.error("Error in adding comment to answer: ", error);
     }
 });
 
