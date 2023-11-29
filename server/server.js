@@ -518,16 +518,29 @@ Method to get comments for a question
 app.get('/questions/:questionId/comments', async (req, res) => {
     try {
         const { questionId } = req.params;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 3;
+        const skip = (page - 1) * limit;
 
         const comments = await Comment.find({ question: questionId })
-            .populate('commented_by', 'username -_id');
+            .populate('commented_by', 'username -_id')
+            .skip(skip)
+            .limit(limit);
 
-        res.json(comments);
+        const totalComments = await Comment.countDocuments({ question: questionId });
+
+        res.json({
+            comments,
+            currentPage: page,
+            totalPages: Math.ceil(totalComments / limit),
+            totalComments
+        });
     } catch (error) {
         res.status(500).json({'message': 'Error fetching comments for the question'});
         console.error("Error: ", error);
     }
 });
+
 
 /*
 Method to get comments for an answer
@@ -535,16 +548,29 @@ Method to get comments for an answer
 app.get('/answers/:answerId/comments', async (req, res) => {
     try {
         const { answerId } = req.params;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 3;
+        const skip = (page - 1) * limit;
 
         const comments = await Comment.find({ answer: answerId })
-            .populate('commented_by', 'username -_id');
+            .populate('commented_by', 'username -_id')
+            .skip(skip)
+            .limit(limit);
 
-        res.json(comments);
+        const totalComments = await Comment.countDocuments({ answer: answerId });
+
+        res.json({
+            comments,
+            currentPage: page,
+            totalPages: Math.ceil(totalComments / limit),
+            totalComments
+        });
     } catch (error) {
         res.status(500).json({'message': 'Error fetching comments for the answer'});
         console.error("Error: ", error);
     }
 });
+
 
 
 /*
