@@ -174,10 +174,22 @@ export default function AnswersPage({question}) {
                         </div>
                         <div className="asked-by-column">
                             <span className="asked-data"><QuestionCardTiming question={question} /></span>
-                            <div className="vote-buttons">
-                                <button onClick={() => handleVoteQuestion("upvote")} className="up">Up</button>
-                                <button onClick={() => handleVoteQuestion("downvote")} className="down">Down</button>
-                            </div>
+                            {userData.username != "" && (
+                                <div className="vote-buttons">
+                                    {userData.reputation < 50 && (
+                                        <>
+                                            <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
+                                            <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
+                                        </>
+                                    )}
+                                    {userData.reputation > 49 && (
+                                        <>
+                                            <button onClick={() => handleVoteQuestion("upvote")} className="up">Up</button>
+                                            <button onClick={() => handleVoteQuestion("downvote")} className="down">Down</button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="dotted-line" />
@@ -195,10 +207,22 @@ export default function AnswersPage({question}) {
                                     </div>
                                     <div className="asked-by-column answerAuthor">
                                         <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
-                                        <div className="vote-buttons">
-                                            <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
-                                            <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
-                                        </div>
+                                        {userData.username != "" && (
+                                            <div className="vote-buttons">
+                                                {userData.reputation < 50 && (
+                                                    <>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
+                                                    </>
+                                                )}
+                                                {userData.reputation > 49 && (
+                                                    <>
+                                                        <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                                        <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 {index !== answers.length - 1 && <div className="dotted-line" />}
