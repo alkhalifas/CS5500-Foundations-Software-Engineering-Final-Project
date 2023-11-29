@@ -18,6 +18,10 @@ const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question'
     },
+    votes: {
+        type: Number,
+        default: 0
+    },
     answer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Answer'
