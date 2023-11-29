@@ -42,6 +42,6 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }]
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Question', questionSchema);
