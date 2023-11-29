@@ -513,6 +513,41 @@ app.post('/accept-answer', async (req, res) => {
 });
 
 /*
+Method to get comments for a question
+ */
+app.get('/questions/:questionId/comments', async (req, res) => {
+    try {
+        const { questionId } = req.params;
+
+        const comments = await Comment.find({ question: questionId })
+            .populate('commented_by', 'username -_id');
+
+        res.json(comments);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching comments for the question'});
+        console.error("Error: ", error);
+    }
+});
+
+/*
+Method to get comments for an answer
+ */
+app.get('/answers/:answerId/comments', async (req, res) => {
+    try {
+        const { answerId } = req.params;
+
+        const comments = await Comment.find({ answer: answerId })
+            .populate('commented_by', 'username -_id');
+
+        res.json(comments);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching comments for the answer'});
+        console.error("Error: ", error);
+    }
+});
+
+
+/*
 Method to add comment to question
  */
 app.post('/questions/:questionId/comments', async (req, res) => {
