@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Answer'
     }]
-});
+}, { timestamps: true });
 
 
 userSchema.pre('save', async function(next) {

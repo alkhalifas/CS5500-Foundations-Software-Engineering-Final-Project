@@ -274,7 +274,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Login successful, create token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
 
         res.json({ token });
     } catch (error) {
@@ -465,7 +465,7 @@ app.post('/vote/comment', async (req, res) => {
         if (voteType === 'upvote') {
             comment.votes += 1;
         } else if (voteType === 'downvote') {
-            comment.votes -= 1;
+            return res.status(404).json({'message': 'Comment cannot be downvoted'});
         }
 
         await comment.save();
