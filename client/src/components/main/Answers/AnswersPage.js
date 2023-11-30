@@ -10,6 +10,7 @@ import CommentsSection from "../comments/commentsSection"
 
 export default function AnswersPage({question}) {
     const [answers, setAnswers] = useState([]);
+    const [answer, setAcceptedAnswer] = useState();
     const [views, setViews] = useState(0);
     const [votes, setVotes] = useState();
     const [showAnswerForm, setShowAnswerForm] = useState(false);
@@ -56,6 +57,17 @@ export default function AnswersPage({question}) {
             });
     }, [question._id]);
 
+    const updateAcceptedAnswer = useCallback(() => {
+        const answerUrl = `http://localhost:8000/questions/${question._id}/accepted-answer`;
+        axios.get(answerUrl)
+            .then(response => {
+                setAcceptedAnswer(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching accepted answer:', error);
+            });
+    }, [question._id]);
+
     useEffect(() => {
         // Increment views when the component is mounted
         const viewUrl = `http://localhost:8000/questions/increment-views/${question._id}`;
@@ -70,6 +82,7 @@ export default function AnswersPage({question}) {
             });
 
         updateSortedAnswers(1);
+        updateAcceptedAnswer();
         fetchUserData();
 
     }, [question._id, question.views, updateSortedAnswers]);
@@ -143,7 +156,23 @@ export default function AnswersPage({question}) {
             console.log('Answer voted successfully:', response.data);
             updateAnswerVote(answerId, voteType);
         } catch (error) {
-            console.error('Error voting the question:', error);
+            console.error('Error voting the answer:', error);
+        }
+    };
+
+    const handleAcceptAnswer = async (answerId) => {
+        const apiUrl = `http://localhost:8000/accept-answer`;
+        try {
+            const response = await axios.post(apiUrl, {
+                answerId: answerId,
+                questionId: question._id
+            });
+            console.log('Answer accepted successfully:', response.data);
+
+            await updateAcceptedAnswer();
+            await updateSortedAnswers(1);
+        } catch (error) {
+            console.error('Error accepting the answer:', error);
         }
     };
 
@@ -199,6 +228,42 @@ export default function AnswersPage({question}) {
 
                     <div className="dotted-line" />
                     <div className="answerText">
+                        {answer && (
+                            <div key={answer._id}>
+                                <div key={answer._id} className="answer-card" id={"questionBody"}>
+                                    <div className="answer-votes-column centered">
+                                        <span className="answer-votes-count">{answer.votes} votes</span>
+                                    </div>
+                                    <div className="answer-text-column">
+                                        <span className="answer-text">
+                                            <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
+                                        </span>
+                                    </div>
+                                    <div className="asked-by-column answerAuthor">
+                                        <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
+                                        {userData.username != "" && (
+                                            <div className="vote-buttons">
+                                                {userData.reputation < 50 && (
+                                                    <>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
+                                                    </>
+                                                )}
+                                                {userData.reputation > 49 && (
+                                                    <>
+                                                        <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                                        <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {answer && <div className="dotted-line" />}
+                    </div>
+                    <div className="answerText">
                         {answers.map((answer, index) => (
 
                             <div key={answer._id}>
@@ -232,7 +297,6 @@ export default function AnswersPage({question}) {
                                             )}
                                         </div>
                                     </div>
-
                                     <div>
                                         <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
                                     </div>
