@@ -195,8 +195,8 @@ export default function AnswersPage({question}) {
                         </div>
                     </div>
 
-                    <CommentsSection type="questions" typeId={question._id} />
-                    
+                    <CommentsSection type="questions" typeId={question._id} userData={userData}/>
+
                     <div className="dotted-line" />
                     <div className="answerText">
                         {answers.map((answer, index) => (

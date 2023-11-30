@@ -525,7 +525,8 @@ app.get('/questions/:questionId/comments', async (req, res) => {
         const comments = await Comment.find({ question: questionId })
             .populate('commented_by', 'username -_id')
             .skip(skip)
-            .limit(limit);
+            .limit(limit)
+            .sort({ createdAt: -1 });
 
         const totalComments = await Comment.countDocuments({ question: questionId });
 
@@ -540,6 +541,7 @@ app.get('/questions/:questionId/comments', async (req, res) => {
         console.error("Error: ", error);
     }
 });
+
 
 
 /*
