@@ -229,7 +229,12 @@ export default function AnswersPage({question}) {
                                             </div>
                                         )}
                                     </div>
+                                    <div>
+                                        <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
+                                    </div>
+
                                 </div>
+
                                 {index !== answers.length - 1 && <div className="dotted-line" />}
                             </div>
                         ))}

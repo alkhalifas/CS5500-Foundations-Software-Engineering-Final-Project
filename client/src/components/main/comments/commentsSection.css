@@ -84,3 +84,37 @@
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+.textarea-comment {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    flex-grow: 1;
+    font-family: Arial, sans-serif;
+    resize: vertical;
+}
+
+.button-post-comment {
+    background-color: dodgerblue; /* Green background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s;
+}
+
+.button-post-comment:hover {
+    background-color: #83beff; /* Darker shade of green */
+}
+
+.comments-input-section {
+    display: flex;
+    align-items: center; /* Aligns children vertically in the center */
+    justify-content: space-between; /* Adjust this as needed */
+    gap: 10px; /* Adds space between the textarea and the button */
+}

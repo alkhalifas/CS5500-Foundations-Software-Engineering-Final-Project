@@ -74,12 +74,17 @@ const CommentsSection = ({ type, typeId, userData }) => {
     return (
         <div className="page-container">
             <div className="comments-container">
-                <textarea
-                    value={newCommentText}
-                    onChange={(e) => setNewCommentText(e.target.value)}
-                    placeholder="Write a comment..."
-                />
-                <button onClick={handleSubmitComment}>Post Comment</button>
+                <div className="comments-input-section">
+                    <input
+                        className="textarea-comment"
+                        value={newCommentText}
+                        onChange={(e) => setNewCommentText(e.target.value)}
+                        placeholder="Write a comment..."
+                    />
+                    <button className="button-post-comment" onClick={handleSubmitComment}>
+                        Post
+                    </button>
+                </div>
 
                 {comments.length === 0 && <div>No comments yet</div>}
                 {comments.map(comment => (
