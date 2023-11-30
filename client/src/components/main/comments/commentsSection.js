@@ -26,8 +26,28 @@ const CommentsSection = ({ type, typeId, userData }) => {
     }, [type, typeId, currentPage]);
 
     const handleUpvote = async (commentId) => {
-        // Implement upvote functionality later // todo
-        console.log("commentId: ", commentId)
+        try {
+            const response = await fetch('http://localhost:8000/vote/comment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add authorization headers if required
+                },
+                body: JSON.stringify({ commentId, voteType: 'upvote' })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to upvote the comment');
+            }
+
+            // Refresh comments to reflect the updated vote count
+            fetchComments();
+        } catch (error) {
+            console.error('Error upvoting comment:', error);
+            alert(error.message || "Error occurred while upvoting the comment.");
+        }
     };
 
     const handleSubmitComment = async () => {
@@ -96,8 +116,8 @@ const CommentsSection = ({ type, typeId, userData }) => {
                     </div>
                 ))}
                 <div className="pagination">
-                    <button className="page-button" onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}> {"<"} </button>
-                    <button className="page-button" onClick={() => changePage(currentPage + 1)}> {">"} </button>
+                    <button className="page-button" onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}> Prev </button>
+                    <button className="page-button" onClick={() => changePage(currentPage + 1)}> Next </button>
                 </div>
             </div>
         </div>
