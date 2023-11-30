@@ -557,7 +557,8 @@ app.get('/answers/:answerId/comments', async (req, res) => {
         const comments = await Comment.find({ answer: answerId })
             .populate('commented_by', 'username -_id')
             .skip(skip)
-            .limit(limit);
+            .limit(limit)
+            .sort({ createdAt: -1 });
 
         const totalComments = await Comment.countDocuments({ answer: answerId });
 

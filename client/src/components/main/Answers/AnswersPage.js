@@ -200,40 +200,44 @@ export default function AnswersPage({question}) {
                     <div className="dotted-line" />
                     <div className="answerText">
                         {answers.map((answer, index) => (
+
                             <div key={answer._id}>
-                                <div key={answer._id} className="answer-card" id={"questionBody"}>
-                                    <div className="answer-votes-column centered">
-                                        <span className="answer-votes-count">{answer.votes} votes</span>
-                                    </div>
-                                    <div className="answer-text-column">
+                                <div className={"vertical-stacking"}>
+                                    <div key={answer._id} className="answer-card" id={"questionBody"}>
+                                        <div className="answer-votes-column centered">
+                                            <span className="answer-votes-count">{answer.votes} votes</span>
+                                        </div>
+                                        <div className="answer-text-column">
                                         <span className="answer-text">
                                             <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
                                         </span>
+                                        </div>
+                                        <div className="asked-by-column answerAuthor">
+                                            <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
+                                            {userData.username != "" && (
+                                                <div className="vote-buttons">
+                                                    {userData.reputation < 50 && (
+                                                        <>
+                                                            <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
+                                                            <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
+                                                        </>
+                                                    )}
+                                                    {userData.reputation > 49 && (
+                                                        <>
+                                                            <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                                            <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="asked-by-column answerAuthor">
-                                        <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
-                                        {userData.username != "" && (
-                                            <div className="vote-buttons">
-                                                {userData.reputation < 50 && (
-                                                    <>
-                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
-                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
-                                                    </>
-                                                )}
-                                                {userData.reputation > 49 && (
-                                                    <>
-                                                        <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
-                                                        <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
-                                                    </>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
+
                                     <div>
                                         <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
                                     </div>
-
                                 </div>
+
 
                                 {index !== answers.length - 1 && <div className="dotted-line" />}
                             </div>
