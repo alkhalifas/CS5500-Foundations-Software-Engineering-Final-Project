@@ -1,0 +1,86 @@
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*height: 100vh; !* This will take the full height of the viewport *!*/
+}
+
+.comments-container {
+    margin: 20px;
+    padding: 10px;
+    width: 60%;
+    /*background-color: #f9f9f9;*/
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment {
+    border-bottom: 1px solid #e1e1e1;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Arial, sans-serif;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.comment div {
+    margin: 0 10px;
+}
+
+.comment-text {
+    flex-grow: 1;
+}
+
+.comment-author {
+    /*font-weight: bold;*/
+    /*color: dodgerblue;*/
+}
+
+.vote-button {
+    background-color: dodgerblue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 50px 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.vote-button:hover {
+    background-color: #83beff;
+}
+
+.vote-button:disabled {
+    background-color: dodgerblue;
+    cursor: not-allowed;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.page-button {
+    background-color: #8c8c8c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.page-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

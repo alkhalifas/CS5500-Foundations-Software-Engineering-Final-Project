@@ -6,6 +6,7 @@ import AnswerForm from "../answerForm/answerForm";
 import formatQuestionText from "../utils";
 import axios from "axios";
 import PropTypes from 'prop-types';
+import CommentsSection from "../comments/commentsSection"
 
 export default function AnswersPage({question}) {
     const [answers, setAnswers] = useState([]);
@@ -172,6 +173,7 @@ export default function AnswersPage({question}) {
                                 ))}
                             </div>
                         </div>
+
                         <div className="asked-by-column">
                             <span className="asked-data"><QuestionCardTiming question={question} /></span>
                             {userData.username != "" && (
@@ -192,6 +194,9 @@ export default function AnswersPage({question}) {
                             )}
                         </div>
                     </div>
+
+                    <CommentsSection type="questions" typeId={question._id} />
+                    
                     <div className="dotted-line" />
                     <div className="answerText">
                         {answers.map((answer, index) => (
