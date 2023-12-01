@@ -160,21 +160,21 @@ export default function AnswersPage({question}) {
         }
     };
 
-    const handleAcceptAnswer = async (answerId) => {
-        const apiUrl = `http://localhost:8000/accept-answer`;
-        try {
-            const response = await axios.post(apiUrl, {
-                answerId: answerId,
-                questionId: question._id
-            });
-            console.log('Answer accepted successfully:', response.data);
-
-            await updateAcceptedAnswer();
-            await updateSortedAnswers(1);
-        } catch (error) {
-            console.error('Error accepting the answer:', error);
-        }
-    };
+    // const handleAcceptAnswer = async (answerId) => {
+    //     const apiUrl = `http://localhost:8000/accept-answer`;
+    //     try {
+    //         const response = await axios.post(apiUrl, {
+    //             answerId: answerId,
+    //             questionId: question._id
+    //         });
+    //         console.log('Answer accepted successfully:', response.data);
+    //
+    //         await updateAcceptedAnswer();
+    //         await updateSortedAnswers(1);
+    //     } catch (error) {
+    //         console.error('Error accepting the answer:', error);
+    //     }
+    // };
 
     return (
         <div>

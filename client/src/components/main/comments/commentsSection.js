@@ -94,6 +94,8 @@ const CommentsSection = ({ type, typeId, userData }) => {
     return (
         <div className="page-container">
             <div className="comments-container">
+                <p style={{"fontSize":"12px"}}>Comments:</p>
+
                 <div className="comments-input-section">
                     <input
                         className="textarea-comment"
