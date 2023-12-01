@@ -17,9 +17,9 @@ export default function Login({setIsLoggedIn, registerSuccess}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/login', credentials);
+            const response = await axios.post('http://localhost:8000/login', credentials, { withCredentials: true });
+            console.log("response:", response);
             console.log("response.data:", response.data);
-
 
             setIsLoggedIn(true)
         } catch (error) {

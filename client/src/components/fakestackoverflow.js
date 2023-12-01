@@ -46,20 +46,7 @@ export default function FakeStackOverflow() {
 
         checkSessionStatus();
 
-        // const checkUserSession = () => {
-        //     const token = localStorage.getItem('token');
-        //     if (token) {
-        //         setUserSession(token);
-        //         fetchUserData();
-        //     }
-        // };
-        //
-        // checkUserSession();
-        // window.addEventListener('storage', checkUserSession);
-        //
-        // return () => {
-        //     window.removeEventListener('storage', checkUserSession);
-        // };
+
     }, []);
 
     const handleComponentSelect = (component, tagId = null) => {

@@ -10,6 +10,7 @@ let bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 const session = require("express-session")
+const MongoStore = require('connect-mongo');
 
 
 // Import Route Methods
@@ -47,7 +48,7 @@ db.on('connected', function() {
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
@@ -62,13 +63,16 @@ app.use(
     session({
         secret: process.env.SERVER_SECRET,
         cookie: {
-            httpOnly: true,
+            secure: true,
+            httpOnly: 'None',
             sameSite: true,
             maxAge: 3600000 // 1 hour limit
 
         },
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/fake_so' })
+
     })
 )
 
@@ -283,21 +287,26 @@ app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
+        // Get current user
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(401).json({'message': 'Username not found.'});
         }
 
+        // Check password matches
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
         // Login successful, update session
-        req.session.user = { id: user._id, username: user.username };
+        // req.session.user = { id: user._id, username: user.username };
+        req.session.userId = user._id;  // Storing user ID in session
         req.session.isLoggedIn = true;
 
-        res.json({ message: 'Login successful' });
+        console.log("req.session: ", req.session)
+        res.send(req.session.sessionID)
+        // res.json({ message: 'Login successful' });
     } catch (error) {
         res.status(500).json({'message': 'Unknown error. Please contact admin.'});
         console.error("Login error: ", error);
@@ -305,29 +314,49 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/session-status', (req, res) => {
+app.get('/test-cookie', (req, res) => {
+    res.cookie('testCookie', 'testValue', { maxAge: 900000, httpOnly: true });
+    res.send('Test cookie set');
+});
 
-    if (req.session && req.session.user) {
-        res.json({
-            isLoggedIn: true,
-            user: req.session.user
-        });
+
+
+app.get('/session-status', (req, res) => {
+    if (req.session.userId) {
+        res.json({ isLoggedIn: true, userId: req.session.userId });
     } else {
-        // The user is not logged in
-        res.json({
-            isLoggedIn: false
-        });
+        res.json({ isLoggedIn: false });
     }
 });
+
+
+// app.get('/session-status', (req, res) => {
+//
+//     console.log("/session-status - req.session: ", req.session)
+//
+//     if (req.session && req.session.user) {
+//         res.json({
+//             isLoggedIn: true,
+//             user: req.session.user
+//         });
+//     } else {
+//         // The user is not logged in
+//         res.json({
+//             isLoggedIn: false
+//         });
+//     }
+// });
 
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            return res.status(500).send('Error in logging out');
+            console.error("Logout error: ", err);
+            return res.status(500).send('Error logging out');
         }
         res.send('Logout successful');
     });
 });
+
 
 
 app.post('/update-reputation', async (req, res) => {
@@ -360,28 +389,28 @@ app.post('/update-reputation', async (req, res) => {
 
 
 
-const verifyUserSessionToken = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1];
+// const verifyUserSessionToken = (req, res, next) => {
+//     const token = req.header('Authorization')?.split(' ')[1];
+//
+//     console.log("token: ", token)
+//
+//     if (!token) {
+//         return res.status(401).send('Access Denied: No token provided');
+//     }
+//
+//     try {
+//         const verified = jwt.verify(token, process.env.JWT_SECRET);
+//
+//         console.log("verified: ", verified)
+//         req.user = verified;
+//         next();
+//     } catch (error) {
+//         console.log("error: ", error)
+//         res.status(400).send('Invalid Token');
+//     }
+// };
 
-    console.log("token: ", token)
-
-    if (!token) {
-        return res.status(401).send('Access Denied: No token provided');
-    }
-
-    try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-
-        console.log("verified: ", verified)
-        req.user = verified;
-        next();
-    } catch (error) {
-        console.log("error: ", error)
-        res.status(400).send('Invalid Token');
-    }
-};
-
-app.get('/user', verifyUserSessionToken, async (req, res) => {
+app.get('/user', async (req, res) => {
     try {
         // Get profile without password field
         const user = await User.findById(req.user.userId).select('-password');
