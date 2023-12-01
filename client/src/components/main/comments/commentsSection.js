@@ -83,8 +83,6 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
-
-
     const changePage = (newPage) => {
         setCurrentPage(newPage);
     };
@@ -94,27 +92,30 @@ const CommentsSection = ({ type, typeId, userData }) => {
     return (
         <div className="page-container">
             <div className="comments-container">
-                <div className="comments-input-section">
-                    <input
-                        className="textarea-comment"
-                        value={newCommentText}
-                        onChange={(e) => setNewCommentText(e.target.value)}
-                        placeholder="Write a comment..."
-                    />
-                    <button className="button-post-comment" onClick={handleSubmitComment}>
-                        Post
-                    </button>
-                </div>
-
                 {comments.length === 0 && <div>No comments yet</div>}
                 {comments.map(comment => (
                     <div key={comment._id} className="comment">
                         <div>{comment.votes} votes</div>
-                        <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        {userData.username != "" && (
+                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        )}
                         <div className="comment-text">{comment.text}</div>
                         <div className="comment-author">{comment.commented_by.username}</div>
                     </div>
                 ))}
+                {userData.username != "" && (
+                    <div className="comments-input-section">
+                        <input
+                            className="textarea-comment"
+                            value={newCommentText}
+                            onChange={(e) => setNewCommentText(e.target.value)}
+                            placeholder="Write a comment..."
+                        />
+                        <button className="button-post-comment" onClick={handleSubmitComment}>
+                            Post
+                        </button>
+                    </div>
+                )}
                 <div className="pagination">
                     <button className="page-button" onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}> Prev </button>
                     <button className="page-button" onClick={() => changePage(currentPage + 1)}> Next </button>
