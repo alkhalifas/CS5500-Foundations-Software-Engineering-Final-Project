@@ -129,13 +129,13 @@ export default function SearchResultsList({ searchInput }) {
                                 <div className="pagination-buttons">
                                     {
                                         (parseInt(currentPage) === 1) &&
-                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="prev" disabled={true}>Prev</button>
+                                        <button className="page-button" disabled={true}>Prev</button>
                                     }
                                     {
                                         (parseInt(currentPage) != 1) &&
-                                        <button onClick={handlePrevPage} className="prev">Prev</button>
+                                        <button onClick={handlePrevPage} className="page-button">Prev</button>
                                     }
-                                    <button onClick={handleNextPage} className="next">Next</button>
+                                    <button onClick={handleNextPage} className="page-button">Next</button>
                                 </div>
                             )}
                         </>
