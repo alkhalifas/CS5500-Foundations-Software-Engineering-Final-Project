@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 let bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+const session = require("express-session")
+
 
 // Import Route Methods
 const home_function = require("./routes/get_home");
@@ -42,11 +44,33 @@ db.on('connected', function() {
 });
 
 // Configure CORS/Express
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+// URL
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.json());
+
+app.use(
+    session({
+        secret: process.env.SERVER_SECRET,
+        cookie: {
+            httpOnly: true,
+            sameSite: true,
+            maxAge: 3600000 // 1 hour limit
+
+        },
+        resave: false,
+        saveUninitialized: false
+    })
+)
 
 /*
 Method that returns homepage message
@@ -245,9 +269,7 @@ app.post('/register', async (req, res) => {
         const user = new User({ username, email, password });
         await user.save();
 
-        // Create JWT token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(201).json({ message: 'User created successfully', token });
+        res.status(200).json({ message: 'User created successfully' });
     } catch (error) {
         res.status(500).send('Error registering new user');
         console.error("Registration error: ", error);
@@ -261,26 +283,50 @@ app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Search for user by username and return if not found
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(401).json({'message': 'Username not found.'});
         }
 
-        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
-        // Login successful, create token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
+        // Login successful, update session
+        req.session.user = { id: user._id, username: user.username };
+        req.session.isLoggedIn = true;
 
-        res.json({ token });
+        res.json({ message: 'Login successful' });
     } catch (error) {
         res.status(500).json({'message': 'Unknown error. Please contact admin.'});
         console.error("Login error: ", error);
     }
+});
+
+
+app.get('/session-status', (req, res) => {
+
+    if (req.session && req.session.user) {
+        res.json({
+            isLoggedIn: true,
+            user: req.session.user
+        });
+    } else {
+        // The user is not logged in
+        res.json({
+            isLoggedIn: false
+        });
+    }
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Error in logging out');
+        }
+        res.send('Logout successful');
+    });
 });
 
 

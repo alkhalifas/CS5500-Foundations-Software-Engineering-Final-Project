@@ -4,29 +4,12 @@ import PropTypes from 'prop-types';
 export default function Header({
                                    setSearchInput,
                                    setSearchActive,
-                                   setUserSession,
-                                   userSession,
-                                   // userProfile
+                                   // userData,
+                                   isLoggedIn,
+                                   setIsLoggedIn
 }) {
     const [searchInput, setSearchInputState] = useState('');
 
-    // useEffect(() => {
-    //
-    //     const checkUserSession = () => {
-    //         const token = localStorage.getItem('token');
-    //         console.log("checkUserSession storage", token)
-    //         setUserSession(token);
-    //     };
-    //
-    //     checkUserSession();
-    //
-    //     window.addEventListener('storage', checkUserSession);
-    //
-    //     return () => {
-    //         window.removeEventListener('storage', checkUserSession);
-    //     };
-    //
-    // }, []);
 
     const handleSearch = () => {
         setSearchInput(searchInput);
@@ -35,7 +18,7 @@ export default function Header({
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setUserSession(null)
+        setIsLoggedIn(false)
     }
 
     return (
@@ -57,7 +40,7 @@ export default function Header({
                     />
                 </div>
                 {
-                    userSession &&
+                    isLoggedIn &&
                     <>
                         {/*<p style={{"fontSize":"16px"}}>Welcome, {userProfile.username}</p>*/}
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
@@ -71,7 +54,7 @@ export default function Header({
 Header.propTypes = {
     setSearchInput: PropTypes.func.isRequired,
     setSearchActive: PropTypes.func.isRequired,
-    setUserSession: PropTypes.func.isRequired,
-    userSession: PropTypes.string,
-    userProfile: PropTypes.object
+    isLoggedIn: PropTypes.bool,
+    setIsLoggedIn: PropTypes.func.isRequired,
+    // userData: PropTypes.object
 };

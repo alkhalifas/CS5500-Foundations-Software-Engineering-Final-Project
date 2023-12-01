@@ -3,7 +3,7 @@ import axios from 'axios';
 import './login.css';
 import PropTypes from 'prop-types';
 
-export default function Login({setUserSession, registerSuccess}) {
+export default function Login({setIsLoggedIn, registerSuccess}) {
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
@@ -18,13 +18,10 @@ export default function Login({setUserSession, registerSuccess}) {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/login', credentials);
-            console.log(response.data);
-            localStorage.setItem('token', response.data.token)
+            console.log("response.data:", response.data);
 
-            const token = localStorage.getItem('token');
-            console.log("localStorage.getItem('token'): ", token)
 
-            setUserSession(token)
+            setIsLoggedIn(true)
         } catch (error) {
             setFeedbackMessage(error.response?.data?.message || 'Unknown Error. Contact Admin.');
             console.error('Login error:', error.response?.data?.message || error.message);
@@ -49,6 +46,6 @@ export default function Login({setUserSession, registerSuccess}) {
 }
 
 Login.propTypes = {
-    setUserSession: PropTypes.func.isRequired,
+    setIsLoggedIn: PropTypes.func.isRequired,
     registerSuccess: PropTypes.bool
 };

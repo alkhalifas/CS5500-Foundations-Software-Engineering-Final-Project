@@ -8,56 +8,58 @@ import TagQuestionsList from "./main/TagQuestionsList/TagQuestionsList";
 import SearchResultsList from './main/searchResults/searchResultsList';
 import Welcome from "../components/welcome/welcome";
 import Profile from "./profile/profile"
+import axios from 'axios';
 
 export default function FakeStackOverflow() {
-    const [userSession, setUserSession] = useState(null);
-    const [userProfile, setUserProfile] = useState({"username": ""});
+    // const [userSession, setUserSession] = useState(null);
+    // const [userProfile, setUserProfile] = useState({"username": ""});
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [selectedTag, setSelectedTag] = useState(null);
     const [searchInput, setSearchInput] = useState('');
     const [searchActive, setSearchActive] = useState(false);
     const [componentKey, setComponentKey] = useState(0);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isGuest, setIsGuest] = useState(false);
+    const [userData, setUserData] = useState(null);
 
-    const fetchUserData = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) return;
 
-        try {
-            const response = await fetch('http://localhost:8000/user', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+    const checkSessionStatus = () => {
+        axios.get('http://localhost:8000/session-status', { withCredentials: true })
+            .then(response => {
+                if (response.data.isLoggedIn) {
+                    setIsLoggedIn(true);
+                    setUserData(response.data.user); // Assuming the server sends some user data
+                    console.log("USER LOGGED IN")
+                } else {
+                    setIsLoggedIn(false);
+                    setUserData(null);
+                    console.log("NOT LOGGED IN")
                 }
+            })
+            .catch(error => {
+                console.error('Error checking session status:', error);
+                // Handle error appropriately
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const userData = await response.json();
-            setUserProfile(userData);
-
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
     };
 
     useEffect(() => {
-        const checkUserSession = () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                setUserSession(token);
-                fetchUserData();
-            }
-        };
 
-        checkUserSession();
-        window.addEventListener('storage', checkUserSession);
+        checkSessionStatus();
 
-        return () => {
-            window.removeEventListener('storage', checkUserSession);
-        };
+        // const checkUserSession = () => {
+        //     const token = localStorage.getItem('token');
+        //     if (token) {
+        //         setUserSession(token);
+        //         fetchUserData();
+        //     }
+        // };
+        //
+        // checkUserSession();
+        // window.addEventListener('storage', checkUserSession);
+        //
+        // return () => {
+        //     window.removeEventListener('storage', checkUserSession);
+        // };
     }, []);
 
     const handleComponentSelect = (component, tagId = null) => {
@@ -78,14 +80,14 @@ export default function FakeStackOverflow() {
             case 'tagQuestions':
                 return selectedTag && <TagQuestionsList key={componentKey} tagId={selectedTag} />;
             case 'profile':
-                return <Profile userSession={userSession}/>;
+                return <Profile />;
             default:
                 return null;
         }
     };
 
     const renderContent = () => {
-        if (userSession) {
+        if (isLoggedIn || isGuest) {
             return (
                 <>
                     <Menubar onSelect={handleComponentSelect} />
@@ -96,19 +98,19 @@ export default function FakeStackOverflow() {
                 </>
             );
         } else {
-            return <Welcome setUserSession={setUserSession} setUserProfile={setUserProfile}/>;
+            return <Welcome setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest}/>;
         }
     };
 
     return (
         <div className="app-container">
             <Header
-                key={userProfile} // Forced update to ensure username renders
+                key={userData}
                 setSearchInput={setSearchInput}
                 setSearchActive={setSearchActive}
-                setUserSession={setUserSession}
-                userSession={userSession}
-                userProfile={userProfile}
+                // userData={userData}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
             />
             <div className="content-container">
                 {renderContent()}

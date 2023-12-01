@@ -4,7 +4,7 @@ import './welcome.css';
 import Register from "../register/register"
 import Login from "../login/login"
 
-export default function Welcome({setUserSession, setUserProfile}) {
+export default function Welcome({setIsLoggedIn, setIsGuest}) {
     const [userSelection, setUserSelection] = useState("log-in");
     const [registerSuccess, setRegisterSuccess] = useState(false);
 
@@ -15,8 +15,7 @@ export default function Welcome({setUserSession, setUserProfile}) {
     };
 
     const handleGuestUser = () => {
-        setUserProfile({"username":"Guest"})
-        setUserSession("0")
+        setIsGuest(true)
     }
 
     return (
@@ -27,13 +26,13 @@ export default function Welcome({setUserSession, setUserProfile}) {
             {
                 userSelection==="log-in" &&
                 <>
-                    <Login setUserSession={setUserSession} registerSuccess={registerSuccess}/>
+                    <Login setIsLoggedIn={setIsLoggedIn} registerSuccess={registerSuccess}/>
                 </>
             }
             {
                 userSelection==="register" &&
                 <>
-                    <Register setUserSession={setUserSession} setRegisterSuccess={setRegisterSuccess} setUserSelection={setUserSelection}/>
+                    <Register setIsLoggedIn={setIsLoggedIn} setRegisterSuccess={setRegisterSuccess} setUserSelection={setUserSelection}/>
                 </>
             }
             <div className="button-row">
@@ -55,6 +54,6 @@ export default function Welcome({setUserSession, setUserProfile}) {
 }
 
 Welcome.propTypes = {
-    setUserSession: PropTypes.func.isRequired,
-    setUserProfile: PropTypes.func.isRequired
+    setIsLoggedIn: PropTypes.func.isRequired,
+    setIsGuest: PropTypes.func.isRequired
 };
