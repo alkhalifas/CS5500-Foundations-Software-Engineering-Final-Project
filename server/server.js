@@ -63,7 +63,7 @@ app.use(
     session({
         secret: process.env.SERVER_SECRET,
         cookie: {
-            secure: true,
+            secure: false, // keep false
             httpOnly: 'None',
             sameSite: true,
             maxAge: 3600000 // 1 hour limit
@@ -305,8 +305,12 @@ app.post('/login', async (req, res) => {
         req.session.isLoggedIn = true;
 
         console.log("req.session: ", req.session)
-        res.send(req.session.sessionID)
+
+        res.cookie('session.userId', req.session.userId, { maxAge: 900000, httpOnly: true });
+        // res.send(req.session.sessionID)
         // res.json({ message: 'Login successful' });
+        res.json({ message: 'Login successful' });
+
     } catch (error) {
         res.status(500).json({'message': 'Unknown error. Please contact admin.'});
         console.error("Login error: ", error);
@@ -314,14 +318,16 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/test-cookie', (req, res) => {
-    res.cookie('testCookie', 'testValue', { maxAge: 900000, httpOnly: true });
-    res.send('Test cookie set');
-});
-
-
+// app.get('/test-cookie', (req, res) => {
+//     res.cookie('testCookie', 'testValue', { maxAge: 900000, httpOnly: true });
+//     res.send('Test cookie set');
+// });
+//
+//
 
 app.get('/session-status', (req, res) => {
+
+    console.log("req.session: ", req.session)
     if (req.session.userId) {
         res.json({ isLoggedIn: true, userId: req.session.userId });
     } else {
