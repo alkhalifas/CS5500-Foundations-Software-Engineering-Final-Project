@@ -7,7 +7,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [newCommentText, setNewCommentText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const [isGuest] = useState(true);
+    const [isGuest, setIsGuest] = useState(true);
 
     const fetchComments = async () => {
         setIsLoading(true);
@@ -22,7 +22,29 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/user`, {
+                method: 'GET',
+                credentials: 'include', // include session cookies
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            setIsGuest(false)
+        } catch (error) {
+            setIsGuest(true)
+            console.error('Error fetching user data:', error);
+        }
+    };
+
     useEffect(() => {
+        fetchUserData();
         fetchComments();
     }, [type, typeId, currentPage]);
 
