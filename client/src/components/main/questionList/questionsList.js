@@ -13,6 +13,7 @@ export default function QuestionsList() {
     const [totalResults, setTotalResults] = useState([]);
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
+    const [isGuest, setIsGuest] = useState(true);
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
 
     const fetchUserData = async () => {
@@ -31,10 +32,11 @@ export default function QuestionsList() {
 
             const data = await response.json();
             setUserData(data);
-            console.log("data: ", data)
+            setIsGuest(false)
+            console.log("userData: ", userData)
         } catch (error) {
+            setIsGuest(true)
             console.error('Error fetching user data:', error);
-            // setError(error.message);
         }
     };
 
@@ -103,7 +105,11 @@ export default function QuestionsList() {
                 <div id={"answersHeader"}>
                     <div className="header-container">
                         <h1>All Answers</h1>
-                        <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        {
+                            !isGuest &&
+                            <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        }
+                        {/*<button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>*/}
                     </div>
                     <AnswersPage question={selectedQuestion} />
 
@@ -112,7 +118,7 @@ export default function QuestionsList() {
                 <>
                     <div className="header-container">
                         <h1>All Questions</h1>
-                        {userData && (
+                        {!isGuest && (
                             <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
                         )}
                     </div>

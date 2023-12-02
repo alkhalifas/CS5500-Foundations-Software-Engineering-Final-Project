@@ -18,6 +18,8 @@ export default function AnswersPage({question}) {
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+    const [isGuest, setIsGuest] = useState(true);
+
 
     const fetchUserData = async () => {
         try {
@@ -35,10 +37,11 @@ export default function AnswersPage({question}) {
 
             const data = await response.json();
             setUserData(data);
-            console.log("data: ", data)
+            setIsGuest(false)
+            console.log("userData: ", userData)
         } catch (error) {
+            setIsGuest(true)
             console.error('Error fetching user data:', error);
-            // setError(error.message);
         }
     };
 
@@ -204,7 +207,7 @@ export default function AnswersPage({question}) {
 
                         <div className="asked-by-column">
                             <span className="asked-data"><QuestionCardTiming question={question} /></span>
-                            {userData.username != "" && (
+                            {!isGuest && (
                                 <div className="vote-buttons">
                                     {userData.reputation < 50 && (
                                         <>
@@ -223,7 +226,7 @@ export default function AnswersPage({question}) {
                         </div>
                     </div>
 
-                    <CommentsSection type="questions" typeId={question._id} userData={userData}/>
+                    <CommentsSection type="questions" typeId={question._id} userData={userData} isGuest={isGuest}/>
 
                     <div className="dotted-line" />
                     <div className="answerText">
@@ -297,7 +300,7 @@ export default function AnswersPage({question}) {
                                         </div>
                                     </div>
                                     <div>
-                                        <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
+                                        <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
                                     </div>
                                 </div>
 

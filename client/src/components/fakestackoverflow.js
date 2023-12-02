@@ -33,6 +33,7 @@ export default function FakeStackOverflow() {
                 } else {
                     setIsLoggedIn(false);
                     setUserData(null);
+
                     console.log("NOT LOGGED IN")
                 }
             })
@@ -40,6 +41,11 @@ export default function FakeStackOverflow() {
                 console.error('Error checking session status:', error);
                 // Handle error appropriately
             });
+    };
+
+    const handleSignIn = () => {
+        setIsGuest(false);
+        setIsLoggedIn(false);
     };
 
     useEffect(() => {
@@ -85,7 +91,7 @@ export default function FakeStackOverflow() {
                 </>
             );
         } else {
-            return <Welcome setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest}/>;
+            return <Welcome setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} />;
         }
     };
 
@@ -98,6 +104,8 @@ export default function FakeStackOverflow() {
                 // userData={userData}
                 isLoggedIn={isLoggedIn}
                 setIsLoggedIn={setIsLoggedIn}
+                isGuest={isGuest}
+                handleSignIn={handleSignIn}
             />
             <div className="content-container">
                 {renderContent()}

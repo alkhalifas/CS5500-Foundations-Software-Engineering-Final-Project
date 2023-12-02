@@ -7,7 +7,9 @@ export default function Header({
                                    setSearchActive,
                                    // userData,
                                    isLoggedIn,
-                                   setIsLoggedIn
+                                   setIsLoggedIn,
+                                   isGuest,
+                                   handleSignIn
 }) {
     const [searchInput, setSearchInputState] = useState('');
     const [userData, setUserData] =useState("");
@@ -19,9 +21,8 @@ export default function Header({
                 if (response.data.isLoggedIn) {
                     setIsLoggedIn(true);
                     setUserData(response.data.userId); // Assuming the server sends some user data
-                    // console.log("HEADER response: ", response)
-                    // console.log("HEADER userData: ", userData)
-                    // console.log("header response: ", response)
+                    console.log("userData: ", userData)
+
                 } else {
                     setIsLoggedIn(false);
                     setUserData('');
@@ -80,8 +81,15 @@ export default function Header({
                 {
                     isLoggedIn &&
                     <>
-                        <p style={{"fontSize":"16px"}}>Welcome, {userData}</p>
+                        {/*<p style={{"fontSize":"16px"}}>Welcome, {userData}</p>*/}
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
+                    </>
+                }
+                {
+                    isGuest &&
+                    <>
+                        <p style={{"fontSize":"16px"}}>Guest</p>
+                        <button className="welcome-button" onClick={() => handleSignIn()}>Log In</button>
                     </>
                 }
             </div>
@@ -94,5 +102,6 @@ Header.propTypes = {
     setSearchActive: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool,
     setIsLoggedIn: PropTypes.func.isRequired,
-    // userData: PropTypes.object
+    isGuest: PropTypes.bool,
+    handleSignIn: PropTypes.func.isRequired
 };

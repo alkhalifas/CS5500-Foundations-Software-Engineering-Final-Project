@@ -7,6 +7,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [newCommentText, setNewCommentText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
+    const [isGuest] = useState(true);
 
     const fetchComments = async () => {
         setIsLoading(true);
@@ -96,23 +97,31 @@ const CommentsSection = ({ type, typeId, userData }) => {
             <div className="comments-container">
                 <p style={{"fontSize":"12px"}}>Comments:</p>
 
-                <div className="comments-input-section">
-                    <input
-                        className="textarea-comment"
-                        value={newCommentText}
-                        onChange={(e) => setNewCommentText(e.target.value)}
-                        placeholder="Write a comment..."
-                    />
-                    <button className="button-post-comment" onClick={handleSubmitComment}>
-                        Post
-                    </button>
-                </div>
+                {
+                    !isGuest &&
+                    <div className="comments-input-section">
+                        <input
+                            className="textarea-comment"
+                            value={newCommentText}
+                            onChange={(e) => setNewCommentText(e.target.value)}
+                            placeholder="Write a comment..."
+                        />
+                        <button className="button-post-comment" onClick={handleSubmitComment}>
+                            Post
+                        </button>
+                    </div>
+                }
+
 
                 {comments.length === 0 && <div>No comments yet</div>}
                 {comments.map(comment => (
                     <div key={comment._id} className="comment">
                         <div>{comment.votes} votes</div>
-                        <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        {
+                            !isGuest &&
+                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        }
+
                         <div className="comment-text">{comment.text}</div>
                         <div className="comment-author">{comment.commented_by.username}</div>
                     </div>
