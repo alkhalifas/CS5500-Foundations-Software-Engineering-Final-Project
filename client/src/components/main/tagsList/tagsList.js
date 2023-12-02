@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import "./tagsList.css"
 import QuestionForm from "../questionForm/questionForm";
 import TagQuestionsList from "../TagQuestionsList/TagQuestionsList";
-import axios from "axios"; // Import the TagQuestionsList component
+import axios from "axios";
+import PropTypes from "prop-types";
 
-export default function TagsList() {
+export default function TagsList({isGuest}) {
     const [showForm, setShowForm] = useState(false);
     const [selectedTag, setSelectedTag] = useState(false);
     const [tags, setTags] = useState([]);
@@ -53,7 +54,11 @@ export default function TagsList() {
                             <div className="header-container">
                                 <h3>{tags.length} Tags</h3>
                                 <h1>All Tags</h1>
-                                <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                                {
+                                    !isGuest &&
+                                    <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+
+                                }
                             </div>
 
                             <div className="tags-container">
@@ -73,4 +78,8 @@ export default function TagsList() {
             )}
         </div>
     );
+}
+
+TagsList.propTypes = {
+    isGuest: PropTypes.bool
 }

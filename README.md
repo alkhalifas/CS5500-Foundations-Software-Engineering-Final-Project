@@ -15,7 +15,7 @@ Detailed instructions with all relevant commands go here.
 - [ ] Server Routes
 - [X] All Tags
 - [X] User Schema
-- [ ] Comment Schema
+- [X] Comment Schema
 
 ## Team Member 2 Contribution
 - [ ] Homepage
