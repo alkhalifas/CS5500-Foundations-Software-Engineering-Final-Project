@@ -11,7 +11,7 @@ export default function Welcome({setIsLoggedIn, setIsGuest}) {
 
     const handleUserChoice = (status) => {
         setUserSelection(status);
-        console.log("userSelection: ", userSelection)
+        // console.log("userSelection: ", userSelection)
     };
 
     const handleGuestUser = () => {

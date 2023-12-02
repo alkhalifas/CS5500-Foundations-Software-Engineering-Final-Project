@@ -416,19 +416,37 @@ app.post('/update-reputation', async (req, res) => {
 //     }
 // };
 
+// app.get('/user', async (req, res) => {
+//     try {
+//         // Get profile without password field
+//         const user = await User.findById(req.user.userId).select('-password');
+//         if (!user) {
+//             // If user not found
+//             return res.status(404).send('User not found');
+//         }
+//         // If usser found:
+//         res.json(user);
+//     } catch (error) {
+//         res.status(500).send('Error fetching user data');
+//         console.error("User data error: ", error);
+//     }
+// });
+
 app.get('/user', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: 'No user is currently logged in.' });
+    }
+
     try {
-        // Get profile without password field
-        const user = await User.findById(req.user.userId).select('-password');
+        const user = await User.findById(req.session.userId).select('-password');
         if (!user) {
-            // If user not found
-            return res.status(404).send('User not found');
+            return res.status(404).json({ message: 'User not found.' });
         }
-        // If usser found:
+
         res.json(user);
     } catch (error) {
-        res.status(500).send('Error fetching user data');
-        console.error("User data error: ", error);
+        console.error('Error fetching user info:', error);
+        res.status(500).json({ message: 'Error retrieving user information.' });
     }
 });
 

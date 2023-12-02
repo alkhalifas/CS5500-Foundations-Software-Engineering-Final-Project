@@ -10,7 +10,7 @@ export default function Header({
                                    setIsLoggedIn
 }) {
     const [searchInput, setSearchInputState] = useState('');
-    const [userData, setUserData] =useState(null);
+    const [userData, setUserData] =useState("");
 
 
     const checkSessionStatus = () => {
@@ -18,13 +18,13 @@ export default function Header({
             .then(response => {
                 if (response.data.isLoggedIn) {
                     setIsLoggedIn(true);
-                    setUserData(response.data.user); // Assuming the server sends some user data
-                    console.log("HEADER response: ", response)
-                    console.log("HEADER userData: ", userData)
-                    console.log("USER LOGGED IN")
+                    setUserData(response.data.userId); // Assuming the server sends some user data
+                    // console.log("HEADER response: ", response)
+                    // console.log("HEADER userData: ", userData)
+                    // console.log("header response: ", response)
                 } else {
                     setIsLoggedIn(false);
-                    setUserData(null);
+                    setUserData('');
                     console.log("NOT LOGGED IN")
                 }
             })
@@ -80,7 +80,7 @@ export default function Header({
                 {
                     isLoggedIn &&
                     <>
-                        {/*<p style={{"fontSize":"16px"}}>Welcome, {userProfile.username}</p>*/}
+                        <p style={{"fontSize":"16px"}}>Welcome, {userData}</p>
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
                     </>
                 }
