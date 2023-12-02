@@ -11,8 +11,6 @@ import Profile from "./profile/profile"
 import axios from 'axios';
 
 export default function FakeStackOverflow() {
-    // const [userSession, setUserSession] = useState(null);
-    // const [userProfile, setUserProfile] = useState({"username": ""});
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [selectedTag, setSelectedTag] = useState(null);
     const [searchInput, setSearchInput] = useState('');
@@ -28,7 +26,7 @@ export default function FakeStackOverflow() {
             .then(response => {
                 if (response.data.isLoggedIn) {
                     setIsLoggedIn(true);
-                    setUserData(response.data.user); // Assuming the server sends some user data
+                    setUserData(response.data.user);
                     console.log("USER LOGGED IN")
                 } else {
                     setIsLoggedIn(false);
@@ -83,7 +81,7 @@ export default function FakeStackOverflow() {
         if (isLoggedIn || isGuest) {
             return (
                 <>
-                    <Menubar onSelect={handleComponentSelect} />
+                    <Menubar onSelect={handleComponentSelect} isGuest={isGuest} />
                     <div className="main-content">
                         {searchActive ? <SearchResultsList key={componentKey} searchInput={searchInput} />
                             : renderSelectedComponent()}
