@@ -67,7 +67,7 @@ export default function FakeStackOverflow() {
             case 'questions':
                 return <QuestionsList key={componentKey} />;
             case 'tags':
-                return <TagsList key={componentKey} onSelect={tagId => handleComponentSelect('tagQuestions', tagId)} />;
+                return <TagsList key={componentKey} onSelect={tagId => handleComponentSelect('tagQuestions', tagId)} isGuest={isGuest} />;
             case 'tagQuestions':
                 return selectedTag && <TagQuestionsList key={componentKey} tagId={selectedTag} />;
             case 'profile':
