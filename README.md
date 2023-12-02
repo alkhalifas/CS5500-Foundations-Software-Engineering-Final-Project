@@ -47,3 +47,17 @@ Detailed instructions with all relevant commands go here.
 - Problem Solved:
 
 - Location in code where pattern is used:
+
+## Instructions to run:
+
+Run Mongod:
+
+    brew services start mongodb-community@7.0
+
+Run Server
+
+    SERVER_SECRET=webdev nodemon server.js
+
+Run Client
+
+    npm start

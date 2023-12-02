@@ -19,25 +19,24 @@ export default function QuestionForm({ onSubmit }) {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-
-                const response = await fetch('http://localhost:8000/user', {
+                const response = await fetch(`http://localhost:8000/user`, {
                     method: 'GET',
+                    credentials: 'include',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
                 setUserData(data);
+                console.log("data: ", data)
             } catch (error) {
                 console.error('Error fetching user data:', error);
+                // setError(error.message);
             }
         };
 

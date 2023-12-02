@@ -7,6 +7,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [newCommentText, setNewCommentText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
+    const [isGuest, setIsGuest] = useState(true);
 
     const fetchComments = async () => {
         setIsLoading(true);
@@ -21,7 +22,29 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/user`, {
+                method: 'GET',
+                credentials: 'include', // include session cookies
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            setIsGuest(false)
+        } catch (error) {
+            setIsGuest(true)
+            console.error('Error fetching user data:', error);
+        }
+    };
+
     useEffect(() => {
+        fetchUserData();
         fetchComments();
     }, [type, typeId, currentPage]);
 
@@ -94,23 +117,33 @@ const CommentsSection = ({ type, typeId, userData }) => {
     return (
         <div className="page-container">
             <div className="comments-container">
-                <div className="comments-input-section">
-                    <input
-                        className="textarea-comment"
-                        value={newCommentText}
-                        onChange={(e) => setNewCommentText(e.target.value)}
-                        placeholder="Write a comment..."
-                    />
-                    <button className="button-post-comment" onClick={handleSubmitComment}>
-                        Post
-                    </button>
-                </div>
+                <p style={{"fontSize":"12px"}}>Comments:</p>
+
+                {
+                    !isGuest &&
+                    <div className="comments-input-section">
+                        <input
+                            className="textarea-comment"
+                            value={newCommentText}
+                            onChange={(e) => setNewCommentText(e.target.value)}
+                            placeholder="Write a comment..."
+                        />
+                        <button className="button-post-comment" onClick={handleSubmitComment}>
+                            Post
+                        </button>
+                    </div>
+                }
+
 
                 {comments.length === 0 && <div>No comments yet</div>}
                 {comments.map(comment => (
                     <div key={comment._id} className="comment">
                         <div>{comment.votes} votes</div>
-                        <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        {
+                            !isGuest &&
+                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        }
+
                         <div className="comment-text">{comment.text}</div>
                         <div className="comment-author">{comment.commented_by.username}</div>
                     </div>

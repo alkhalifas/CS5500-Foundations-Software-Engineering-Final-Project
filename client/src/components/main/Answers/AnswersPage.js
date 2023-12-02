@@ -18,27 +18,29 @@ export default function AnswersPage({question}) {
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+    const [isGuest, setIsGuest] = useState(true);
+
 
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            const response = await fetch('http://localhost:8000/user', {
+            const response = await fetch(`http://localhost:8000/user`, {
                 method: 'GET',
+                credentials: 'include', // include session cookies
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
             const data = await response.json();
             setUserData(data);
+            setIsGuest(false)
+            console.log("userData: ", userData)
         } catch (error) {
+            setIsGuest(true)
             console.error('Error fetching user data:', error);
         }
     };
@@ -160,21 +162,21 @@ export default function AnswersPage({question}) {
         }
     };
 
-    const handleAcceptAnswer = async (answerId) => {
-        const apiUrl = `http://localhost:8000/accept-answer`;
-        try {
-            const response = await axios.post(apiUrl, {
-                answerId: answerId,
-                questionId: question._id
-            });
-            console.log('Answer accepted successfully:', response.data);
-
-            await updateAcceptedAnswer();
-            await updateSortedAnswers(1);
-        } catch (error) {
-            console.error('Error accepting the answer:', error);
-        }
-    };
+    // const handleAcceptAnswer = async (answerId) => {
+    //     const apiUrl = `http://localhost:8000/accept-answer`;
+    //     try {
+    //         const response = await axios.post(apiUrl, {
+    //             answerId: answerId,
+    //             questionId: question._id
+    //         });
+    //         console.log('Answer accepted successfully:', response.data);
+    //
+    //         await updateAcceptedAnswer();
+    //         await updateSortedAnswers(1);
+    //     } catch (error) {
+    //         console.error('Error accepting the answer:', error);
+    //     }
+    // };
 
     return (
         <div>
@@ -205,7 +207,7 @@ export default function AnswersPage({question}) {
 
                         <div className="asked-by-column">
                             <span className="asked-data"><QuestionCardTiming question={question} /></span>
-                            {userData.username != "" && (
+                            {!isGuest && (
                                 <div className="vote-buttons">
                                     {userData.reputation < 50 && (
                                         <>
@@ -224,7 +226,7 @@ export default function AnswersPage({question}) {
                         </div>
                     </div>
 
-                    <CommentsSection type="questions" typeId={question._id} userData={userData}/>
+                    <CommentsSection type="questions" typeId={question._id} userData={userData} isGuest={isGuest}/>
 
                     <div className="dotted-line" />
                     <div className="answerText">
@@ -298,7 +300,7 @@ export default function AnswersPage({question}) {
                                         </div>
                                     </div>
                                     <div>
-                                        <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
+                                        <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
                                     </div>
                                 </div>
 
