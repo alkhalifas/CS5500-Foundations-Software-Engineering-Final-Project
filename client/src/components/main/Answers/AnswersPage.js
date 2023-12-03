@@ -154,6 +154,7 @@ export default function AnswersPage({question}) {
             });
             console.log('Answer voted successfully:', response.data);
             updateAnswerVote(answerId, voteType, response.data.newVotes);
+            updateAcceptedAnswer();
         } catch (error) {
             console.error('Error voting the answer:', error);
         }
