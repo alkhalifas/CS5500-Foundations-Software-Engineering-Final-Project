@@ -112,3 +112,9 @@
   margin-right: 10px;
   font-size: 14px
 }
+
+.up:disabled,
+.down:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
