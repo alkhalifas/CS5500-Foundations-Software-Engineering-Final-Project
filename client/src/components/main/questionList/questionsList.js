@@ -134,9 +134,9 @@ export default function QuestionsList() {
 
                     <div className="question-cards scrollable-container">
                         {sortedQuestions.map((question, index) => (
-                            <div key={question.qid}>
+                            <div key={question._id}>
                                 <div
-                                    key={question.qid}
+                                    key={question._id}
                                     className="question-card"
                                 >
                                     <div className={"question-left postStats"}>

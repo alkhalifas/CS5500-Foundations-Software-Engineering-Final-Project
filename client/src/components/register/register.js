@@ -48,10 +48,11 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
         <div className="register-container">
             <form onSubmit={handleSubmit}>
                 <h1>Register</h1>
-                <input type="text" name="username" placeholder="Username" value={formRegisterData.username} onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" value={formRegisterData.email} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password (min 6 digits)" value={formRegisterData.password} onChange={handleChange} required />
+                <input id={"usernameInput"} type="text" name="username" placeholder="Username" value={formRegisterData.username} onChange={handleChange} required />
+                <input id={"emailInput"} type="email" name="email" placeholder="Email" value={formRegisterData.email} onChange={handleChange} required />
+                <input id={"passwordInput"} type="password" name="password" placeholder="Password (min 6 digits)" value={formRegisterData.password} onChange={handleChange} required />
                 <input
+                    id={"confirmPasswordInput"}
                     type="password"
                     name="confirmPassword"
                     placeholder="Confirm Password (min 6 digits)"
@@ -66,7 +67,7 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
                 }
                 {
                     (formRegisterData.password === formRegisterData.confirmPassword && formRegisterData.password.length > 5) &&
-                    <button type="submit">Register </button>
+                    <button id={"registerSubmit"} type="submit">Register </button>
                 }
                 {/*<button type="submit" disabled={formRegisterData.password !== formRegisterData.confirmPassword}>*/}
                 {/*    Register*/}
