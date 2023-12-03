@@ -32,8 +32,8 @@ export default function Login({setIsLoggedIn, registerSuccess}) {
         <div className="login-container">
             <form onSubmit={handleSubmit}>
                 <h1>Login</h1>
-                <input type="text" name="username" placeholder="Username" value={credentials.username} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange} required />
+                <input id={"username"} type="text" name="username" placeholder="Username" value={credentials.username} onChange={handleChange} required />
+                <input id={"password"} type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange} required />
                 <p style={{"color":"red"}}>{feedbackMessage}</p>
                 {
                     registerSuccess &&
