@@ -301,7 +301,6 @@ describe('Fake SO Test Suite', () => {
         cy.contains('Unanswered').click();
         cy.contains('0 questions')
 
-
         cy.contains('Ask a Question').click();
         cy.get('#formTitleInput').type('What is the uncertainty principle?');
         cy.get('#formTextInput').type('What exactly is the uncertainty principle?');
