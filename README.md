@@ -35,11 +35,11 @@ Detailed instructions with all relevant commands go here.
 
 | #  | Use-case Name                                    | Test case Name | Status  |
 |----|--------------------------------------------------|----------------|---------|
-| 1  | Welcome Page                                     | Test-1.1       | Passing |
-| 2  | Register Page                                    | Test-1.2       | Passing |
-| 3  | Login page                                       | Test-1.3       | Passing |
-| 4  | Proceed as Guest                                 | Test-1.4       | Passing |
-| 5  | Welcome Page                                     | Test-1.5       | Passing |
+| 1  | Welcome Page Content Check                       | Test-1.1       | Passing |
+| 2  | Register Page Content Check                      | Test-1.2       | Passing |
+| 3  | Login page navigate to                           | Test-1.3       | Passing |
+| 4  | Proceed as Guest navigate to                     | Test-1.4       | Passing |
+| 5  | Welcome Page navigate to                         | Test-1.5       | Passing |
 | 6  |                                                  | Test-1.6       | Passing |
 | 7  |                                                  | Test-1.7       | Passing |
 | 8  | Register User                                    | Test-2.1       | Passing |
