@@ -32,7 +32,7 @@ export default function Welcome({setIsLoggedIn, setIsGuest}) {
             {
                 userSelection==="register" &&
                 <>
-                    <Register setIsLoggedIn={setIsLoggedIn} setRegisterSuccess={setRegisterSuccess} setUserSelection={setUserSelection}/>
+                    <Register setRegisterSuccess={setRegisterSuccess} setUserSelection={setUserSelection}/>
                 </>
             }
             <div className="button-row">

@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const User = require('./models/users');
 const Question = require('./models/questions');
+const Comment = require('./models/comment');
 const Answer = require('./models/answers');
 const Tag = require('./models/tags');
 const bcrypt = require('bcrypt');
@@ -13,23 +14,27 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const sampleUsers = [
-    { name: 'Werner Heisenberg', username:"wheisenberg", email: 'wheisenberg@science.com', password: "Password_123" },
-    { name: 'Niels Bohr', username:"nbohr", email: 'nbohr@science.com', password: "Password_123" },
-    { name: 'Ernest Rutherford', username:"eruth", email: 'eruth@example.com', password: "Password_123" },
-    { name: 'JJ Thompson', username:"jjthom", email: 'jjthom@example.com', password: "Password_123" },
-    { name: 'John Dalton', username:"jdalt", email: 'jdalt@example.com', password: "Password_123" },
-    { name: 'Albert Einstein', username:"aeinstein", email: 'aeinstein@example.com' , password: "Password_123"},
-    { name: 'Erwin Schrodinger', username:"eschrod", email: 'eschrod@example.com' , password: "Password_123"}
+    { name: 'Werner Heisenberg', username:"wheisenberg", email: 'wheisenberg@science.com', password: "Password_123", reputation: 100 },
+    { name: 'Niels Bohr', username:"nbohr", email: 'nbohr@science.com', password: "Password_123", reputation: 45 },
+    { name: 'Ernest Rutherford', username:"eruth", email: 'eruth@example.com', password: "Password_123", reputation: 0 },
+    { name: 'JJ Thompson', username:"jjthom", email: 'jjthom@example.com', password: "Password_123", reputation: 0 },
+    { name: 'John Dalton', username:"jdalt", email: 'jdalt@example.com', password: "Password_123", reputation: 100 },
+    { name: 'Albert Einstein', username:"aeinstein", email: 'aeinstein@example.com' , password: "Password_123", reputation: 100},
+    { name: 'Erwin Schrodinger', username:"eschrod", email: 'eschrod@example.com' , password: "Password_123", reputation: 100}
 ];
 
 const tags = [
-    'Quantum Mechanics', 'Relativity', 'Atomic Structure', 'Electron Discovery',
-    'Nuclear Physics', 'Quantum Theory', 'Physics', 'Mathematics'
+    'Quantum', 'Relativity', 'Atom', 'Electrons',
+    'Particles', 'Theory', 'Physics', 'Mathematics'
 ];
 
 async function createUser(userData) {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    let user = new User({ ...userData, password: hashedPassword });
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(userData.password, 10);
+    // console.log("userData.username: ", userData.username)
+    // console.log("hashedPassword: ", hashedPassword)
+    // console.log("userData.password: ", userData.password)
+    let user = new User({ ...userData, password: userData.password });
     return user.save();
 }
 
@@ -39,8 +44,13 @@ async function createTag(tagName) {
 }
 
 async function createAnswer(text, user) {
-    let answer = new Answer({ text: text, ans_by: user.username });
+    let answer = new Answer({ text: text, ans_by: user.username, votes: 2 });
     return answer.save();
+}
+
+async function createComment(text, user) {
+    let comment = new Comment({ text: text, ans_by: user.username, votes: 0 });
+    return comment.save();
 }
 
 async function createQuestion(title, text, tagIds, answerIds, user) {
