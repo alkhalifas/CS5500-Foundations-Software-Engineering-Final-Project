@@ -249,22 +249,16 @@ describe('Fake SO Test Suite', () => {
     //     cy.contains('Question text cannot be empty');
     // })
 
-    // Section 3: Add Answer
-    it('3.0 | Registers, logs in, asks a Question with empty text shows error', () => {
+    // Section 3: Upvote
+    it('3.0 | Logs in, upvotes another users question and answer', () => {
         cy.visit('http://localhost:3000');
-        cy.contains('Register').click();
-        cy.get('#usernameInput').type('alkhalifas')
-        cy.get('#emailInput').type('alkhalifas@gmail.com')
-        cy.get('#passwordInput').type('Password_123')
-        cy.get('#confirmPasswordInput').type('Password_123')
-        cy.get('#registerSubmit').click();
 
-        cy.visit('http://localhost:3000');
-        cy.get('#username').type('alkhalifas')
+        cy.get('#username').type('jdalt')
         cy.get('#password').type('Password_123')
         cy.contains('Log In').click();
 
-        cy.contains('Ask a Question').click();
+        cy.contains('Question Title 10').click();
+        cy.contains('Question Title 10')
         cy.get('#formTitleInput').type('Test Question 1 Text Q1');
         cy.get('#formTagInput').type('javascript');
         cy.contains('Post Question').click();
