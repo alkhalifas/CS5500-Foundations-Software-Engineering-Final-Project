@@ -13,28 +13,29 @@ export default function QuestionsList() {
     const [totalResults, setTotalResults] = useState([]);
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
+    const [isGuest, setIsGuest] = useState(true);
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
 
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            const response = await fetch('http://localhost:8000/user', {
+            const response = await fetch(`http://localhost:8000/user`, {
                 method: 'GET',
+                credentials: 'include', // include session cookies
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
             const data = await response.json();
             setUserData(data);
+            setIsGuest(false)
+            console.log("userData: ", userData)
         } catch (error) {
+            setIsGuest(true)
             console.error('Error fetching user data:', error);
         }
     };
@@ -104,7 +105,11 @@ export default function QuestionsList() {
                 <div id={"answersHeader"}>
                     <div className="header-container">
                         <h1>All Answers</h1>
-                        <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        {
+                            !isGuest &&
+                            <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        }
+                        {/*<button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>*/}
                     </div>
                     <AnswersPage question={selectedQuestion} />
 
@@ -113,7 +118,7 @@ export default function QuestionsList() {
                 <>
                     <div className="header-container">
                         <h1>All Questions</h1>
-                        {userData.username != "" && (
+                        {!isGuest && (
                             <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
                         )}
                     </div>

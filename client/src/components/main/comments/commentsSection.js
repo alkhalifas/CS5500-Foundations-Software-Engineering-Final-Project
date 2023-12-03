@@ -7,6 +7,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [newCommentText, setNewCommentText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
+    const [isGuest, setIsGuest] = useState(true);
 
     const fetchComments = async () => {
         setIsLoading(true);
@@ -21,7 +22,29 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/user`, {
+                method: 'GET',
+                credentials: 'include', // include session cookies
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            setIsGuest(false)
+        } catch (error) {
+            setIsGuest(true)
+            console.error('Error fetching user data:', error);
+        }
+    };
+
     useEffect(() => {
+        fetchUserData();
         fetchComments();
     }, [type, typeId, currentPage]);
 
@@ -83,6 +106,8 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
+
+
     const changePage = (newPage) => {
         setCurrentPage(newPage);
     };
@@ -92,18 +117,10 @@ const CommentsSection = ({ type, typeId, userData }) => {
     return (
         <div className="page-container">
             <div className="comments-container">
-                {comments.length === 0 && <div>No comments yet</div>}
-                {comments.map(comment => (
-                    <div key={comment._id} className="comment">
-                        <div>{comment.votes} votes</div>
-                        {userData.username != "" && (
-                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
-                        )}
-                        <div className="comment-text">{comment.text}</div>
-                        <div className="comment-author">{comment.commented_by.username}</div>
-                    </div>
-                ))}
-                {userData.username != "" && (
+                <p style={{"fontSize":"12px"}}>Comments:</p>
+
+                {
+                    !isGuest &&
                     <div className="comments-input-section">
                         <input
                             className="textarea-comment"
@@ -115,7 +132,22 @@ const CommentsSection = ({ type, typeId, userData }) => {
                             Post
                         </button>
                     </div>
-                )}
+                }
+
+
+                {comments.length === 0 && <div>No comments yet</div>}
+                {comments.map(comment => (
+                    <div key={comment._id} className="comment">
+                        <div>{comment.votes} votes</div>
+                        {
+                            !isGuest &&
+                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        }
+
+                        <div className="comment-text">{comment.text}</div>
+                        <div className="comment-author">{comment.commented_by.username}</div>
+                    </div>
+                ))}
                 <div className="pagination">
                     <button className="page-button" onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}> Prev </button>
                     <button className="page-button" onClick={() => changePage(currentPage + 1)}> Next </button>

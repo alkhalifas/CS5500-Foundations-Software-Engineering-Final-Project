@@ -18,27 +18,29 @@ export default function AnswersPage({question}) {
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+    const [isGuest, setIsGuest] = useState(true);
+
 
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            const response = await fetch('http://localhost:8000/user', {
+            const response = await fetch(`http://localhost:8000/user`, {
                 method: 'GET',
+                credentials: 'include', // include session cookies
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
             const data = await response.json();
             setUserData(data);
+            setIsGuest(false)
+            console.log("userData: ", userData)
         } catch (error) {
+            setIsGuest(true)
             console.error('Error fetching user data:', error);
         }
     };
@@ -160,21 +162,21 @@ export default function AnswersPage({question}) {
         }
     };
 
-    const handleAcceptAnswer = async (answerId) => {
-        const apiUrl = `http://localhost:8000/accept-answer`;
-        try {
-            const response = await axios.post(apiUrl, {
-                answerId: answerId,
-                questionId: question._id
-            });
-            console.log('Answer accepted successfully:', response.data);
-
-            await updateAcceptedAnswer();
-            await updateSortedAnswers(1);
-        } catch (error) {
-            console.error('Error accepting the answer:', error);
-        }
-    };
+    // const handleAcceptAnswer = async (answerId) => {
+    //     const apiUrl = `http://localhost:8000/accept-answer`;
+    //     try {
+    //         const response = await axios.post(apiUrl, {
+    //             answerId: answerId,
+    //             questionId: question._id
+    //         });
+    //         console.log('Answer accepted successfully:', response.data);
+    //
+    //         await updateAcceptedAnswer();
+    //         await updateSortedAnswers(1);
+    //     } catch (error) {
+    //         console.error('Error accepting the answer:', error);
+    //     }
+    // };
 
     return (
         <div>
@@ -205,7 +207,7 @@ export default function AnswersPage({question}) {
 
                         <div className="asked-by-column">
                             <span className="asked-data"><QuestionCardTiming question={question} /></span>
-                            {userData.username != "" && (
+                            {!isGuest && (
                                 <div className="vote-buttons">
                                     {userData.reputation < 50 && (
                                         <>
@@ -223,43 +225,40 @@ export default function AnswersPage({question}) {
                             )}
                         </div>
                     </div>
-                    <CommentsSection type="questions" typeId={question._id} userData={userData}/>
+
+                    <CommentsSection type="questions" typeId={question._id} userData={userData} isGuest={isGuest}/>
+
                     <div className="dotted-line" />
                     <div className="answerText">
                         {answer && (
                             <div key={answer._id}>
-                                <div className={"vertical-stacking"}>
-                                    <div key={answer._id} className="answer-card" id={"questionBody"}>
-                                        <div className="answer-votes-column centered">
-                                            <span className="answer-votes-count">{answer.votes} votes</span>
-                                        </div>
-                                        <div className="answer-text-column">
-                                            <span className="answer-text">
-                                                <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
-                                            </span>
-                                        </div>
-                                        <div className="asked-by-column answerAuthor">
-                                            <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
-                                            {userData.username != "" && (
-                                                <div className="vote-buttons">
-                                                    {userData.reputation < 50 && (
-                                                        <>
-                                                            <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
-                                                            <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
-                                                        </>
-                                                    )}
-                                                    {userData.reputation > 49 && (
-                                                        <>
-                                                            <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
-                                                            <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
-                                                        </>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
+                                <div key={answer._id} className="answer-card" id={"questionBody"}>
+                                    <div className="answer-votes-column centered">
+                                        <span className="answer-votes-count">{answer.votes} votes</span>
                                     </div>
-                                    <div>
-                                        <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
+                                    <div className="answer-text-column">
+                                        <span className="answer-text">
+                                            <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
+                                        </span>
+                                    </div>
+                                    <div className="asked-by-column answerAuthor">
+                                        <span className="asked-data"><AnswerCardTiming answer={answer} /></span>
+                                        {userData.username != "" && (
+                                            <div className="vote-buttons">
+                                                {userData.reputation < 50 && (
+                                                    <>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
+                                                    </>
+                                                )}
+                                                {userData.reputation > 49 && (
+                                                    <>
+                                                        <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                                        <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -268,6 +267,7 @@ export default function AnswersPage({question}) {
                     </div>
                     <div className="answerText">
                         {answers.map((answer, index) => (
+
                             <div key={answer._id}>
                                 <div className={"vertical-stacking"}>
                                     <div key={answer._id} className="answer-card" id={"questionBody"}>
@@ -295,19 +295,16 @@ export default function AnswersPage({question}) {
                                                             <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
                                                         </>
                                                     )}
-                                                    {userData.username === question.asked_by && (
-                                                        <>
-                                                            <button onClick={() => handleAcceptAnswer(answer._id)} className="accept">Accept</button>
-                                                        </>
-                                                    )}
                                                 </div>
                                             )}
                                         </div>
                                     </div>
                                     <div>
-                                        <CommentsSection type="answers" typeId={answer._id} userData={userData}/>
+                                        <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
                                     </div>
                                 </div>
+
+
                                 {index !== answers.length - 1 && <div className="dotted-line" />}
                             </div>
                         ))}
@@ -316,13 +313,13 @@ export default function AnswersPage({question}) {
                         <div className="pagination-buttons">
                             {
                                 (parseInt(currentPage) === 1) &&
-                                <button className="page-button" disabled={true}>Prev</button>
+                                <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="prev" disabled={true}>Prev</button>
                             }
                             {
                                 (parseInt(currentPage) != 1) &&
-                                <button onClick={handlePrevPage} className="page-button">Prev</button>
+                                <button onClick={handlePrevPage} className="prev">Prev</button>
                             }
-                            <button onClick={handleNextPage} className="page-button">Next</button>
+                            <button onClick={handleNextPage} className="next">Next</button>
                         </div>
                     )}
                     {userData.username != "" && (
