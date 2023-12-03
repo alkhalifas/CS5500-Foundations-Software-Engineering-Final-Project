@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const User = require('./models/users');
 const Question = require('./models/questions');
+const Comment = require('./models/comment');
 const Answer = require('./models/answers');
 const Tag = require('./models/tags');
 const bcrypt = require('bcrypt');
@@ -43,8 +44,13 @@ async function createTag(tagName) {
 }
 
 async function createAnswer(text, user) {
-    let answer = new Answer({ text: text, ans_by: user.username });
+    let answer = new Answer({ text: text, ans_by: user.username, votes: 2 });
     return answer.save();
+}
+
+async function createComment(text, user) {
+    let comment = new Comment({ text: text, ans_by: user.username, votes: 0 });
+    return comment.save();
 }
 
 async function createQuestion(title, text, tagIds, answerIds, user) {

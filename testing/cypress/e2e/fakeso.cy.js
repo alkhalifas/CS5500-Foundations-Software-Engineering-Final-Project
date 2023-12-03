@@ -14,7 +14,7 @@ describe('Fake SO Test Suite', () => {
 
       });
 
-    // Section 1: Main page
+    // Section 1: Welcome
     it('1.1 | Shows page title, welcome message, login, register, and guest options', () => {
         cy.visit('http://localhost:3000');
         cy.contains('Fake Stack Overflow');
@@ -143,7 +143,7 @@ describe('Fake SO Test Suite', () => {
         cy.contains('11 questions');
     })
 
-    it('2.5 | Logs in and asks a question with new tag without enough rep', () => {
+    it('2.4.2 | Logs in and asks a question with new tag without enough rep', () => {
 
         cy.visit('http://localhost:3000');
         cy.get('#username').type('eruth')
@@ -158,7 +158,7 @@ describe('Fake SO Test Suite', () => {
 
         cy.contains('Only a user with reputation of 50 or more can create a new tag');
     })
-    it('2.6 | Login and see tags page', () => {
+    it('2.5 | Login and see tags page', () => {
 
         cy.visit('http://localhost:3000');
         cy.get('#username').type('eruth')
@@ -169,7 +169,7 @@ describe('Fake SO Test Suite', () => {
         cy.contains('8 Tags');
     })
 
-    it('2.7 | Login and see profile page', () => {
+    it('2.6 | Login and see profile page', () => {
 
         cy.visit('http://localhost:3000');
         cy.get('#username').type('eruth')
@@ -182,7 +182,7 @@ describe('Fake SO Test Suite', () => {
         cy.contains('Reputation');
     })
 
-    it('2.8 | Logs in, asks a Question with empty title shows error', () => {
+    it('2.7 | Logs in, asks a Question with empty title shows error', () => {
 
         cy.visit('http://localhost:3000');
         cy.get('#username').type('jdalt')
@@ -196,7 +196,7 @@ describe('Fake SO Test Suite', () => {
         cy.contains('Title cannot be empty');
     })
 
-    it('2.9 | Logs in, asks a Question with empty text shows error', () => {
+    it('2.7.1 | Logs in, asks a Question with empty text shows error', () => {
 
         cy.visit('http://localhost:3000');
         cy.get('#username').type('jdalt')
@@ -209,21 +209,107 @@ describe('Fake SO Test Suite', () => {
         cy.contains('Post Question').click();
         cy.contains('Question text cannot be empty');
     })
+    it('2.7.2 | Logs in, asks a Question with empty tag shows error', () => {
 
-    // Section 3: Upvote
-    it('3.0 | Logs in, upvotes another users question and answer', () => {
         cy.visit('http://localhost:3000');
-
         cy.get('#username').type('jdalt')
         cy.get('#password').type('Password_123')
         cy.contains('Log In').click();
 
-        cy.contains('Question Title 10').click();
-        cy.contains('Question Title 10')
+        cy.contains('Ask a Question').click();
         cy.get('#formTitleInput').type('Test Question 1 Text Q1');
-        cy.get('#formTagInput').type('javascript');
+        cy.get('#formTextInput').type('Test Question 1 Text Q1');
         cy.contains('Post Question').click();
-        cy.contains('Question text cannot be empty');
+        cy.contains('Tags cannot be empty');
+    })
+
+    // Section 3: Upvote and reputation
+    it('3.0 | nbohr Logs in, checks reputation, logs out, jdalt logs in, upvotes question, logs out, nbohr Logs in, checks reputation', () => {
+        cy.visit('http://localhost:3000');
+
+        cy.get('#username').type('nbohr')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+        cy.contains('Reputation');
+        cy.contains('45');
+        cy.contains('Logout').click();
+
+        cy.get('#username').type('jdalt')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+        cy.contains('Reputation');
+        cy.contains('100');
+
+        cy.contains('Questions').click();
+        cy.contains('Question Title 9').click();
+        cy.contains('0 votes')
+        cy.contains('Up').click();
+        cy.contains('1 votes')
+        cy.contains('Logout').click();
+
+        cy.get('#username').type('nbohr')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+        cy.contains('Reputation');
+        cy.contains('50');
+    })
+
+    it('3.1 | nbohr Logs in, checks reputation, logs out, jdalt logs in, downvotes question, logs out, nbohr Logs in, checks reputation', () => {
+        cy.visit('http://localhost:3000');
+
+        cy.get('#username').type('nbohr')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+        cy.contains('Reputation');
+        cy.contains('45');
+        cy.contains('Logout').click();
+
+        cy.get('#username').type('jdalt')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+        cy.contains('Reputation');
+        cy.contains('100');
+
+        cy.contains('Questions').click();
+        cy.contains('Question Title 9').click();
+        cy.contains('0 votes')
+        cy.contains('Up').click();
+        cy.contains('Down').click();
+        cy.contains('0 votes')
+        cy.contains('Logout').click();
+
+        cy.get('#username').type('nbohr')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+        cy.contains('Reputation');
+        cy.contains('40');
+    })
+    it('3.2 | Logs in , no unanswered, and asks a question, 1 unanswered', () => {
+
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+        cy.contains('10 questions')
+
+        cy.contains('Unanswered').click();
+        cy.contains('0 questions')
+
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is the uncertainty principle?');
+        cy.get('#formTextInput').type('What exactly is the uncertainty principle?');
+        cy.get('#formTagInput').type('uncertainty');
+        cy.contains('Post Question').click();
+        cy.contains('Unanswered').click();
+        cy.contains('1 questions')
+
     })
 
 })
