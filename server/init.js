@@ -13,13 +13,13 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const sampleUsers = [
-    { name: 'Werner Heisenberg', username:"wheisenberg", email: 'wheisenberg@science.com', password: "Password_123" },
-    { name: 'Niels Bohr', username:"nbohr", email: 'nbohr@science.com', password: "Password_123" },
-    { name: 'Ernest Rutherford', username:"eruth", email: 'eruth@example.com', password: "Password_123" },
-    { name: 'JJ Thompson', username:"jjthom", email: 'jjthom@example.com', password: "Password_123" },
-    { name: 'John Dalton', username:"jdalt", email: 'jdalt@example.com', password: "Password_123" },
-    { name: 'Albert Einstein', username:"aeinstein", email: 'aeinstein@example.com' , password: "Password_123"},
-    { name: 'Erwin Schrodinger', username:"eschrod", email: 'eschrod@example.com' , password: "Password_123"}
+    { name: 'Werner Heisenberg', username:"wheisenberg", email: 'wheisenberg@science.com', password: "Password_123", reputation: 100 },
+    { name: 'Niels Bohr', username:"nbohr", email: 'nbohr@science.com', password: "Password_123", reputation: 45 },
+    { name: 'Ernest Rutherford', username:"eruth", email: 'eruth@example.com', password: "Password_123", reputation: 0 },
+    { name: 'JJ Thompson', username:"jjthom", email: 'jjthom@example.com', password: "Password_123", reputation: 0 },
+    { name: 'John Dalton', username:"jdalt", email: 'jdalt@example.com', password: "Password_123", reputation: 100 },
+    { name: 'Albert Einstein', username:"aeinstein", email: 'aeinstein@example.com' , password: "Password_123", reputation: 100},
+    { name: 'Erwin Schrodinger', username:"eschrod", email: 'eschrod@example.com' , password: "Password_123", reputation: 100}
 ];
 
 const tags = [
@@ -28,7 +28,8 @@ const tags = [
 ];
 
 async function createUser(userData) {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(userData.password, salt);
     let user = new User({ ...userData, password: hashedPassword });
     return user.save();
 }
