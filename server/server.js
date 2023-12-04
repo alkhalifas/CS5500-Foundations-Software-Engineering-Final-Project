@@ -78,7 +78,9 @@ app.use(
 )
 
 const questionRoutes = require('./routes/route_questions');
+const userRoutes = require('./routes/route_users');
 app.use(questionRoutes);
+app.use(userRoutes);
 
 
 /*

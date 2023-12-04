@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require("../models/users");
 const router = express.Router();
+const bcrypt = require('bcrypt');
 
 /*
 method that lets user register account
