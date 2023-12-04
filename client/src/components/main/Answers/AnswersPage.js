@@ -200,7 +200,7 @@ export default function AnswersPage({question}) {
                             <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
                             <div className="tags">
                                 {question.tags.map(tag => (
-                                    <span key={tag} className="badge">{tag}</span>
+                                    <span key={tag._id} className="badge">{tag.name}</span>
                                 ))}
                             </div>
                         </div>
@@ -341,5 +341,5 @@ export default function AnswersPage({question}) {
 }
 
 AnswersPage.propTypes = {
-    question: PropTypes.func.isRequired
+    question: PropTypes.object
 }
