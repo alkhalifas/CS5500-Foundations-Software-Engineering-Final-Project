@@ -291,8 +291,8 @@ export default function AnswersPage({question}) {
                                                     )}
                                                     {userData.reputation > 49 && (
                                                         <>
-                                                            <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
-                                                            <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                                            <button id={"upvoteAnswer"} onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                                            <button id={"downvoteAnswer"} onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
                                                         </>
                                                     )}
                                                 </div>
