@@ -36,7 +36,7 @@ router.get('/answers/:answerId/comments', async (req, res) => {
     }
 });
 
-app.post('/accept-answer', async (req, res) => {
+router.post('/accept-answer', async (req, res) => {
     try {
         const { questionId, answerId } = req.body;
 
@@ -70,7 +70,7 @@ app.post('/accept-answer', async (req, res) => {
 });
 
 
-app.post('/answers/:answerId/comments', async (req, res) => {
+router.post('/answers/:answerId/comments', async (req, res) => {
     try {
         const { answerId } = req.params;
         const { text, commented_by } = req.body;

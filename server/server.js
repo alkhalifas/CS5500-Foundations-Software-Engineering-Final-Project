@@ -80,9 +80,13 @@ app.use(
 const questionRoutes = require('./routes/route_questions');
 const userRoutes = require('./routes/route_users');
 const answerRoutes = require('./routes/route_answers');
+const voteRoutes = require('./routes/route_vote');
+const tagRoutes = require('./routes/route_tags');
 app.use(questionRoutes);
 app.use(userRoutes);
 app.use(answerRoutes);
+app.use(voteRoutes);
+app.use(tagRoutes);
 
 
 /*
