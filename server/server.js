@@ -26,6 +26,7 @@ const get_tags_with_count_function = require("./routes/get_tags_with_count");
 const post_increment_question_view_function = require("./routes/post_increment_question_view")
 const post_answer_function = require("./routes/post_answer");
 
+// Import Models
 const User = require("./models/users");
 const Question = require("./models/questions");
 const Answer = require("./models/answers");
@@ -76,6 +77,10 @@ app.use(
     })
 )
 
+const questionRoutes = require('./routes/route_questions');
+app.use(questionRoutes);
+
+
 /*
 Method that returns homepage message
  */
@@ -83,82 +88,82 @@ app.get('/', async (req, res) => {
     await home_function.home(res);
 });
 
-/*
-Method that returns everything
- */
-app.get('/questions/all', async (req, res) => {
-    await all_questions_function.allQuestions(res);
-});
+// /*
+// Method that returns everything
+//  */
+// app.get('/questions/all', async (req, res) => {
+//     await all_questions_function.allQuestions(res);
+// });
 
 /*
 Method that provides a question and all its stuff
  */
-app.get('/question/:id', async (req, res) => {
-    try {
-        const questionId = req.params.id;
-
-        const question = await Question.findById(questionId)
-            .populate('tags')
-            .populate({
-                path: 'answers',
-                populate: {
-                    path: 'comments',
-                    model: 'Comment',
-                    populate: {
-                        path: 'commented_by',
-                        model: 'User',
-                        select: '-password'
-                    }
-                }
-            })
-            .populate('accepted')
-            .populate('comments');
-
-        if (!question) {
-            return res.status(404).json({'message': 'Question not found'});
-        }
-
-        res.json(question);
-    } catch (error) {
-        res.status(500).json({'message': 'Error fetching question'});
-        console.error("Error in fetching question: ", error);
-    }
-});
+// app.get('/question/:id', async (req, res) => {
+//     try {
+//         const questionId = req.params.id;
+//
+//         const question = await Question.findById(questionId)
+//             .populate('tags')
+//             .populate({
+//                 path: 'answers',
+//                 populate: {
+//                     path: 'comments',
+//                     model: 'Comment',
+//                     populate: {
+//                         path: 'commented_by',
+//                         model: 'User',
+//                         select: '-password'
+//                     }
+//                 }
+//             })
+//             .populate('accepted')
+//             .populate('comments');
+//
+//         if (!question) {
+//             return res.status(404).json({'message': 'Question not found'});
+//         }
+//
+//         res.json(question);
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error fetching question'});
+//         console.error("Error in fetching question: ", error);
+//     }
+// });
 
 /*
 Method that gets a questions accepted answer
  */
-app.get('/questions/:id/accepted-answer', async (req, res) => {
-    try {
-        const questionId = req.params.id;
+// app.get('/questions/:id/accepted-answer', async (req, res) => {
+//     try {
+//         const questionId = req.params.id;
+//
+//         const question = await Question.findById(questionId).populate('accepted');
+//
+//         if (!question) {
+//             return res.status(404).json({'message': 'Question not found'});
+//         }
+//
+//         if (!question.accepted) {
+//             return res.status(404).json({'message': 'No accepted answer for this question'});
+//         }
+//
+//         res.json(question.accepted);
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error fetching accepted answer'});
+//         console.error("Error in fetching accepted answer: ", error);
+//     }
+// });
 
-        const question = await Question.findById(questionId).populate('accepted');
 
-        if (!question) {
-            return res.status(404).json({'message': 'Question not found'});
-        }
-
-        if (!question.accepted) {
-            return res.status(404).json({'message': 'No accepted answer for this question'});
-        }
-
-        res.json(question.accepted);
-    } catch (error) {
-        res.status(500).json({'message': 'Error fetching accepted answer'});
-        console.error("Error in fetching accepted answer: ", error);
-    }
-});
-
-
-/*
-Method that returns all questions and associated fields
- */
-app.get('/questions', async (req, res) => {
-    const sortType = req.query.sort || 'newest'; // Default to 'newest' if no sort parameter is provided
-    const searchInput = req.query.searchInput;
-    const page = req.query.page || 1;
-    await questions_function.questions(res, sortType, searchInput, page);
-});
+// /*
+// Method that returns all questions and associated fields
+//  */
+// app.get('/questions', async (req, res) => {
+//     const sortType = req.query.sort || 'newest'; // Default to 'newest' if no sort parameter is provided
+//     const searchInput = req.query.searchInput;
+//     const page = req.query.page || 1;
+//     await questions_function.questions(res, sortType, searchInput, page);
+// });
 
 /*
 Method that returns all tags and their IDs
@@ -179,36 +184,64 @@ app.get('/questions/:questionId/answers', async (req, res) => {
 /*
 Method that posts a new question
  */
-app.post('/questions', async (req, res) => {
-    const { title, text, tags, asked_by } = req.body;
-    await post_question_function.post_question(res, title, text, tags, asked_by);
-});
+// app.post('/questions', async (req, res) => {
+//     const { title, text, tags, asked_by } = req.body;
+//     await post_question_function.post_question(res, title, text, tags, asked_by);
+// });
 
-/*
-Method that posts a new answer to a given question
- */
-app.post('/questions/:questionId/answers', async (req, res) => {
-    const { questionId } = req.params;
-    const { text, ans_by } = req.body;
-    await post_answer_function.post_answer(res, questionId, text, ans_by);
-});
+// /*
+// A method that allows a user to edit a question
+//  */
+// app.put('/questions/:questionId', async (req, res) => {
+//     const questionId = req.params.questionId;
+//     const { title, text, tags } = req.body;
+//
+//     try {
+//         // Find the question by ID and update it
+//         const updatedQuestion = await Question.findByIdAndUpdate(questionId, {
+//             title: title,
+//             text: text,
+//             tags: tags
+//         }, { new: true }); // The option { new: true } ensures that the method returns the updated document
+//
+//         // If the question doesn't exist, return a 404
+//         if (!updatedQuestion) {
+//             return res.status(404).json({ error: 'Question not found' });
+//         }
+//
+//         // Return the updated question
+//         res.status(200).json(updatedQuestion);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Error updating the question' });
+//     }
+// });
 
-/*
-Method that gets questions for a given tag
- */
-app.get('/questions/tag/:tagName', async (req, res) => {
-    const { tagName } = req.params;
-    await get_questions_by_tag_name_function.get_questions_by_tag_name(res, tagName);
-});
+// /*
+// Method that posts a new answer to a given question
+//  */
+// app.post('/questions/:questionId/answers', async (req, res) => {
+//     const { questionId } = req.params;
+//     const { text, ans_by } = req.body;
+//     await post_answer_function.post_answer(res, questionId, text, ans_by);
+// });
 
-/*
-Method that returns questions for a given tan id
- */
-app.get('/questions/tag-id/:tagId', async (req, res) => {
-    const { tagId } = req.params;
-    const page = req.query.page || 1;
-    await get_questions_by_tag_id_function.get_questions_by_tag_id(res, tagId, page);
-});
+// /*
+// Method that gets questions for a given tag
+//  */
+// app.get('/questions/tag/:tagName', async (req, res) => {
+//     const { tagName } = req.params;
+//     await get_questions_by_tag_name_function.get_questions_by_tag_name(res, tagName);
+// });
+
+// /*
+// Method that returns questions for a given tan id
+//  */
+// app.get('/questions/tag-id/:tagId', async (req, res) => {
+//     const { tagId } = req.params;
+//     const page = req.query.page || 1;
+//     await get_questions_by_tag_id_function.get_questions_by_tag_id(res, tagId, page);
+// });
 
 
 /*
@@ -218,13 +251,13 @@ app.get('/tags-with-count', async (req, res) => {
     await get_tags_with_count_function.get_tags_with_count(res);
 });
 
-/*
-Method that increments views by 1
- */
-app.post('/questions/increment-views/:questionId', async (req, res) => {
-    const { questionId } = req.params;
-    await post_increment_question_view_function.post_increment_question_view(res, questionId);
-});
+// /*
+// Method that increments views by 1
+//  */
+// app.post('/questions/increment-views/:questionId', async (req, res) => {
+//     const { questionId } = req.params;
+//     await post_increment_question_view_function.post_increment_question_view(res, questionId);
+// });
 
 /*
 Method that returns tagName for a given tag id
@@ -234,91 +267,91 @@ app.get('/tags/tag-id/:tagId', async (req, res) => {
     await get_tag_name_by_tag_id_function.get_tag_name_by_tag_id(res, tagId);
 });
 
-/*
-method that lets user register account
- */
-app.post('/register', async (req, res) => {
-    try {
-        const { username, email, password } = req.body;
+// /*
+// method that lets user register account
+//  */
+// app.post('/register', async (req, res) => {
+//     try {
+//         const { username, email, password } = req.body;
+//
+//         // Validate email format
+//         const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+//         if (!emailRegex.test(email)) {
+//             return res.status(400).json({'message': 'Invalid email format. Email must be of the form local-part@domain.com'});
+//         }
+//
+//         // Check if user already exists
+//         const existingUsername = await User.findOne({ username });
+//         if (existingUsername) {
+//             return res.status(400).json({'message': 'Username already in use'});
+//         }
+//
+//         // Check if email exists
+//         const existingEmail = await User.findOne({ email });
+//         if (existingEmail) {
+//             return res.status(400).json({'message': 'Email already in use'});
+//         }
+//
+//         // Check password length
+//         if (password.length < 6) {
+//             return res.status(400).json({ message: 'Password must be greater than 5 characters' });
+//         }
+//
+//         // Pass cannot contain username or email
+//         if (password.includes(username) || password.includes(email)) {
+//             return res.status(400).json({ message: 'Password must not contain username or email' });
+//         }
+//
+//         // Create new user with hashed password
+//         const user = new User({ username, email, password });
+//         await user.save();
+//
+//         res.status(200).json({ message: 'User created successfully' });
+//     } catch (error) {
+//         res.status(500).send('Error registering new user');
+//         console.error("Registration error: ", error);
+//     }
+// });
 
-        // Validate email format
-        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({'message': 'Invalid email format. Email must be of the form local-part@domain.com'});
-        }
-
-        // Check if user already exists
-        const existingUsername = await User.findOne({ username });
-        if (existingUsername) {
-            return res.status(400).json({'message': 'Username already in use'});
-        }
-
-        // Check if email exists
-        const existingEmail = await User.findOne({ email });
-        if (existingEmail) {
-            return res.status(400).json({'message': 'Email already in use'});
-        }
-
-        // Check password length
-        if (password.length < 6) {
-            return res.status(400).json({ message: 'Password must be greater than 5 characters' });
-        }
-
-        // Pass cannot contain username or email
-        if (password.includes(username) || password.includes(email)) {
-            return res.status(400).json({ message: 'Password must not contain username or email' });
-        }
-
-        // Create new user with hashed password
-        const user = new User({ username, email, password });
-        await user.save();
-
-        res.status(200).json({ message: 'User created successfully' });
-    } catch (error) {
-        res.status(500).send('Error registering new user');
-        console.error("Registration error: ", error);
-    }
-});
-
-/*
-Method that lets user log in
- */
-app.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        // Get current user
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(401).json({'message': 'Username not found.'});
-        }
-
-        // Check password matches
-        console.log("password: ", password)
-        console.log("user.password: ", user.password)
-        console.log("bcrypt.compare(password, user.password): ", await bcrypt.compare(password, user.password))
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({'message': 'Invalid username or password.'});
-        }
-
-        // Login successful, update session
-        // req.session.user = { id: user._id, username: user.username };
-        req.session.userId = user._id;  // Storing user ID in session
-        req.session.isLoggedIn = true;
-
-        console.log("req.session: ", req.session)
-
-        res.cookie('session.userId', req.session.userId, { maxAge: 900000, httpOnly: true });
-        // res.send(req.session.sessionID)
-        // res.json({ message: 'Login successful' });
-        res.json({ message: 'Login successful' });
-
-    } catch (error) {
-        res.status(500).json({'message': 'Unknown error. Please contact admin.'});
-        console.error("Login error: ", error);
-    }
-});
+// /*
+// Method that lets user log in
+//  */
+// app.post('/login', async (req, res) => {
+//     try {
+//         const { username, password } = req.body;
+//
+//         // Get current user
+//         const user = await User.findOne({ username });
+//         if (!user) {
+//             return res.status(401).json({'message': 'Username not found.'});
+//         }
+//
+//         // Check password matches
+//         console.log("password: ", password)
+//         console.log("user.password: ", user.password)
+//         console.log("bcrypt.compare(password, user.password): ", await bcrypt.compare(password, user.password))
+//         const isMatch = await bcrypt.compare(password, user.password);
+//         if (!isMatch) {
+//             return res.status(401).json({'message': 'Invalid username or password.'});
+//         }
+//
+//         // Login successful, update session
+//         // req.session.user = { id: user._id, username: user.username };
+//         req.session.userId = user._id;  // Storing user ID in session
+//         req.session.isLoggedIn = true;
+//
+//         console.log("req.session: ", req.session)
+//
+//         res.cookie('session.userId', req.session.userId, { maxAge: 900000, httpOnly: true });
+//         // res.send(req.session.sessionID)
+//         // res.json({ message: 'Login successful' });
+//         res.json({ message: 'Login successful' });
+//
+//     } catch (error) {
+//         res.status(500).json({'message': 'Unknown error. Please contact admin.'});
+//         console.error("Login error: ", error);
+//     }
+// });
 
 
 // app.get('/test-cookie', (req, res) => {
@@ -328,15 +361,15 @@ app.post('/login', async (req, res) => {
 //
 //
 
-app.get('/session-status', (req, res) => {
-
-    console.log("req.session: ", req.session)
-    if (req.session.userId) {
-        res.json({ isLoggedIn: true, userId: req.session.userId });
-    } else {
-        res.json({ isLoggedIn: false });
-    }
-});
+// app.get('/session-status', (req, res) => {
+//
+//     console.log("req.session: ", req.session)
+//     if (req.session.userId) {
+//         res.json({ isLoggedIn: true, userId: req.session.userId });
+//     } else {
+//         res.json({ isLoggedIn: false });
+//     }
+// });
 
 
 // app.get('/session-status', (req, res) => {
@@ -356,45 +389,45 @@ app.get('/session-status', (req, res) => {
 //     }
 // });
 
-app.post('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error("Logout error: ", err);
-            return res.status(500).send('Error logging out');
-        }
-        res.send('Logout successful');
-    });
-});
+// app.post('/logout', (req, res) => {
+//     req.session.destroy(err => {
+//         if (err) {
+//             console.error("Logout error: ", err);
+//             return res.status(500).send('Error logging out');
+//         }
+//         res.send('Logout successful');
+//     });
+// });
 
 
 
-app.post('/update-reputation', async (req, res) => {
-    try {
-        const { username, reputationChange } = req.body;
-
-        // Find user by username, from body of request
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(404).json({'message': 'User not found.'});
-        }
-
-        // Calculate new reputation
-        let newReputation = user.reputation + reputationChange;
-        if (newReputation < 0) {
-            // Account for negative
-            newReputation = 0;
-        }
-
-        // Update user
-        user.reputation = newReputation;
-        await user.save();
-
-        res.json({ 'message': 'Reputation update success', 'newReputation': newReputation });
-    } catch (error) {
-        res.status(500).json({'message': 'Error updating reputation'});
-        console.error("Reputation update error: ", error);
-    }
-});
+// app.post('/update-reputation', async (req, res) => {
+//     try {
+//         const { username, reputationChange } = req.body;
+//
+//         // Find user by username, from body of request
+//         const user = await User.findOne({ username });
+//         if (!user) {
+//             return res.status(404).json({'message': 'User not found.'});
+//         }
+//
+//         // Calculate new reputation
+//         let newReputation = user.reputation + reputationChange;
+//         if (newReputation < 0) {
+//             // Account for negative
+//             newReputation = 0;
+//         }
+//
+//         // Update user
+//         user.reputation = newReputation;
+//         await user.save();
+//
+//         res.json({ 'message': 'Reputation update success', 'newReputation': newReputation });
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error updating reputation'});
+//         console.error("Reputation update error: ", error);
+//     }
+// });
 
 
 
@@ -614,35 +647,35 @@ app.post('/accept-answer', async (req, res) => {
     }
 });
 
-/*
-Method to get comments for a question
- */
-app.get('/questions/:questionId/comments', async (req, res) => {
-    try {
-        const { questionId } = req.params;
-        const page = parseInt(req.query.page) || 1;
-        const limit = 3;
-        const skip = (page - 1) * limit;
-
-        const comments = await Comment.find({ question: questionId })
-            .populate('commented_by', 'username -_id')
-            .skip(skip)
-            .limit(limit)
-            .sort({ createdAt: -1 });
-
-        const totalComments = await Comment.countDocuments({ question: questionId });
-
-        res.json({
-            comments,
-            currentPage: page,
-            totalPages: Math.ceil(totalComments / limit),
-            totalComments
-        });
-    } catch (error) {
-        res.status(500).json({'message': 'Error fetching comments for the question'});
-        console.error("Error: ", error);
-    }
-});
+// /*
+// Method to get comments for a question
+//  */
+// app.get('/questions/:questionId/comments', async (req, res) => {
+//     try {
+//         const { questionId } = req.params;
+//         const page = parseInt(req.query.page) || 1;
+//         const limit = 3;
+//         const skip = (page - 1) * limit;
+//
+//         const comments = await Comment.find({ question: questionId })
+//             .populate('commented_by', 'username -_id')
+//             .skip(skip)
+//             .limit(limit)
+//             .sort({ createdAt: -1 });
+//
+//         const totalComments = await Comment.countDocuments({ question: questionId });
+//
+//         res.json({
+//             comments,
+//             currentPage: page,
+//             totalPages: Math.ceil(totalComments / limit),
+//             totalComments
+//         });
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error fetching comments for the question'});
+//         console.error("Error: ", error);
+//     }
+// });
 
 
 
