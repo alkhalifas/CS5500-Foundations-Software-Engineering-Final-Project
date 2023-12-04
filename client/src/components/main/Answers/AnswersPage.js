@@ -238,7 +238,7 @@ export default function AnswersPage({question}) {
                                     </div>
                                     <div className="answer-text-column">
                                         <span className="answer-text">
-                                            <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
+                                            <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer['text'])} />
                                         </span>
                                     </div>
                                     <div className="asked-by-column answerAuthor">

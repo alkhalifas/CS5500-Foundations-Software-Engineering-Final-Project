@@ -14,6 +14,7 @@ export default function TagQuestionsList({ tag }) {
 
     const handleQuestionClick = (question) => {
         setSelectedQuestion(question);
+        // console.log("TQL question: ", question)
     };
 
     const fetchQuestions = async (page) => {
