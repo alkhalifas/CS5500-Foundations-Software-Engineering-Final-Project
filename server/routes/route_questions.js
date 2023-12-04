@@ -343,6 +343,39 @@ router.post('/questions/:questionId/answers', async (req, res) => {
 });
 
 /*
+Method that deletes a question, its answer, and tags
+ */
+router.delete('/questions/:questionId', async (req, res) => {
+    const questionId = req.params.questionId;
+
+    try {
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({ error: 'Question not found' });
+        }
+
+        // Delete  answers
+        await Answer.deleteMany({ _id: { $in: question.answers } });
+
+        // Check each tag to see if other Qs have that tag
+        for (const tagId of question.tags) {
+            const isTagUsedElsewhere = await Question.findOne({ tags: tagId, _id: { $ne: questionId } });
+            if (!isTagUsedElsewhere) {
+                await Tag.findByIdAndDelete(tagId);
+            }
+        }
+
+        // delete the question obj
+        await Question.findByIdAndRemove(questionId);
+
+        res.status(200).json({ message: 'Question and its associated data deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error deleting the question' });
+    }
+});
+
+/*
 Method that gets questions for a given tag
  */
 router.get('/questions/tag/:tagName', async (req, res) => {
