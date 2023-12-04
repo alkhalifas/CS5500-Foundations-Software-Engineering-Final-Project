@@ -79,8 +79,10 @@ app.use(
 
 const questionRoutes = require('./routes/route_questions');
 const userRoutes = require('./routes/route_users');
+const answerRoutes = require('./routes/route_answers');
 app.use(questionRoutes);
 app.use(userRoutes);
+app.use(answerRoutes);
 
 
 /*
@@ -167,21 +169,21 @@ Method that gets a questions accepted answer
 //     await questions_function.questions(res, sortType, searchInput, page);
 // });
 
-/*
-Method that returns all tags and their IDs
- */
-app.get('/tags', async (req, res) => {
-    await tags_function.tags(res);
-});
+// /*
+// Method that returns all tags and their IDs
+//  */
+// app.get('/tags', async (req, res) => {
+//     await tags_function.tags(res);
+// });
 
-/*
-Method that returns the answers to a given question
- */
-app.get('/questions/:questionId/answers', async (req, res) => {
-    const { questionId } = req.params;
-    const page = req.query.page || 1;
-    await answers_function.answers(res, questionId, page);
-});
+// /*
+// Method that returns the answers to a given question
+//  */
+// app.get('/questions/:questionId/answers', async (req, res) => {
+//     const { questionId } = req.params;
+//     const page = req.query.page || 1;
+//     await answers_function.answers(res, questionId, page);
+// });
 
 /*
 Method that posts a new question
@@ -246,12 +248,12 @@ Method that posts a new question
 // });
 
 
-/*
-Method that gets tag with teg count
- */
-app.get('/tags-with-count', async (req, res) => {
-    await get_tags_with_count_function.get_tags_with_count(res);
-});
+// /*
+// Method that gets tag with teg count
+//  */
+// app.get('/tags-with-count', async (req, res) => {
+//     await get_tags_with_count_function.get_tags_with_count(res);
+// });
 
 // /*
 // Method that increments views by 1
@@ -261,13 +263,13 @@ app.get('/tags-with-count', async (req, res) => {
 //     await post_increment_question_view_function.post_increment_question_view(res, questionId);
 // });
 
-/*
-Method that returns tagName for a given tag id
- */
-app.get('/tags/tag-id/:tagId', async (req, res) => {
-    const { tagId } = req.params;
-    await get_tag_name_by_tag_id_function.get_tag_name_by_tag_id(res, tagId);
-});
+// /*
+// Method that returns tagName for a given tag id
+//  */
+// app.get('/tags/tag-id/:tagId', async (req, res) => {
+//     const { tagId } = req.params;
+//     await get_tag_name_by_tag_id_function.get_tag_name_by_tag_id(res, tagId);
+// });
 
 // /*
 // method that lets user register account
@@ -470,59 +472,59 @@ app.get('/tags/tag-id/:tagId', async (req, res) => {
 //     }
 // });
 
-app.get('/user', async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ message: 'No user is currently logged in.' });
-    }
+// app.get('/user', async (req, res) => {
+//     if (!req.session.userId) {
+//         return res.status(401).json({ message: 'No user is currently logged in.' });
+//     }
+//
+//     try {
+//         const user = await User.findById(req.session.userId).select('-password');
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found.' });
+//         }
+//
+//         res.json(user);
+//     } catch (error) {
+//         console.error('Error fetching user info:', error);
+//         res.status(500).json({ message: 'Error retrieving user information.' });
+//     }
+// });
 
-    try {
-        const user = await User.findById(req.session.userId).select('-password');
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
-
-        res.json(user);
-    } catch (error) {
-        console.error('Error fetching user info:', error);
-        res.status(500).json({ message: 'Error retrieving user information.' });
-    }
-});
-
-/*
-Method to upvote or downvote a question
- */
-app.post('/vote/question', async (req, res) => {
-    try {
-        const { questionId, voteType } = req.body;
-
-        const question = await Question.findById(questionId);
-        if (!question) {
-            return res.status(404).json({'message': 'Question not found'});
-        }
-
-        let reputationChange = 0;
-        if (voteType === 'upvote') {
-            question.votes += 1;
-            reputationChange = 5;
-        } else if (voteType === 'downvote') {
-            question.votes -= 1;
-            reputationChange = -10;
-        }
-
-        await question.save();
-
-        const author = await User.findOne({ username: question.asked_by });
-        if (author) {
-            author.reputation += reputationChange;
-            await author.save();
-        }
-
-        res.json({'message': 'Vote and reputation updated successfully', 'newVotes': question.votes});
-    } catch (error) {
-        res.status(500).json({'message': 'Error updating vote and reputation'});
-        console.error("Vote and reputation update error: ", error);
-    }
-});
+// /*
+// Method to upvote or downvote a question
+//  */
+// app.post('/vote/question', async (req, res) => {
+//     try {
+//         const { questionId, voteType } = req.body;
+//
+//         const question = await Question.findById(questionId);
+//         if (!question) {
+//             return res.status(404).json({'message': 'Question not found'});
+//         }
+//
+//         let reputationChange = 0;
+//         if (voteType === 'upvote') {
+//             question.votes += 1;
+//             reputationChange = 5;
+//         } else if (voteType === 'downvote') {
+//             question.votes -= 1;
+//             reputationChange = -10;
+//         }
+//
+//         await question.save();
+//
+//         const author = await User.findOne({ username: question.asked_by });
+//         if (author) {
+//             author.reputation += reputationChange;
+//             await author.save();
+//         }
+//
+//         res.json({'message': 'Vote and reputation updated successfully', 'newVotes': question.votes});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error updating vote and reputation'});
+//         console.error("Vote and reputation update error: ", error);
+//     }
+// });
 
 // app.post('/vote/question', async (req, res) => {
 //     try {
@@ -549,105 +551,105 @@ app.post('/vote/question', async (req, res) => {
 //     }
 // });
 
-/*
-Method to upvote or downvote a answer
- */
-app.post('/vote/answer', async (req, res) => {
-    try {
-        const { answerId, voteType } = req.body;
+// /*
+// Method to upvote or downvote a answer
+//  */
+// app.post('/vote/answer', async (req, res) => {
+//     try {
+//         const { answerId, voteType } = req.body;
+//
+//         const answer = await Answer.findById(answerId).populate('ans_by');
+//         if (!answer) {
+//             return res.status(404).json({'message': 'Answer not found'});
+//         }
+//
+//         let reputationChange = 0;
+//         if (voteType === 'upvote') {
+//             answer.votes += 1;
+//             reputationChange = 5;
+//         } else if (voteType === 'downvote') {
+//             answer.votes -= 1;
+//             reputationChange = -10;
+//         }
+//
+//         await answer.save();
+//
+//         const author = await User.findOne({username: answer.ans_by});
+//
+//         if (author) {
+//             author.reputation += reputationChange;
+//             await author.save();
+//         }
+//
+//         res.json({'message': 'Vote updated successfully', 'newVotes': answer.votes});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error updating answer vote'});
+//         console.error("Vote error: ", error);
+//     }
+// });
+//
+//
+// /*
+// Method to upvote or downvote a comment
+//  */
+// app.post('/vote/comment', async (req, res) => {
+//     try {
+//         const { commentId, voteType } = req.body;
+//
+//         const comment = await Comment.findById(commentId);
+//         if (!comment) {
+//             return res.status(404).json({'message': 'Comment not found'});
+//         }
+//
+//         if (voteType === 'upvote') {
+//             comment.votes += 1;
+//         } else if (voteType === 'downvote') {
+//             return res.status(404).json({'message': 'Comment cannot be downvoted'});
+//         }
+//
+//         await comment.save();
+//
+//         res.status(200).json({'message': 'Vote updated successfully', 'newVotes': comment.votes});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error updating answer vote'});
+//         console.error("Vote error: ", error);
+//     }
+// });
 
-        const answer = await Answer.findById(answerId).populate('ans_by');
-        if (!answer) {
-            return res.status(404).json({'message': 'Answer not found'});
-        }
-
-        let reputationChange = 0;
-        if (voteType === 'upvote') {
-            answer.votes += 1;
-            reputationChange = 5;
-        } else if (voteType === 'downvote') {
-            answer.votes -= 1;
-            reputationChange = -10;
-        }
-
-        await answer.save();
-
-        const author = await User.findOne({username: answer.ans_by});
-
-        if (author) {
-            author.reputation += reputationChange;
-            await author.save();
-        }
-
-        res.json({'message': 'Vote updated successfully', 'newVotes': answer.votes});
-    } catch (error) {
-        res.status(500).json({'message': 'Error updating answer vote'});
-        console.error("Vote error: ", error);
-    }
-});
 
 
-/*
-Method to upvote or downvote a comment
- */
-app.post('/vote/comment', async (req, res) => {
-    try {
-        const { commentId, voteType } = req.body;
-
-        const comment = await Comment.findById(commentId);
-        if (!comment) {
-            return res.status(404).json({'message': 'Comment not found'});
-        }
-
-        if (voteType === 'upvote') {
-            comment.votes += 1;
-        } else if (voteType === 'downvote') {
-            return res.status(404).json({'message': 'Comment cannot be downvoted'});
-        }
-
-        await comment.save();
-
-        res.status(200).json({'message': 'Vote updated successfully', 'newVotes': comment.votes});
-    } catch (error) {
-        res.status(500).json({'message': 'Error updating answer vote'});
-        console.error("Vote error: ", error);
-    }
-});
-
-
-
-app.post('/accept-answer', async (req, res) => {
-    try {
-        const { questionId, answerId } = req.body;
-
-        const question = await Question.findById(questionId);
-        if (!question) {
-            return res.status(404).json({'message': 'Question not found'});
-        }
-
-        if (question.accepted && question.accepted.toString() === answerId) {
-            return res.status(400).json({'message': 'This answer is already the accepted answer'});
-        }
-
-        if (!question.answers.includes(answerId)) {
-            return res.status(400).json({'message': 'Answer is not part of the question'});
-        }
-
-        if (question.accepted && !question.answers.includes(question.accepted)) {
-            question.answers.push(question.accepted);
-        }
-
-        question.answers = question.answers.filter(aId => aId.toString() !== answerId.toString());
-
-        question.accepted = answerId;
-
-        await question.save();
-        res.json({'message': 'Accepted answer updated successfully'});
-    } catch (error) {
-        res.status(500).json({'message': 'Error updating accepted answer'});
-        console.error("Error in updating accepted answer: ", error);
-    }
-});
+// app.post('/accept-answer', async (req, res) => {
+//     try {
+//         const { questionId, answerId } = req.body;
+//
+//         const question = await Question.findById(questionId);
+//         if (!question) {
+//             return res.status(404).json({'message': 'Question not found'});
+//         }
+//
+//         if (question.accepted && question.accepted.toString() === answerId) {
+//             return res.status(400).json({'message': 'This answer is already the accepted answer'});
+//         }
+//
+//         if (!question.answers.includes(answerId)) {
+//             return res.status(400).json({'message': 'Answer is not part of the question'});
+//         }
+//
+//         if (question.accepted && !question.answers.includes(question.accepted)) {
+//             question.answers.push(question.accepted);
+//         }
+//
+//         question.answers = question.answers.filter(aId => aId.toString() !== answerId.toString());
+//
+//         question.accepted = answerId;
+//
+//         await question.save();
+//         res.json({'message': 'Accepted answer updated successfully'});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error updating accepted answer'});
+//         console.error("Error in updating accepted answer: ", error);
+//     }
+// });
 
 // /*
 // Method to get comments for a question
@@ -680,125 +682,125 @@ app.post('/accept-answer', async (req, res) => {
 // });
 
 
-
-/*
-Method to get comments for an answer
- */
-app.get('/answers/:answerId/comments', async (req, res) => {
-    try {
-        const { answerId } = req.params;
-        const page = parseInt(req.query.page) || 1;
-        const limit = 3;
-        const skip = (page - 1) * limit;
-
-        const comments = await Comment.find({ answer: answerId })
-            .populate('commented_by', 'username -_id')
-            .skip(skip)
-            .limit(limit)
-            .sort({ createdAt: -1 });
-
-        const totalComments = await Comment.countDocuments({ answer: answerId });
-
-        res.json({
-            comments,
-            currentPage: page,
-            totalPages: Math.ceil(totalComments / limit),
-            totalComments
-        });
-    } catch (error) {
-        res.status(500).json({'message': 'Error fetching comments for the answer'});
-        console.error("Error: ", error);
-    }
-});
-
-
-
-/*
-Method to add comment to question
- */
-app.post('/questions/:questionId/comments', async (req, res) => {
-    try {
-        const { questionId } = req.params;
-        const { text, commented_by } = req.body;
-
-        const question = await Question.findById(questionId);
-        if (!question) {
-            return res.status(404).json({'message': 'Question not found'});
-        }
-
-        if (text.length > 140) {
-            return res.status(400).json({'message': 'Comment must be less than 140 characters'});
-        }
-
-        const user = await User.findOne({username: commented_by});
-        if (!user) {
-            return res.status(404).json({'message': 'User not found'});
-        }
-
-        if (user.reputation < 50) {
-            return res.status(403).json({'message': 'User does not have enough reputation'});
-        }
-
-        const newComment = new Comment({
-            text: text,
-            commented_by: user,
-            question: questionId
-        });
-
-        await newComment.save();
-
-        question.comments.push(newComment._id);
-        await question.save();
-
-        res.status(200).json({'message': 'Comment added to question successfully', 'comment': newComment});
-    } catch (error) {
-        res.status(500).json({'message': 'Error adding comment to question'});
-        console.error("Error in adding comment to question: ", error);
-    }
-});
+//
+// /*
+// Method to get comments for an answer
+//  */
+// app.get('/answers/:answerId/comments', async (req, res) => {
+//     try {
+//         const { answerId } = req.params;
+//         const page = parseInt(req.query.page) || 1;
+//         const limit = 3;
+//         const skip = (page - 1) * limit;
+//
+//         const comments = await Comment.find({ answer: answerId })
+//             .populate('commented_by', 'username -_id')
+//             .skip(skip)
+//             .limit(limit)
+//             .sort({ createdAt: -1 });
+//
+//         const totalComments = await Comment.countDocuments({ answer: answerId });
+//
+//         res.json({
+//             comments,
+//             currentPage: page,
+//             totalPages: Math.ceil(totalComments / limit),
+//             totalComments
+//         });
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error fetching comments for the answer'});
+//         console.error("Error: ", error);
+//     }
+// });
 
 
-app.post('/answers/:answerId/comments', async (req, res) => {
-    try {
-        const { answerId } = req.params;
-        const { text, commented_by } = req.body;
 
-        const answer = await Answer.findById(answerId);
-        if (!answer) {
-            return res.status(404).json({'message': 'Answer not found'});
-        }
+// /*
+// Method to add comment to question
+//  */
+// app.post('/questions/:questionId/comments', async (req, res) => {
+//     try {
+//         const { questionId } = req.params;
+//         const { text, commented_by } = req.body;
+//
+//         const question = await Question.findById(questionId);
+//         if (!question) {
+//             return res.status(404).json({'message': 'Question not found'});
+//         }
+//
+//         if (text.length > 140) {
+//             return res.status(400).json({'message': 'Comment must be less than 140 characters'});
+//         }
+//
+//         const user = await User.findOne({username: commented_by});
+//         if (!user) {
+//             return res.status(404).json({'message': 'User not found'});
+//         }
+//
+//         if (user.reputation < 50) {
+//             return res.status(403).json({'message': 'User does not have enough reputation'});
+//         }
+//
+//         const newComment = new Comment({
+//             text: text,
+//             commented_by: user,
+//             question: questionId
+//         });
+//
+//         await newComment.save();
+//
+//         question.comments.push(newComment._id);
+//         await question.save();
+//
+//         res.status(200).json({'message': 'Comment added to question successfully', 'comment': newComment});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error adding comment to question'});
+//         console.error("Error in adding comment to question: ", error);
+//     }
+// });
 
-        if (text.length > 140) {
-            return res.status(400).json({'message': 'Comment must be less than 140 characters'});
-        }
 
-        const user = await User.findOne({username: commented_by});
-        if (!user) {
-            return res.status(404).json({'message': 'User not found'});
-        }
-
-        if (user.reputation < 50) {
-            return res.status(403).json({'message': 'User does not have enough reputation'});
-        }
-
-
-        const newComment = new Comment({
-            text: text,
-            commented_by: user,
-            answer: answerId
-        });
-
-        await newComment.save();
-
-        answer.comments.push(newComment._id);
-        await answer.save();
-
-        res.status(200).json({'message': 'Comment added to answer successfully', 'comment': newComment});
-    } catch (error) {
-        res.status(500).json({'message': 'Error adding comment to answer'});
-        console.error("Error in adding comment to answer: ", error);
-    }
-});
+// app.post('/answers/:answerId/comments', async (req, res) => {
+//     try {
+//         const { answerId } = req.params;
+//         const { text, commented_by } = req.body;
+//
+//         const answer = await Answer.findById(answerId);
+//         if (!answer) {
+//             return res.status(404).json({'message': 'Answer not found'});
+//         }
+//
+//         if (text.length > 140) {
+//             return res.status(400).json({'message': 'Comment must be less than 140 characters'});
+//         }
+//
+//         const user = await User.findOne({username: commented_by});
+//         if (!user) {
+//             return res.status(404).json({'message': 'User not found'});
+//         }
+//
+//         if (user.reputation < 50) {
+//             return res.status(403).json({'message': 'User does not have enough reputation'});
+//         }
+//
+//
+//         const newComment = new Comment({
+//             text: text,
+//             commented_by: user,
+//             answer: answerId
+//         });
+//
+//         await newComment.save();
+//
+//         answer.comments.push(newComment._id);
+//         await answer.save();
+//
+//         res.status(200).json({'message': 'Comment added to answer successfully', 'comment': newComment});
+//     } catch (error) {
+//         res.status(500).json({'message': 'Error adding comment to answer'});
+//         console.error("Error in adding comment to answer: ", error);
+//     }
+// });
 
 
 // Display the specified message when disconnected

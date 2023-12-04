@@ -489,4 +489,83 @@ router.get('/questions/:questionId/comments', async (req, res) => {
     }
 });
 
+/*
+Method to add comment to question
+ */
+router.post('/questions/:questionId/comments', async (req, res) => {
+    try {
+        const { questionId } = req.params;
+        const { text, commented_by } = req.body;
+
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({'message': 'Question not found'});
+        }
+
+        if (text.length > 140) {
+            return res.status(400).json({'message': 'Comment must be less than 140 characters'});
+        }
+
+        const user = await User.findOne({username: commented_by});
+        if (!user) {
+            return res.status(404).json({'message': 'User not found'});
+        }
+
+        if (user.reputation < 50) {
+            return res.status(403).json({'message': 'User does not have enough reputation'});
+        }
+
+        const newComment = new Comment({
+            text: text,
+            commented_by: user,
+            question: questionId
+        });
+
+        await newComment.save();
+
+        question.comments.push(newComment._id);
+        await question.save();
+
+        res.status(200).json({'message': 'Comment added to question successfully', 'comment': newComment});
+    } catch (error) {
+        res.status(500).json({'message': 'Error adding comment to question'});
+        console.error("Error in adding comment to question: ", error);
+    }
+});
+
+/*
+Method that returns the answers to a given question
+ */
+router.get('/questions/:questionId/answers', async (req, res) => {
+    const { questionId } = req.params;
+    const page = req.query.page || 1;
+
+    try {
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({ error: 'Question not found' });
+        }
+        const answers = await Answer.find({ _id: { $in: question.answers } });
+        answers.sort((a, b) => b.ans_date_time - a.ans_date_time);
+
+        // Determine the start and end indices based on the page number
+        const answersPerPage = question.accepted ? 4 : 5;
+        const startIndex = (page - 1) * answersPerPage;
+        const endIndex = startIndex + answersPerPage;
+
+        // Extract the subset of answers for the specified page
+        const paginatedAnswers = answers.slice(startIndex, endIndex);
+
+        res.json({
+            totalAnswers: answers.length,
+            answers: paginatedAnswers,
+            currentPage: page,
+            totalPages: Math.ceil(answers.length / answersPerPage)
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error getting answers to question' });
+    }
+});
+
 module.exports = router;
