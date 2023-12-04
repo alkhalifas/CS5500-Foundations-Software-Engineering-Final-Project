@@ -199,8 +199,10 @@ export default function AnswersPage({question}) {
                         <div className="question-text-column">
                             <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
                             <div className="tags">
-                                {question.tags.map(tag => (
-                                    <span key={tag._id} className="badge">{tag.name}</span>
+                                {question.tags.map((tag, index) => (
+                                    <span key={index} className="badge">
+                                        {typeof tag === 'string' ? tag : tag.name}
+                                    </span>
                                 ))}
                             </div>
                         </div>
