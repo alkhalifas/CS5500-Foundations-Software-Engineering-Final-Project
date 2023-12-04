@@ -1,5 +1,6 @@
 const express = require('express');
 const Question = require("../models/questions");
+const Comment = require("../models/comment");
 const User = require("../models/users");
 const Tag = require("../models/tags");
 const elementFactory = require("../models/elementFactory");
@@ -62,7 +63,6 @@ async function answerCreate(text, ans_by, ans_date_time) {
         throw error;
     }
 }
-
 
 const getSearchResultsList = (questions, tags, searchInput) => {
     const searchWords = searchInput.toLowerCase().trim().split(/\s+/);

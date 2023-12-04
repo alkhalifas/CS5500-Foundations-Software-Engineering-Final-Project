@@ -112,5 +112,29 @@ router.post('/answers/:answerId/comments', async (req, res) => {
     }
 });
 
+/*
+Method to get an answer by ID
+ */
+router.get('/answers/:answerId', async (req, res) => {
+    try {
+        const { answerId } = req.params;
+
+        const answer = await Answer.findById(answerId)
+            .populate('commented_by', 'username -_id')
+            .populate('tags')
+            .populate('answers')
+            .populate('comments');
+
+        if (!answer) {
+            return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        res.json(answer);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching answer'});
+        console.error("Error: ", error);
+    }
+});
+
 module.exports = router;
 
