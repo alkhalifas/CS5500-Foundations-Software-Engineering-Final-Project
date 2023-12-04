@@ -11,7 +11,7 @@ exports.answers = async function (res, questionId, page) {
         answers.sort((a, b) => b.ans_date_time - a.ans_date_time);
 
         // Determine the start and end indices based on the page number
-        const answersPerPage = 5;
+        const answersPerPage = question.accepted ? 4 : 5;
         const startIndex = (page - 1) * answersPerPage;
         const endIndex = startIndex + answersPerPage;
 
