@@ -116,5 +116,5 @@ export default function TagQuestionsList({ tag }) {
 }
 
 TagQuestionsList.propTypes = {
-    tag: PropTypes.func.isRequired
+    tag: PropTypes.object.isRequired
 };
