@@ -227,6 +227,7 @@ export default function AnswersPage({question}) {
                     <div className="answerText">
                         {answer && (
                             <div key={answer._id}>
+
                                 <div className={"vertical-stacking"}>
                                     <div key={answer._id} className="answer-card" id={"questionBody"}>
                                         <div className="answer-votes-column centered">
@@ -243,8 +244,8 @@ export default function AnswersPage({question}) {
                                                 <div className="vote-buttons">
                                                     {userData.reputation < 50 && (
                                                         <>
-                                                            <button className="up" disabled={true}>Up</button>
-                                                            <button className="down" disabled={true}>Down</button>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="up" disabled={true}>Up</button>
+                                                        <button style={{"backgroundColor":"#f1f1f1", "cursor":"not-allowed"}} className="down" disabled={true}>Down</button>
                                                         </>
                                                     )}
                                                     {userData.reputation > 49 && (
@@ -290,8 +291,8 @@ export default function AnswersPage({question}) {
                                                     )}
                                                     {userData.reputation > 49 && (
                                                         <>
-                                                            <button onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
-                                                            <button onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
+                                                            <button id={"upvoteAnswer"} onClick={() => handleVoteAnswer(answer._id, "upvote")} className="up">Up</button>
+                                                            <button id={"downvoteAnswer"} onClick={() => handleVoteAnswer(answer._id, "downvote")} className="down">Down</button>
                                                         </>
                                                     )}
                                                     {userData.username === question.asked_by && (

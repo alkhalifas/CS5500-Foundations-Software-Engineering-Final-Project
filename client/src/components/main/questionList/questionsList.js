@@ -59,6 +59,8 @@ export default function QuestionsList() {
 
     const handleQuestionClick = (question) => {
         setSelectedQuestion(question);
+        console.log("QL question: ", question)
+
     };
 
     const fetchQuestions = async (sortType, page) => {
