@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import "./commentsSection.css"
 
@@ -9,7 +9,6 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [totalPages, setTotalPages] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [isGuest, setIsGuest] = useState(true);
-    // const commentInputRef = useRef("");
 
     const fetchComments = async () => {
         setIsLoading(true);
@@ -26,7 +25,12 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
-
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmitComment();
+        }
+    };
 
     const fetchUserData = async () => {
         try {
@@ -50,23 +54,11 @@ const CommentsSection = ({ type, typeId, userData }) => {
     };
 
     useEffect(() => {
-        console.log('useEffect is running'); // Add this line
+        console.log('useEffect is running');
         fetchUserData();
         fetchComments();
 
-        // const handleKeyPress = (e) => {
-        //     console.log('Key pressed:', e.key); // Add this line
-        //     if (e.key === 'Enter') {
-        //         handleSubmitComment();
-        //     }
-        // };
-        //
-        //
-        // commentInputRef.current.addEventListener('keydown', handleKeyPress);
-        //
-        // return () => {
-        //     commentInputRef.current.removeEventListener('keydown', handleKeyPress);
-        // };
+
     }, [type, typeId, currentPage]);
 
 
@@ -172,12 +164,12 @@ const CommentsSection = ({ type, typeId, userData }) => {
                 {
                     !isGuest &&
                     <div className="comments-input-section">
-                        <input
-                            // ref={commentInputRef}
+                        <textarea
                             className="textarea-comment"
                             value={newCommentText}
                             onChange={(e) => setNewCommentText(e.target.value)}
                             placeholder="Write a comment..."
+                            onKeyDown={handleKeyPress} // Handle key press here
                         />
 
                         <button className="button-post-comment" onClick={handleSubmitComment}>
