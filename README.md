@@ -12,10 +12,11 @@ Detailed instructions with all relevant commands go here.
 - [X] Welcome Page
 - [X] Login
 - [X] Logout
-- [ ] Server Routes
+- [X] Server Routes
 - [X] All Tags
 - [X] User Schema
 - [X] Comment Schema
+- [ ] PUT and DELETE for Q, A, nad T
 
 ## Team Member 2 Contribution
 - [ ] Homepage
