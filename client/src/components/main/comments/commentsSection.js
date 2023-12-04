@@ -6,6 +6,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [comments, setComments] = useState([]);
     const [newCommentText, setNewCommentText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [isGuest, setIsGuest] = useState(true);
     // const commentInputRef = useRef("");
@@ -16,6 +17,8 @@ const CommentsSection = ({ type, typeId, userData }) => {
             const response = await fetch(`http://localhost:8000/${type}/${typeId}/comments?page=${currentPage}`);
             const data = await response.json();
             setComments(data.comments);
+            setCurrentPage(data.currentPage);
+            setTotalPages(data.totalPages);
         } catch (error) {
             console.error('Error fetching comments:', error);
         } finally {
@@ -127,10 +130,18 @@ const CommentsSection = ({ type, typeId, userData }) => {
         }
     };
 
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(parseInt(currentPage) + 1);
+        } else if (currentPage == totalPages) {
+            setCurrentPage(1);
+        }
+    };
 
-
-    const changePage = (newPage) => {
-        setCurrentPage(newPage);
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(parseInt(currentPage) - 1);
+        }
     };
 
     if (isLoading) return <div>Loading comments...</div>;
@@ -139,7 +150,25 @@ const CommentsSection = ({ type, typeId, userData }) => {
         <div className="page-container">
             <div className="comments-container">
                 <p style={{"fontSize":"12px"}}>Comments:</p>
+                {comments.length === 0 && <div>No comments yet</div>}
+                {comments.map(comment => (
+                    <div key={comment._id} className="comment">
+                        <div>{comment.votes} votes</div>
+                        {
+                            !isGuest &&
+                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
+                        }
 
+                        <div className="comment-text">{comment.text}</div>
+                        <div className="comment-author">{comment.commented_by.username}</div>
+                    </div>
+                ))}
+                {totalPages > 1 && (
+                    <div className="pagination">
+                        <button className="page-button" onClick={handlePrevPage} disabled={currentPage === 1}> Prev </button>
+                        <button className="page-button" onClick={handleNextPage}> Next </button>
+                    </div>
+                )}
                 {
                     !isGuest &&
                     <div className="comments-input-section">
@@ -156,25 +185,6 @@ const CommentsSection = ({ type, typeId, userData }) => {
                         </button>
                     </div>
                 }
-
-
-                {comments.length === 0 && <div>No comments yet</div>}
-                {comments.map(comment => (
-                    <div key={comment._id} className="comment">
-                        <div>{comment.votes} votes</div>
-                        {
-                            !isGuest &&
-                            <button className="vote-button" onClick={() => handleUpvote(comment._id)}>Vote</button>
-                        }
-
-                        <div className="comment-text">{comment.text}</div>
-                        <div className="comment-author">{comment.commented_by.username}</div>
-                    </div>
-                ))}
-                <div className="pagination">
-                    <button className="page-button" onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}> Prev </button>
-                    <button className="page-button" onClick={() => changePage(currentPage + 1)}> Next </button>
-                </div>
             </div>
         </div>
     );
