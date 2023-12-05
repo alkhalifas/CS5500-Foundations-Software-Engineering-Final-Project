@@ -120,10 +120,7 @@ router.get('/answers/:answerId', async (req, res) => {
         const { answerId } = req.params;
 
         const answer = await Answer.findById(answerId)
-            .populate('commented_by', 'username -_id')
-            .populate('tags')
-            .populate('answers')
-            .populate('comments');
+            .populate('ans_by', 'username -_id')
 
         if (!answer) {
             return res.status(404).json({'message': 'Answer not found'});
@@ -133,6 +130,53 @@ router.get('/answers/:answerId', async (req, res) => {
     } catch (error) {
         res.status(500).json({'message': 'Error fetching answer'});
         console.error("Error: ", error);
+    }
+});
+
+/*
+Method to update an answer by ID
+*/
+router.put('/answers/:answerId', async (req, res) => {
+    const { answerId } = req.params;
+    const { text } = req.body;
+
+    try {
+        const updatedAnswer = await Answer.findByIdAndUpdate(answerId, { text }, { new: true });
+
+        if (!updatedAnswer) {
+            return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        res.json({'message': 'Answer updated successfully', 'updatedAnswer': updatedAnswer});
+    } catch (error) {
+        res.status(500).json({'message': 'Error updating answer'});
+        console.error("Error in updating answer: ", error);
+    }
+});
+
+
+/*
+Method to delete an answer by ID
+*/
+router.delete('/answers/:answerId', async (req, res) => {
+    const { answerId } = req.params;
+
+    try {
+        const answer = await Answer.findById(answerId);
+
+        if (!answer) {
+            return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        await Comment.deleteMany({ answer: answerId });
+
+
+        await Answer.findByIdAndRemove(answerId);
+
+        res.json({'message': 'Answer deleted successfully'});
+    } catch (error) {
+        res.status(500).json({'message': 'Error deleting answer'});
+        console.error("Error in deleting answer: ", error);
     }
 });
 
