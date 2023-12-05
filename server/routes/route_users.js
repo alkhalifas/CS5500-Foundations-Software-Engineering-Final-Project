@@ -2,6 +2,10 @@ const express = require('express');
 const User = require("../models/users");
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const Question = require("../models/questions");
+const Tag = require("../models/tags");
+const Answer = require("../models/answers");
+
 
 /*
 method that lets user register account
@@ -167,6 +171,83 @@ router.get('/user', async (req, res) => {
         res.status(500).json({ message: 'Error retrieving user information.' });
     }
 });
+
+/*
+Method to get all questions for the logged-in user
+*/
+router.get('/user/questions', async (req, res) => {
+    try {
+        // getting the user ID from the sesion
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({'message': 'Unauthorized - No user logged in'});
+        }
+
+        // Check if the user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({'message': 'User not valid'});
+        }
+
+        const questions = await Question.find({ asked_by: user.username });
+        res.json(questions);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching questions for the user'});
+        console.error("Error: ", error);
+    }
+});
+
+
+/*
+Method to get all answers for the logged-in user
+*/
+router.get('/user/answers', async (req, res) => {
+    try {
+        // get user ID from the session
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({'message': 'Unauthorized - No user logged in'});
+        }
+
+        // Confirm if the user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({'message': 'User not valid'});
+        }
+
+        const answers = await Answer.find({ ans_by: user.username });
+
+        res.json(answers);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching answers for the user'});
+        console.error("Error: ", error);
+    }
+});
+
+/*
+Method to get all tags created by the logged-in user
+*/
+router.get('/user/tags', async (req, res) => {
+    try {
+        // Fetch user ID from the session
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({'message': 'Unauthorized - No user logged in'});
+        }
+
+        const user = await User.findById(userId).populate('posted_tags');
+        if (!user) {
+            return res.status(404).json({'message': 'User not found'});
+        }
+
+        res.json(user.posted_tags);
+    } catch (error) {
+        res.status(500).json({'message': 'Error fetching tags created by the user'});
+        console.error("Error: ", error);
+    }
+});
+
+
 
 
 module.exports = router;
