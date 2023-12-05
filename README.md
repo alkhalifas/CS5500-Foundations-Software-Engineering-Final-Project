@@ -16,18 +16,20 @@ Detailed instructions with all relevant commands go here.
 - [X] All Tags
 - [X] User Schema
 - [X] Comment Schema
-- [ ] PUT and DELETE for Q, A, nad T
+- [X] Comments
+- [X] PUT and DELETE for Q/A/T
+- [ ] Testing
 
 ## Team Member 2 Contribution
-- [ ] Homepage
-- [ ] New Question
-- [ ] Searching
-- [ ] New Answer
-- [ ] Answers
-- [ ] Comments
+- [X] Homepage
+- [X] New Question
+- [X] Searching
+- [X] New Answer
+- [X] Answers
+- [ ] User Profile
+- [ ] Active Filter
 
 ## Backlog
-- [ ] User Profile
 
 
 
@@ -94,10 +96,14 @@ Run Mongod:
 
     brew services start mongodb-community@7.0
 
-Run Server
+Run Server:
 
     SERVER_SECRET=webdev nodemon server.js
 
-Run Client
+Run Client:
 
     npm start
+
+Run Tests:
+
+    npx cypress open
