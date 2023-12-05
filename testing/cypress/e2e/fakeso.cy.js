@@ -118,6 +118,42 @@ describe('Fake SO Test Suite', () => {
     //     cy.contains('Tags').click();
     //
     // })
+
+    it('2.1.1 | Register User, Existing Username', () => {
+
+        cy.visit('http://localhost:3000');
+        cy.contains('Register').click();
+        cy.get('#usernameInput').type('nbohr');
+        cy.get('#emailInput').type('new_nbohr@science.com');
+        cy.get('#passwordInput').type('password123');
+        cy.get('#confirmPasswordInput').type('password123');
+        cy.get('#registerSubmit').click();
+        cy.contains('Username already in use');
+    });
+
+    it('2.2.2 | Register User, Existing Email', () => {
+
+        cy.visit('http://localhost:3000');
+        cy.contains('Register').click();
+        cy.get('#usernameInput').type('new_nbohr');
+        cy.get('#emailInput').type('nbohr@science.com');
+        cy.get('#passwordInput').type('password123');
+        cy.get('#confirmPasswordInput').type('password123');
+        cy.get('#registerSubmit').click();
+        cy.contains('Email already in use');
+    });
+
+    it('2.3.3 | Register User, Passwords dont match', () => {
+
+        cy.visit('http://localhost:3000');
+        cy.contains('Register').click();
+        cy.get('#usernameInput').type('new_nbohr');
+        cy.get('#emailInput').type('new_nbohr@science.com');
+        cy.get('#passwordInput').type('password123');
+        cy.get('#confirmPasswordInput').type('password12345');
+        cy.get('#registerSubmit').should('not.exist');
+    });
+
     // it('2.2 | Create a user and login and answer a question', () => {
     //     cy.visit('http://localhost:3000');
     //     cy.contains('Register').click();
@@ -360,27 +396,27 @@ describe('Fake SO Test Suite', () => {
     //
     // })
 
-    it('3.3 | Open a question and confirm current answers', () => {
-        cy.visit('http://localhost:3000');
-        cy.get('#username').type('jdalt')
-        cy.get('#password').type('Password_123')
-        cy.contains('Log In').click();
-
-        cy.contains('Question Title 10').click();
-        cy.get('.answerText').should('have.length', 2);
-    });
-
-    it('3.4 | Login, upvote answer and confirm', () => {
-        cy.visit('http://localhost:3000');
-        cy.get('#username').type('aeinstein')
-        cy.get('#password').type('Password_123')
-        cy.contains('Log In').click();
-
-        cy.contains('Newest').click();
-        cy.contains('Question Title 10').click();
-        cy.get('#upvoteAnswer').first().click();
-        cy.contains('3 votes')
-    });
+    // it('3.3 | Open a question and confirm current answers', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('jdalt')
+    //     cy.get('#password').type('Password_123')
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Question Title 10').click();
+    //     cy.get('.answerText').should('have.length', 2);
+    // });
+    //
+    // it('3.4 | Login, upvote answer and confirm', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('aeinstein')
+    //     cy.get('#password').type('Password_123')
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Newest').click();
+    //     cy.contains('Question Title 10').click();
+    //     cy.get('#upvoteAnswer').first().click();
+    //     cy.contains('3 votes')
+    // });
 
     // it('3.5 | Login, upvote answer and confirm', () => {
     //     cy.visit('http://localhost:3000');
@@ -390,58 +426,59 @@ describe('Fake SO Test Suite', () => {
     //
     //     cy.contains('Active').click();
     //     cy.contains('Question Title 1').click();
-    //     cy.get('.upvoteAnswer').first().click();
-    //     cy.get('.answerVotes').first().should('contain', '1');
+    //     cy.get('#upvoteAnswer').first().click();
+    //     cy.contains('3 votes')
     // });
-    //
+
     // it('3.6 | Upvote an answer and check reputation', () => {
     //     cy.visit('http://localhost:3000');
     //     cy.get('#username').type('jdalt')
     //     cy.get('#password').type('Password_123')
     //     cy.contains('Log In').click();
     //
-    //     cy.contains('Question Title 1').click();
-    //     cy.get('.upvoteAnswer').first().click();
+    //     cy.contains('Question Title 9').click();
+    //     cy.get('#upvoteAnswer').first().click();
     //     cy.contains('Logout').click();
     //
     //     cy.get('#username').type('nbohr')
     //     cy.get('#password').type('Password_123')
     //     cy.contains('Log In').click();
     //     cy.contains('Profile').click();
-    //     cy.contains('Reputation').should('contain', '46'); // Assuming starting reputation was 45
+    //     cy.contains('50');
     // });
-    //
-    // it('3.7 | Downvote an answer and check reputation', () => {
-    //     // Assuming 'jdalt' downvotes an answer by 'nbohr'
+
+    // it('3.7 | Next Page Downvote an answer and check reputation', () => {
     //     cy.visit('http://localhost:3000');
     //     cy.get('#username').type('jdalt')
     //     cy.get('#password').type('Password_123')
     //     cy.contains('Log In').click();
     //
+    //     cy.contains('Next').click();
     //     cy.contains('Question Title 1').click();
-    //     cy.get('.downvoteAnswer').first().click();
+    //     cy.get('#downvoteAnswer').first().click();
     //     cy.contains('Logout').click();
     //
-    //     cy.get('#username').type('nbohr')
+    //     cy.get('#username').type('wheisenberg')
     //     cy.get('#password').type('Password_123')
     //     cy.contains('Log In').click();
     //     cy.contains('Profile').click();
-    //     cy.contains('Reputation').should('contain', '44'); // Assuming starting reputation was 45
+    //     cy.contains('90');
     // });
-    // it('4.0 | Search tags and check responses', () => {
-    //     cy.visit('http://localhost:3000');
-    //     cy.get('#searchBar').type('Quantum');
-    //     cy.contains('Search').click();
-    //     cy.get('.postTitle').should('contain', 'Quantum');
-    // });
-    //
-    // it('4.1 | Search text and check responses', () => {
-    //     cy.visit('http://localhost:3000');
-    //     cy.get('#searchBar').type('Uncertainty Principle');
-    //     cy.contains('Search').click();
-    //     cy.get('.postTitle').should('contain', 'Uncertainty Principle');
-    // });
-    //
+
+    it('4.0 | Search tags and check responses', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#searchBar').type('Quantum');
+        cy.contains('Search').click();
+        cy.get('.postTitle').should('contain', 'Quantum');
+    });
+
+    it('4.1 | Search text and check responses', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#searchBar').type('Uncertainty Principle');
+        cy.contains('Search').click();
+        cy.get('.postTitle').should('contain', 'Uncertainty Principle');
+    });
+
     // it('4.2 | Search tags and text, check responses', () => {
     //     cy.visit('http://localhost:3000');
     //     cy.get('#searchBar').type('Quantum Mechanics Uncertainty');

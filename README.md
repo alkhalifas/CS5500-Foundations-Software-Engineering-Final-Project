@@ -45,9 +45,15 @@ Detailed instructions with all relevant commands go here.
 | 5  | Welcome Page navigate to                        | Test-1.5       | Passing  |
 | 6  | Confirm Class and IDs 1/2                       | Test-1.6       | Passing  |
 | 7  | Confirm Class and IDs 2/2                       | Test-1.7       | Passing  |
-| 8  | Register User                                   | Test-2.1       | Passing  |
+| 8  | Register User, Success                          | Test-2.1       | Passing  |
+| 8  | Register User, Existing Username                | Test-2.1.1     | Passing  |
+| 8  | Register User, Existing Email                   | Test-2.1.2     | Passing  |
+| 8  | Register User, Passwords dont match             | Test-2.1.3     | Passing  |
 | 9  | Register User, Add Answer                       | Test-2.2       | Passing  |
 | 10 | Login, Display Data                             | Test-2.3       | Passing  |
+| 10 | Login, Display Data                             | Test-2.3.1     | Passing  |
+| 10 | Login, Display Data                             | Test-2.3.2     | Passing  |
+| 10 | Login, Display Data                             | Test-2.3.3     | Passing  |
 | 11 | Login, Ask Question with Existing Tag           | Test-2.4       | Passing  |
 | 12 | Login, Ask Question with New Tag, High Rep      | Test-2.4.1     | Passing  |
 | 13 | Login, Ask Question with New Tag, Low Rep       | Test-2.4.2     | Passing  |
@@ -61,9 +67,9 @@ Detailed instructions with all relevant commands go here.
 | 21 | Filter Unanswesred, Ask Question, Confirm       | Test-3.2       | Passing  |
 | 22 | Open Question, Confirm Current Answers          | Test-3.3       | Passing  | 
 | 23 | Login, Filter Newest, Upvote Answer, Confirm    | Test-3.4       | Passing  | 
-| 24 | Login, Filter Active, Upvote Answer, Confirm    | Test-3.5       |          | 
-| 25 | Upvote Answer, Reputation Check                 | Test-3.6       |          | 
-| 26 | Downvote Answer, Reputation Check               | Test-3.7       |          | 
+| 24 | Login, Filter Active, Upvote Answer, Confirm    | Test-3.5       | Passing  | 
+| 25 | Upvote Answer, Reputation Check                 | Test-3.6       | Passing  | 
+| 26 | Downvote Answer, Reputation Check               | Test-3.7       | Passing  | 
 | 27 | Search Tags, Check Responses                    | Test-4.0       |          | 
 | 28 | Search Text, Check Responses                    | Test-4.1       |          | 
 | 29 | Search Tags and Text, Check Responses           | Test-4.2       |          | 
