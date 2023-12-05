@@ -235,7 +235,7 @@ export default function AnswersPage({question}) {
                                 <div className={"vertical-stacking"}>
                                     <div key={answer._id} className="answer-card" id={"questionBody"}>
                                         <div className="answer-votes-column centered">
-                                            <span className="answer-votes-count">{answer.votes} votes</span>
+                                            <span id={"answerVotes"} className="answer-votes-count">{answer.votes} votes</span>
                                         </div>
                                         <div className="answer-text-column">
                                             <span className="answer-text">
