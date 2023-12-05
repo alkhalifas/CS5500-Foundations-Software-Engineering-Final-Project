@@ -53,3 +53,19 @@ body, html {
 .sorting-buttons {
     width: 30%;
 }
+
+.page-button {
+    background-color: #8c8c8c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.page-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

@@ -3,7 +3,7 @@ import axios from 'axios';
 import './register.css';
 import PropTypes from 'prop-types';
 
-export default function Register({setUserSession, setRegisterSuccess, setUserSelection}) {
+export default function Register({ setRegisterSuccess, setUserSelection}) {
     const [formRegisterData, setFormRegisterData] = useState({
         username: '',
         email: '',
@@ -17,10 +17,6 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
         setFormRegisterData({ ...formRegisterData, [e.target.name]: e.target.value });
     };
 
-    // const handleSetFeedbackMessage = (e) => {
-    //     setFeedbackMessage(e)
-    //     console.log(e)
-    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,10 +33,10 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
             setUserSelection("log-in")
             // localStorage.setItem('token', response.data.token)
 
-            const token = localStorage.getItem('token');
-            console.log("localStorage.getItem('token'): ", token)
+            // const token = localStorage.getItem('token');
+            // console.log("localStorage.getItem('token'): ", token)
 
-            setUserSession(token)
+            // setUserSession(token)
         } catch (error) {
             setFeedbackMessage(error.response?.data?.message || 'Registration failed');
 
@@ -52,25 +48,26 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
         <div className="register-container">
             <form onSubmit={handleSubmit}>
                 <h1>Register</h1>
-                <input type="text" name="username" placeholder="Username" value={formRegisterData.username} onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" value={formRegisterData.email} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" value={formRegisterData.password} onChange={handleChange} required />
+                <input id={"usernameInput"} type="text" name="username" placeholder="Username" value={formRegisterData.username} onChange={handleChange} required />
+                <input id={"emailInput"} type="email" name="email" placeholder="Email" value={formRegisterData.email} onChange={handleChange} required />
+                <input id={"passwordInput"} type="password" name="password" placeholder="Password (min 6 digits)" value={formRegisterData.password} onChange={handleChange} required />
                 <input
+                    id={"confirmPasswordInput"}
                     type="password"
                     name="confirmPassword"
-                    placeholder="Confirm Password"
+                    placeholder="Confirm Password (min 6 digits)"
                     value={formRegisterData.confirmPassword}
                     onChange={handleChange}
                     required
                 />
-                <p>{feedbackMessage}</p>
+                <p style={{"color":"red"}}>{feedbackMessage}</p>
                 {
                     (formRegisterData.password !== formRegisterData.confirmPassword || formRegisterData.password.length <= 5) &&
                     <button style={{"backgroundColor":"gray", "cursor":"not-allowed"}} type="submit" disabled={true}>Register </button>
                 }
                 {
                     (formRegisterData.password === formRegisterData.confirmPassword && formRegisterData.password.length > 5) &&
-                    <button type="submit">Register </button>
+                    <button id={"registerSubmit"} type="submit">Register </button>
                 }
                 {/*<button type="submit" disabled={formRegisterData.password !== formRegisterData.confirmPassword}>*/}
                 {/*    Register*/}
@@ -81,7 +78,6 @@ export default function Register({setUserSession, setRegisterSuccess, setUserSel
 }
 
 Register.propTypes = {
-    setUserSession: PropTypes.func.isRequired,
     setRegisterSuccess: PropTypes.func.isRequired,
     setUserSelection: PropTypes.func.isRequired,
 };

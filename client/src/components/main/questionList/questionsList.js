@@ -10,10 +10,35 @@ export default function QuestionsList() {
     const [showForm, setShowForm] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [sortedQuestions, setSortedQuestions] = useState([]);
+    const [totalResults, setTotalResults] = useState([]);
+    const [totalPages, setTotalPages] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isGuest, setIsGuest] = useState(true);
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
 
-    useEffect(() => {
-        handleSort('newest');
-    }, []);
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/user`, {
+                method: 'GET',
+                credentials: 'include', // include session cookies
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUserData(data);
+            setIsGuest(false)
+            console.log("userData: ", userData)
+        } catch (error) {
+            setIsGuest(true)
+            console.error('Error fetching user data:', error);
+        }
+    };
 
     const handleAskQuestion = () => {
         setShowForm(true);
@@ -26,7 +51,6 @@ export default function QuestionsList() {
             console.log('Question added successfully:', response.data);
 
             await handleSort('newest');
-
             setShowForm(false);
         } catch (error) {
             console.error('Error adding question:', error);
@@ -35,17 +59,45 @@ export default function QuestionsList() {
 
     const handleQuestionClick = (question) => {
         setSelectedQuestion(question);
+        console.log("QL question: ", question)
+
     };
 
-    const handleSort = async (sortType) => {
-        const apiUrl = `http://localhost:8000/questions?sort=${sortType}`;
+    const fetchQuestions = async (sortType, page) => {
+        const apiUrl = `http://localhost:8000/questions?sort=${sortType}&page=${page}`;
         try {
             const response = await axios.get(apiUrl);
-            setSortedQuestions(response.data);
+            setSortedQuestions(response.data.questions);
+            setCurrentPage(response.data.currentPage);
+            setTotalResults(response.data.totalQuestions);
+            setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('Error fetching questions:', error);
         }
     };
+
+    const handleSort = async (sortType) => {
+        fetchQuestions(sortType, 1);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            fetchQuestions('newest', parseInt(currentPage) + 1);
+        } else if (currentPage == totalPages) {
+            fetchQuestions('newest', 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            fetchQuestions('newest', parseInt(currentPage) - 1);
+        }
+    };
+
+    useEffect(() => {
+        fetchQuestions('newest', 1);
+        fetchUserData();
+    }, []);
 
     return (
         <div>
@@ -55,7 +107,11 @@ export default function QuestionsList() {
                 <div id={"answersHeader"}>
                     <div className="header-container">
                         <h1>All Answers</h1>
-                        <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        {
+                            !isGuest &&
+                            <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        }
+                        {/*<button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>*/}
                     </div>
                     <AnswersPage question={selectedQuestion} />
 
@@ -64,11 +120,13 @@ export default function QuestionsList() {
                 <>
                     <div className="header-container">
                         <h1>All Questions</h1>
-                        <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        {!isGuest && (
+                            <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
+                        )}
                     </div>
 
                     <div className="header-container">
-                        <h3>{sortedQuestions.length} questions</h3>
+                        <h3>{totalResults} questions</h3>
                         <div className="sorting-buttons">
                             <button className={"sort-button"} onClick={() => handleSort('newest')}>Newest</button>
                             <button className={"sort-button"} onClick={() => handleSort('active')}>Active</button>
@@ -78,13 +136,14 @@ export default function QuestionsList() {
 
                     <div className="question-cards scrollable-container">
                         {sortedQuestions.map((question, index) => (
-                            <div key={question.qid}>
+                            <div key={question._id}>
                                 <div
-                                    key={question.qid}
+                                    key={question._id}
                                     className="question-card"
                                 >
                                     <div className={"question-left postStats"}>
                                         <p>{question.views} views</p>
+                                        <p>{question.votes} votes</p>
                                         <p>{question.answers.length} answers</p>
                                     </div>
                                     <div className={"question-mid"}>
@@ -105,8 +164,21 @@ export default function QuestionsList() {
                                 </div>
                                 {index !== sortedQuestions.length - 1 && <div className="dotted-line" />}
                             </div>
-                            ))}
+                        ))}
                     </div>
+                    {totalPages > 1 && (
+                        <div className="pagination-buttons">
+                            {
+                                (parseInt(currentPage) === 1) &&
+                                <button className="page-button" disabled={true}>Prev</button>
+                            }
+                            {
+                                (parseInt(currentPage) != 1) &&
+                                <button onClick={handlePrevPage} className="page-button">Prev</button>
+                            }
+                            <button onClick={handleNextPage} className="page-button">Next</button>
+                        </div>
+                    )}
                 </>
             )}
         </div>

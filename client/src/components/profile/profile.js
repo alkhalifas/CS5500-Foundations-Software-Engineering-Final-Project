@@ -12,33 +12,31 @@ const calculateDaysSinceCreation = (createdOn) => {
 
 
 export default function Profile() {
-    const [userData, setUserData] = useState({ username: '', email: '', reputation: '', createdOn: ''});
+    const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/user`, {
+                method: 'GET',
+                credentials: 'include', // include session cookies
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUserData(data);
+            console.log("userData: ", userData)
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-
-                const response = await fetch('http://localhost:8000/user', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setUserData(data);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
-
         fetchUserData();
     }, []);
 
@@ -56,7 +54,7 @@ export default function Profile() {
                 </div>
                 <div className="card">
                     <div className="card-value">
-                        {calculateDaysSinceCreation(userData.reputation)}
+                        {userData.reputation}
                     </div>
                     <div className="card-description">
                         Reputation Points

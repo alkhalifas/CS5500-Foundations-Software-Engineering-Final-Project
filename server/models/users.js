@@ -31,7 +31,19 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-});
+    posted_questions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Question'
+    }],
+    posted_tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
+    posted_answers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Answer'
+    }]
+}, { timestamps: true });
 
 
 userSchema.pre('save', async function(next) {
@@ -39,8 +51,8 @@ userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
 
     try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
+        // const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, 10);
         next();
     } catch (error) {
         next(error);

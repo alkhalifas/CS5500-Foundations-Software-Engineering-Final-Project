@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import "./questionForm.css"
 import PropTypes from 'prop-types';
+import axios from "axios";
 
 export default function QuestionForm({ onSubmit }) {
 
@@ -13,33 +14,34 @@ export default function QuestionForm({ onSubmit }) {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [formData, setFormData] = useState(initialFormData);
     const [validationErrors, setValidationErrors] = useState({});
+    const [existingTags, setExistingTags] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-
-                const response = await fetch('http://localhost:8000/user', {
+                const response = await fetch(`http://localhost:8000/user`, {
                     method: 'GET',
+                    credentials: 'include',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
                 setUserData(data);
+                console.log("data: ", data)
             } catch (error) {
                 console.error('Error fetching user data:', error);
+                // setError(error.message);
             }
         };
 
         fetchUserData();
+        fetchExistingTags();
     }, []);
 
     const handleInputChange = (e) => {
@@ -53,10 +55,23 @@ export default function QuestionForm({ onSubmit }) {
         e.preventDefault();
         const errors = validateForm(formData);
         if (Object.keys(errors).length === 0) {
-            onSubmit(formData);
+            // Set asked_by to userData.username before submitting
+            const formDataWithUser = { ...formData, asked_by: userData.username };
+            onSubmit(formDataWithUser);
             setFormData(initialFormData);
         } else {
             setValidationErrors(errors);
+        }
+    };
+
+    const fetchExistingTags = async () => {
+        const apiUrl = `http://localhost:8000/tags`;
+        try {
+            const response = await axios.get(apiUrl);
+            const tagNames = response.data.map(tag => tag.name);
+            setExistingTags(tagNames);
+        } catch (error) {
+            console.error('Error fetching tags:', error);
         }
     };
 
@@ -91,22 +106,27 @@ export default function QuestionForm({ onSubmit }) {
         // Tags validation
         if (!data.tags.trim()) {
             errors.tags = "Tags cannot be empty";
-        }
-
-        const tagNames = data.tags.trim().split(/\s+/);
-        if (tagNames.length > 5) {
-            errors.tags = "Cannot have more than 5 tags";
-        }
-        for (const tag of tagNames) {
-            if (tag.length > 20) {
-                errors.tags = "New tag length cannot be more than 20";
-                break;
+        } else {
+            const tagNames = data.tags.trim().split(/\s+/);
+            if (tagNames.length > 5) {
+                errors.tags = "Cannot have more than 5 tags";
             }
-        }
-
-        // Username validation
-        if (!data.asked_by.trim()) {
-            errors.asked_by = "Username cannot be empty";
+            // Check if the tags already exists
+            if (userData.reputation < 50) {
+                for (const tag of tagNames) {
+                    if (!existingTags.includes(tag.toLowerCase())) {
+                        errors.tags = "Only a user with reputation of 50 or more can create a new tag";
+                        break;
+                    }
+                }
+            } else {
+                for (const tag of tagNames) {
+                    if (tag.length > 20) {
+                        errors.tags = "Tag length cannot be more than 20";
+                        break;
+                    }
+                }
+            }
         }
 
         return errors;
@@ -142,53 +162,19 @@ export default function QuestionForm({ onSubmit }) {
                     <div className="error-message">{validationErrors.text}</div>
                 )}
             </label>
-            {
-                (userData.reputation >= 50 )&&
-                <label>
-                    Tags*
-                    <input
-                        type="text"
-                        id="formTagInput"
-                        name="tags"
-                        value={formData.tags}
-                        onChange={handleInputChange}
-                        placeholder="Add keywords separated by whitespace"
-                        //required
-                    />
-                    {validationErrors.tags && (
-                        <div className="error-message">{validationErrors.tags}</div>
-                    )}
-                </label>
-            }
-
             <label>
                 Tags*
                 <input
                     type="text"
                     id="formTagInput"
                     name="tags"
-                    // value={formData.tags}
-                    // onChange={handleInputChange}
-                    placeholder={`50 Reputation points required to add tags (You have: ${userData.reputation})`}
-                    disabled
+                    value={formData.tags}
+                    onChange={handleInputChange}
+                    placeholder="Add keywords separated by whitespace"
+                    //required
                 />
                 {validationErrors.tags && (
                     <div className="error-message">{validationErrors.tags}</div>
-                )}
-            </label>
-            <label>
-                Username*
-                <input
-                    type="text"
-                    id="formUsernameInput"
-                    name="asked_by"
-                    value={userData.username}
-                    onChange={handleInputChange}
-                    placeholder="Add username"
-                    disabled
-                />
-                {validationErrors.asked_by && (
-                    <div className="error-message">{validationErrors.asked_by}</div>
                 )}
             </label>
 

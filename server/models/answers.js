@@ -13,7 +13,15 @@ const answerSchema = new mongoose.Schema({
     ans_date_time: {
         type: Date,
         default: Date.now
-    }
-});
+    },
+    votes: {
+        type: Number,
+        default: 0
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
+}, { timestamps: true });
 
 module.exports = mongoose.model('Answer', answerSchema);
