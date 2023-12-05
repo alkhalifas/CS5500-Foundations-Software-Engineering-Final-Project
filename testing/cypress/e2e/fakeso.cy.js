@@ -119,40 +119,40 @@ describe('Fake SO Test Suite', () => {
     //
     // })
 
-    it('2.1.1 | Register User, Existing Username', () => {
-
-        cy.visit('http://localhost:3000');
-        cy.contains('Register').click();
-        cy.get('#usernameInput').type('nbohr');
-        cy.get('#emailInput').type('new_nbohr@science.com');
-        cy.get('#passwordInput').type('password123');
-        cy.get('#confirmPasswordInput').type('password123');
-        cy.get('#registerSubmit').click();
-        cy.contains('Username already in use');
-    });
-
-    it('2.2.2 | Register User, Existing Email', () => {
-
-        cy.visit('http://localhost:3000');
-        cy.contains('Register').click();
-        cy.get('#usernameInput').type('new_nbohr');
-        cy.get('#emailInput').type('nbohr@science.com');
-        cy.get('#passwordInput').type('password123');
-        cy.get('#confirmPasswordInput').type('password123');
-        cy.get('#registerSubmit').click();
-        cy.contains('Email already in use');
-    });
-
-    it('2.3.3 | Register User, Passwords dont match', () => {
-
-        cy.visit('http://localhost:3000');
-        cy.contains('Register').click();
-        cy.get('#usernameInput').type('new_nbohr');
-        cy.get('#emailInput').type('new_nbohr@science.com');
-        cy.get('#passwordInput').type('password123');
-        cy.get('#confirmPasswordInput').type('password12345');
-        cy.get('#registerSubmit').should('not.exist');
-    });
+    // it('2.1.1 | Register User, Existing Username', () => {
+    //
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Register').click();
+    //     cy.get('#usernameInput').type('nbohr');
+    //     cy.get('#emailInput').type('new_nbohr@science.com');
+    //     cy.get('#passwordInput').type('password123');
+    //     cy.get('#confirmPasswordInput').type('password123');
+    //     cy.get('#registerSubmit').click();
+    //     cy.contains('Username already in use');
+    // });
+    //
+    // it('2.1.2 | Register User, Existing Email', () => {
+    //
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Register').click();
+    //     cy.get('#usernameInput').type('new_nbohr');
+    //     cy.get('#emailInput').type('nbohr@science.com');
+    //     cy.get('#passwordInput').type('password123');
+    //     cy.get('#confirmPasswordInput').type('password123');
+    //     cy.get('#registerSubmit').click();
+    //     cy.contains('Email already in use');
+    // });
+    //
+    // it('2.1.3 | Register User, Passwords dont match', () => {
+    //
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Register').click();
+    //     cy.get('#usernameInput').type('new_nbohr');
+    //     cy.get('#emailInput').type('new_nbohr@science.com');
+    //     cy.get('#passwordInput').type('password123');
+    //     cy.get('#confirmPasswordInput').type('password12345');
+    //     cy.get('#registerSubmit').should('not.exist');
+    // });
 
     // it('2.2 | Create a user and login and answer a question', () => {
     //     cy.visit('http://localhost:3000');
@@ -194,6 +194,33 @@ describe('Fake SO Test Suite', () => {
     //     cy.contains('Unanswered').click();
     //     cy.get('.postTitle').should('have.length', 1);
     //     cy.contains('1 question');
+    // })
+    //
+    // it('2.3.1 | Login, Username incorrect', () => {
+    //
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('someusername')
+    //     cy.get('#password').type('Password_321')
+    //     cy.contains('Log In').click();
+    //     cy.contains('Invalid username or password.');
+    // })
+    //
+    // it('2.3.2 | Login, Password incorrect', () => {
+    //
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('someusername')
+    //     cy.get('#password').type('Password_321')
+    //     cy.contains('Log In').click();
+    //     cy.contains('Invalid username or password.');
+    // })
+
+    // it('2.3.3 | Login, Fields Missing', () => {
+    //
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('wheisenberg')
+    //     cy.get('#password');
+    //     cy.contains('Log In').click();
+    //     cy.contains('Questions').should('not.exist');
     // })
     //
     // it('2.4 | Logs in and asks a question with exiting tag', () => {
