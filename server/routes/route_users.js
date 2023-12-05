@@ -63,7 +63,7 @@ router.post('/login', async (req, res) => {
         // Get current user
         const user = await User.findOne({ username });
         if (!user) {
-            return res.status(401).json({'message': 'Username not found.'});
+            return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
         // Check password matches
