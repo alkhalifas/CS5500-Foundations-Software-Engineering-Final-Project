@@ -185,8 +185,8 @@ describe('Fake SO Test Suite', () => {
         cy.get('#registerSubmit').click();
 
         cy.visit('http://localhost:3000');
-        cy.get('#username').type('alkhalifas')
-        cy.get('#password').type('Password_123')
+        cy.get('#username').type('alkhalifas');
+        cy.get('#password').type('Password_123');
         cy.contains('Log In').click();
 
         cy.contains('Questions');
