@@ -97,6 +97,13 @@ export default function QuestionsList() {
         fetchUserData();
     }, []);
 
+    function truncateQuestionText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    }
+
     return (
         <div>
             {showForm ? (
@@ -149,7 +156,7 @@ export default function QuestionsList() {
                                             onClick={() => handleQuestionClick(question)}
                                         >{question.title}
                                         </h4>
-                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
+                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(truncateQuestionText(question.text, 100))} />
                                         <div className="tags">
                                             {question.tags.map(tag => (
                                                 <span key={tag} className="badge">{tag}</span>

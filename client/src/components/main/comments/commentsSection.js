@@ -187,10 +187,6 @@ const CommentsSection = ({ type, typeId, userData }) => {
                             placeholder="Write a comment..."
                             onKeyDown={handleKeyPress} // Handle key press here
                         />
-
-                        <button id={"commentSubmit"} className="textarea-comment" onClick={handleSubmitComment}>
-                            Post
-                        </button>
                     </div>
                 }
                 {
