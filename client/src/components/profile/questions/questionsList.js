@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import "../main/questionList/questionList.css";
-import QuestionCardTiming from "../main/questionList/QuestionCardTiming";
-import QuestionForm from "./questionForm/questionForm";
-import formatQuestionText from "../main/utils"
+import "./questionList.css";
+import QuestionForm from "../questionForm/questionForm";
+import formatQuestionText from "../../main/utils"
 import axios from "axios";
 
 export default function QuestionsList() {
@@ -10,6 +9,7 @@ export default function QuestionsList() {
     const [sortedQuestions, setSortedQuestions] = useState([]);
     const [totalPages, setTotalPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalResults, setTotalResults] = useState([]);
 
     const handleQuestionClick = (question) => {
         setSelectedQuestion(question);
@@ -56,7 +56,7 @@ export default function QuestionsList() {
             }
 
             const responseData = await response.json();
-
+            setTotalResults(responseData.totalQuestions);
             setSortedQuestions(responseData.questions);
             setCurrentPage(responseData.currentPage);
             setTotalPages(responseData.totalPages);
@@ -83,6 +83,13 @@ export default function QuestionsList() {
         fetchQuestions(1);
     }, []);
 
+    function truncateQuestionText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    }
+
     return (
         <div>
             {selectedQuestion ? (
@@ -91,6 +98,9 @@ export default function QuestionsList() {
                 </div>
             ) : (
                 <>
+                    <div className="header-container">
+                        <h3>{totalResults} Questions</h3>
+                    </div>
                     <div className="question-cards scrollable-container">
                         {sortedQuestions.map((question, index) => (
                             <div key={question._id}>
@@ -98,25 +108,17 @@ export default function QuestionsList() {
                                     key={question._id}
                                     className="question-card"
                                 >
-                                    <div className={"question-left postStats"}>
-                                        <p>{question.views} views</p>
-                                        <p>{question.votes} votes</p>
-                                        <p>{question.answers.length} answers</p>
-                                    </div>
                                     <div className={"question-mid"}>
                                         <h4 className={"postTitle"}
                                             onClick={() => handleQuestionClick(question)}
                                         >{question.title}
                                         </h4>
-                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
+                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(truncateQuestionText(question.text, 100))} />
                                         <div className="tags">
                                             {question.tags.map(tag => (
                                                 <span key={tag} className="badge">{tag}</span>
                                             ))}
                                         </div>
-                                    </div>
-                                    <div className={"question-right lastActivity"}>
-                                        <QuestionCardTiming question={question} />
                                     </div>
                                 </div>
                                 {index !== sortedQuestions.length - 1 && <div className="dotted-line" />}

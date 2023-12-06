@@ -49,12 +49,19 @@ export default function TagsList() {
     const handleSaveEdit = async () => {
         const apiUrl = `http://localhost:8000/tags/${editingTagId}`;
         try {
-            const response = await axios.delete(apiUrl);
-            console.log('Tag deleted successfully:', response.data);
+            const response = await axios.put(apiUrl, {name: editedTagName});
+            console.log('Tag edited successfully:', response.data);
 
-            fetchTags();
+            // Update the tags list after editing
+            const updatedTags = tags.map(tag =>
+                tag._id === editingTagId ? { ...tag, name: editedTagName } : tag
+            );
+
+            setTags(updatedTags);
+            setEditingTagId(null);
+            setEditedTagName('');
         } catch (error) {
-            console.error('Error deleting the tag:', error);
+            console.error('Error editing the tag:', error);
         }
     };
 
@@ -64,34 +71,31 @@ export default function TagsList() {
 
     return (
         <div>
-            <div>
-                <div className="header-container">
-                    <h3>{tags.length} Tags</h3>
-                </div>
-
-                <div className="tags-container">
-                    {tags.map((tag) => (
-                        <div key={tag._id} className="tag-box tagNode">
-                            {editingTagId === tag._id ? (
-                                <>
-                                    <input
-                                        type="text"
-                                        value={editedTagName}
-                                        onChange={(e) => setEditedTagName(e.target.value)}
-                                    />
-                                    <button onClick={handleSaveEdit} className="page-button">Save</button>
-                                </>
-                            ) : (
-                                <>
-                                    <span>{tag.name}</span>
-                                    <p>({tag.count} questions)</p>
-                                    <button onClick={() => handleDelete(tag._id)} className="page-button">Delete</button>
-                                    <button onClick={() => handleEdit(tag._id)} className="page-button">Edit</button>
-                                </>
-                            )}
-                        </div>
-                    ))}
-                </div>
+            <div className="header-container">
+                <h3>{tags.length} Tags</h3>
+            </div>
+            <div className="tags-container">
+                {tags.map((tag) => (
+                    <div key={tag._id} className="tag-box tagNode">
+                        {editingTagId === tag._id ? (
+                            <>
+                                <input
+                                    type="text"
+                                    value={editedTagName}
+                                    onChange={(e) => setEditedTagName(e.target.value)}
+                                />
+                                <button onClick={handleSaveEdit} className="page-button">Save</button>
+                            </>
+                        ) : (
+                            <>
+                                <span>{tag.name}</span>
+                                <p>({tag.count} questions)</p>
+                                <button onClick={() => handleDelete(tag._id)} className="page-button">Delete</button>
+                                <button onClick={() => handleEdit(tag._id)} className="page-button">Edit</button>
+                            </>
+                        )}
+                    </div>
+                ))}
             </div>
         </div>
     );
