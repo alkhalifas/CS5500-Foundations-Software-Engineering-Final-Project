@@ -94,9 +94,9 @@ Detailed instructions with all relevant commands go here.
 | 54 | Create comment for answer                       | Test-7.1       | Passing  | 
 | 55 | Create multiple comments for question, paginate | Test-7.2       | Passing  | 
 | 56 | Create multiple comments for answer, paginate   | Test-7.3       | Passing  | 
-| 57 | Tags render correctly                           | Test-8.0       |          | 
-| 58 | Tags Correct Count                              | Test-8.1       |          | 
-| 59 | Tags Click Shows Questions                      | Test-8.2       |          | 
+| 57 | Tags render correctly, correct count            | Test-8.0       | Passing  | 
+| 58 | Tags Correct Count after adding question        | Test-8.1       | Passing  | 
+| 59 | Tags Click Shows Questions                      | Test-8.2       | Passing  | 
 | 60 | Authentication Logout                           | Test-9.0       | Passing  | 
 
 ## Design Patterns Used
