@@ -261,9 +261,9 @@ export default function AnswersPage({question}) {
                                             )}
                                         </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
+                                    <div>
+                                        <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
+                                    </div>
                                 </div>
                             </div>
                         )}
