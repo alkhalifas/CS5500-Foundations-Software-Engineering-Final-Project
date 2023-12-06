@@ -65,7 +65,7 @@ export default function Header({
             <div className="header">
                 Fake Stack Overflow
                 {
-                    isGuest || isLoggedIn &&
+                    (isGuest || isLoggedIn) &&
                     <div className="search-bar">
                         <input
                             type="text"
