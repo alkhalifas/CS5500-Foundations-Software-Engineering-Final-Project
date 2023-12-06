@@ -15,14 +15,8 @@ const calculateDaysSinceCreation = (createdOn) => {
 
 export default function Profile() {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
-    const [selectedComponent, setSelectedComponent] = useState('tags');
+    const [selectedComponent, setSelectedComponent] = useState('questions');
     const [componentKey, setComponentKey] = useState(0);
-    const [selectedProfileComponent, setSelectedProfileComponent] = useState('questions');
-
-    const handleSelectedProfileComponent = (status) => {
-        setSelectedProfileComponent(status);
-        console.log("setSelectedProfileComponent: ", status);
-    }
 
 
     const fetchUserData = async () => {
@@ -58,28 +52,35 @@ export default function Profile() {
         setComponentKey(prevKey => prevKey + 1);
     };
 
-    const renderSelectedComponent = () => {
+    const renderContent = () => {
         switch (selectedComponent) {
             case 'questions':
-                return <QuestionsList key={componentKey} />;
+                return (
+                    <>
+                        <h3>Questions:</h3>
+                        <QuestionsList key={componentKey} />
+                    </>
+                        )
             case 'tags':
-                return <TagsList key={componentKey} />;
-//            case 'answers':
-//                return <AnswersList key={componentKey} />;
+                return (
+                    <>
+                        <h3>Tags:</h3>
+                        <TagsList key={componentKey} />;
+                    </>
+                )
+
+
+            case 'answers':
+                return (
+                    <>
+                        <h3>Answers:</h3>
+                        {/*<AnswersList key={componentKey} />;*/}
+
+                    </>
+                )
             default:
                 return null;
         }
-    };
-
-    const renderContent = () => {
-        return (
-            <>
-                <profileMenu onSelect={handleComponentSelect}/>
-                <div className="main-content">
-                    {renderSelectedComponent()}
-                </div>
-            </>
-        );
     };
 
     return (
@@ -101,6 +102,28 @@ export default function Profile() {
                     <div className="card-description">
                         Reputation Points
                     </div>
+                </div>
+            </div>
+            <div>
+                <div className={"horizontal-menu"}>
+                    <button
+                        className={selectedComponent === "questions" ? "menu-btn dark-active" : "menu-btn"}
+                        onClick={() => handleComponentSelect("questions")}
+                    >
+                        Questions
+                    </button>
+                    <button
+                        className={selectedComponent === "tags" ? "menu-btn dark-active" : "menu-btn"}
+                        onClick={() => handleComponentSelect("tags")}
+                    >
+                        Tags
+                    </button>
+                    <button
+                        className={selectedComponent === "answers" ? "menu-btn dark-active" : "menu-btn"}
+                        onClick={() => handleComponentSelect("answers")}
+                    >
+                        Answers
+                    </button>
                 </div>
             </div>
             <div className="content-container">
