@@ -358,12 +358,12 @@ router.delete('/questions/:questionId', async (req, res) => {
         await Answer.deleteMany({ _id: { $in: question.answers } });
 
         // Check each tag to see if other Qs have that tag
-        for (const tagId of question.tags) {
-            const isTagUsedElsewhere = await Question.findOne({ tags: tagId, _id: { $ne: questionId } });
-            if (!isTagUsedElsewhere) {
-                await Tag.findByIdAndDelete(tagId);
-            }
-        }
+//        for (const tagId of question.tags) {
+//            const isTagUsedElsewhere = await Question.findOne({ tags: tagId, _id: { $ne: questionId } });
+//            if (!isTagUsedElsewhere) {
+//                await Tag.findByIdAndDelete(tagId);
+//            }
+//        }
 
         // delete the question obj
         await Question.findByIdAndRemove(questionId);
