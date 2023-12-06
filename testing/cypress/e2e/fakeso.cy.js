@@ -704,11 +704,24 @@ describe('Fake SO Test Suite', () => {
 
         // Target the first '.vertical-stacking' element
         cy.get('.vertical-stacking').eq(0).within(() => {
-            cy.get('#commentInput').type('Redox reactions are complex');
+            cy.get('#commentInput').type('Test comment 1');
             cy.get('#commentSubmit').click();
-        });
+            cy.get('#commentInput').type('Test comment 2');
+            cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Test comment 3');
+            cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Test comment 4');
+            cy.get('#commentSubmit').click();
 
-        cy.contains('Redox reactions are complex');
+            cy.contains('Test comment 1').should('not.exist');
+            cy.contains('Test comment 2').should('exist');
+            cy.contains('Test comment 3').should('exist');
+            cy.contains('Test comment 4').should('exist');
+
+            cy.get('button').contains('Next').click();
+            cy.contains('Test comment 1').should('exist');
+
+        });
         cy.contains('jdalt');
     });
 
