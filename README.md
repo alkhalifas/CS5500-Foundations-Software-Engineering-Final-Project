@@ -89,8 +89,8 @@ Detailed instructions with all relevant commands go here.
 | 48 | Guest cannot answer a question                  | Test-6.4       | Passing  | 
 | 49 | Guest cannot comment                            | Test-6.5       | Passing  | 
 | 50 | Guest cannot vote                               | Test-6.6       | Passing  | 
-| 51 | Create comment for question                     | Test-7.0       |          | 
-| 52 | Create comment for answer                       | Test-7.1       |          | 
+| 51 | Create comment for question                     | Test-7.0       | Passing  | 
+| 52 | Create comment for answer                       | Test-7.1       | Passing  | 
 | 53 | Create multiple comments for question, paginate | Test-7.2       |          | 
 | 54 | Create multiple comments for answer, paginate   | Test-7.3       |          | 
 | 55 | Tags render correctly                           | Test-8.0       |          | 

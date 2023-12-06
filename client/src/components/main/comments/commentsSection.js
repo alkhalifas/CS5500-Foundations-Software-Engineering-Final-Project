@@ -165,6 +165,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
                     !isGuest &&
                     <div className="comments-input-section">
                         <textarea
+                            id={"commentInput"}
                             className="textarea-comment"
                             value={newCommentText}
                             onChange={(e) => setNewCommentText(e.target.value)}
@@ -172,7 +173,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
                             onKeyDown={handleKeyPress} // Handle key press here
                         />
 
-                        <button className="button-post-comment" onClick={handleSubmitComment}>
+                        <button id={"commentSubmit"} className="textarea-comment" onClick={handleSubmitComment}>
                             Post
                         </button>
                     </div>
