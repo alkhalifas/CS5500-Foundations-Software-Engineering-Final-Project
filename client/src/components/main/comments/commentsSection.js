@@ -9,6 +9,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
     const [totalPages, setTotalPages] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [isGuest, setIsGuest] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const fetchComments = async () => {
         setIsLoading(true);
@@ -90,8 +91,22 @@ const CommentsSection = ({ type, typeId, userData }) => {
 
     const handleSubmitComment = async () => {
         console.log('Submit button pressed or Enter key pressed');
+
+        // Reset error message
+        setErrorMessage('');
+
         if (newCommentText.trim().length === 0) {
-            alert("Comment text cannot be empty.");
+            setErrorMessage("Comment text cannot be empty.");
+            return;
+        }
+
+        if (newCommentText.length > 140) {
+            setErrorMessage("Comment must be less than 140 characters.");
+            return;
+        }
+
+        if (userData.reputation < 50) {
+            setErrorMessage("User does not have enough reputation.");
             return;
         }
 
@@ -118,7 +133,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
             setNewCommentText('');
         } catch (error) {
             console.error('Error posting new comment:', error);
-            alert("Failed to post the comment.");
+            setErrorMessage("Failed to post the comment.");
         }
     };
 
@@ -177,6 +192,9 @@ const CommentsSection = ({ type, typeId, userData }) => {
                             Post
                         </button>
                     </div>
+                }
+                {
+                    errorMessage && <div style={{"color":"red"}} className="error-message">{errorMessage}</div>
                 }
             </div>
         </div>

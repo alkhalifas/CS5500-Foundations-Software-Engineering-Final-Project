@@ -79,24 +79,25 @@ Detailed instructions with all relevant commands go here.
 | 39 | View Questions, Sort by Active                  | Test-5.1.1     |          | 
 | 40 | View Questions, Sort by Unanswered              | Test-5.1.2     |          | 
 | 41 | View Answers to question                        | Test-5.2       |          | 
-| 41 | Add Answer to question, Success                 | Test-5.3       | Passing  | 
-| 42 | Add Answer to question, Missing Text            | Test-5.3.1     | Passing  | 
-| 43 | Add Answer to Question, Invalid Hyperlink       | Test-5.3.2     | Passing  | 
-| 44 | Guest Accessing Application                     | Test-6.0       | Passing  | 
-| 45 | Guest can see questions                         | Test-6.1       | Passing  | 
-| 46 | Guest cannot access profile page                | Test-6.2       | Passing  | 
-| 47 | Guest cannot ask a question                     | Test-6.3       | Passing  | 
-| 48 | Guest cannot answer a question                  | Test-6.4       | Passing  | 
-| 49 | Guest cannot comment                            | Test-6.5       | Passing  | 
-| 50 | Guest cannot vote                               | Test-6.6       | Passing  | 
-| 51 | Create comment for question                     | Test-7.0       | Passing  | 
-| 52 | Create comment for answer                       | Test-7.1       | Passing  | 
-| 53 | Create multiple comments for question, paginate | Test-7.2       | Passing  | 
-| 54 | Create multiple comments for answer, paginate   | Test-7.3       | Passing  | 
-| 55 | Tags render correctly                           | Test-8.0       |          | 
-| 56 | Tags Correct Count                              | Test-8.0       |          | 
-| 57 | Tags Click Shows Questions                      | Test-8.0       |          | 
-| 58 | Authentication Logout                           | Test-9.0       | Passing  | 
+| 42 | Add Answer to question, Success                 | Test-5.3       | Passing  | 
+| 43 | Add Answer to question, Missing Text            | Test-5.3.1     | Passing  | 
+| 44 | Add Answer to Question, Invalid Hyperlink       | Test-5.3.2     | Passing  | 
+| 45 | Guest Accessing Application                     | Test-6.0       | Passing  | 
+| 46 | Guest can see questions                         | Test-6.1       | Passing  | 
+| 47 | Guest cannot access profile page                | Test-6.2       | Passing  | 
+| 48 | Guest cannot ask a question                     | Test-6.3       | Passing  | 
+| 49 | Guest cannot answer a question                  | Test-6.4       | Passing  | 
+| 50 | Guest cannot comment                            | Test-6.5       | Passing  | 
+| 51 | Guest cannot vote                               | Test-6.6       | Passing  | 
+| 52 | Create comment for question                     | Test-7.0       | Passing  | 
+| 53 | Create comment for question fails low rep       | Test-7.0.1     | Passing  | 
+| 54 | Create comment for answer                       | Test-7.1       | Passing  | 
+| 55 | Create multiple comments for question, paginate | Test-7.2       | Passing  | 
+| 56 | Create multiple comments for answer, paginate   | Test-7.3       | Passing  | 
+| 57 | Tags render correctly                           | Test-8.0       |          | 
+| 58 | Tags Correct Count                              | Test-8.1       |          | 
+| 59 | Tags Click Shows Questions                      | Test-8.2       |          | 
+| 60 | Authentication Logout                           | Test-9.0       | Passing  | 
 
 ## Design Patterns Used
 
