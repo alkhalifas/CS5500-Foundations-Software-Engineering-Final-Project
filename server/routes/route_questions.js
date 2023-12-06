@@ -354,7 +354,7 @@ router.delete('/questions/:questionId', async (req, res) => {
             return res.status(404).json({ error: 'Question not found' });
         }
 
-        // Delete  answers
+        // Delete answers of the question
         await Answer.deleteMany({ _id: { $in: question.answers } });
 
 
