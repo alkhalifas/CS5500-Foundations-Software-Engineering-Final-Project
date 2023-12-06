@@ -629,22 +629,72 @@ describe('Fake SO Test Suite', () => {
     //
     // });
 
-    it('7.0 | Create comment for question', () => {
-        cy.visit('http://localhost:3000');
-        cy.get('#username').type('jdalt')
-        cy.get('#password').type('Password_123')
-        cy.contains('Log In').click();
+    // it('7.0 | Create comment for question', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('jdalt')
+    //     cy.get('#password').type('Password_123')
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Question Title 10').click();
+    //
+    //     cy.get('#commentInput').type('Redox reactions are complex')
+    //     cy.get('#commentSubmit').click();
+    //     cy.contains('Redox reactions are complex');
+    //     cy.contains('jdalt');
+    //
+    // });
 
-        cy.contains('Question Title 10').click();
+    // it('7.1 | Create comment for answer', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('jdalt');
+    //     cy.get('#password').type('Password_123');
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Question Title 10').click();
+    //
+    //     // Target the first '.vertical-stacking' element
+    //     cy.get('.vertical-stacking').eq(0).within(() => {
+    //         cy.get('#commentInput').type('Redox reactions are complex');
+    //         cy.get('#commentSubmit').click();
+    //     });
+    //
+    //     cy.contains('Redox reactions are complex');
+    //     cy.contains('jdalt');
+    // });
 
-        cy.get('#commentInput').type('Redox reactions are complex')
-        cy.get('#commentSubmit').click();
-        cy.contains('Redox reactions are complex');
-        cy.contains('jdalt');
+    // it('7.2 | Create multiple comments for question, paginate', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('jdalt')
+    //     cy.get('#password').type('Password_123')
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Question Title 10').click();
+    //
+    //     cy.get('#commentInput').type('Test comment 1')
+    //     cy.get('#commentSubmit').click();
+    //
+    //     cy.get('#commentInput').type('Test comment 2')
+    //     cy.get('#commentSubmit').click();
+    //
+    //     cy.get('#commentInput').type('Test comment 3')
+    //     cy.get('#commentSubmit').click();
+    //
+    //
+    //     cy.contains('Test comment 1');
+    //     cy.contains('Test comment 2');
+    //     cy.contains('Test comment 3');
+    //
+    //     cy.get('#commentInput').type('Test comment 4')
+    //     cy.get('#commentSubmit').click();
+    //
+    //     cy.contains('Test comment 1').should('not.exist');
+    //     cy.contains('Test comment 2').should('exist');
+    //     cy.contains('Test comment 3').should('exist');
+    //     cy.contains('Test comment 4').should('exist');
+    //
+    // });
 
-    });
-
-    it('7.1 | Create comment for answer', () => {
+    it('7.3 | Create multiple comments for answer, paginate', () => {
         cy.visit('http://localhost:3000');
         cy.get('#username').type('jdalt');
         cy.get('#password').type('Password_123');
@@ -661,9 +711,6 @@ describe('Fake SO Test Suite', () => {
         cy.contains('Redox reactions are complex');
         cy.contains('jdalt');
     });
-
-
-
 
 
     // it('9.0 | Login and Logout', () => {

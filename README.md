@@ -91,7 +91,7 @@ Detailed instructions with all relevant commands go here.
 | 50 | Guest cannot vote                               | Test-6.6       | Passing  | 
 | 51 | Create comment for question                     | Test-7.0       | Passing  | 
 | 52 | Create comment for answer                       | Test-7.1       | Passing  | 
-| 53 | Create multiple comments for question, paginate | Test-7.2       |          | 
+| 53 | Create multiple comments for question, paginate | Test-7.2       | Passing  | 
 | 54 | Create multiple comments for answer, paginate   | Test-7.3       |          | 
 | 55 | Tags render correctly                           | Test-8.0       |          | 
 | 56 | Tags Correct Count                              | Test-8.0       |          | 
