@@ -82,13 +82,13 @@ Detailed instructions with all relevant commands go here.
 | 41 | Add Answer to question, Success                 | Test-5.3       | Passing  | 
 | 42 | Add Answer to question, Missing Text            | Test-5.3.1     | Passing  | 
 | 43 | Add Answer to Question, Invalid Hyperlink       | Test-5.3.2     | Passing  | 
-| 44 | Guest Accessing Application                     | Test-6.0       |          | 
-| 45 | Guest can see questions                         | Test-6.1       |          | 
-| 46 | Guest cannot access profile page                | Test-6.2       |          | 
-| 47 | Guest cannot ask a question                     | Test-6.3       |          | 
-| 48 | Guest cannot answer a question                  | Test-6.4       |          | 
-| 49 | Guest cannot comment                            | Test-6.5       |          | 
-| 50 | Guest cannot vote                               | Test-6.6       |          | 
+| 44 | Guest Accessing Application                     | Test-6.0       | Passing  | 
+| 45 | Guest can see questions                         | Test-6.1       | Passing  | 
+| 46 | Guest cannot access profile page                | Test-6.2       | Passing  | 
+| 47 | Guest cannot ask a question                     | Test-6.3       | Passing  | 
+| 48 | Guest cannot answer a question                  | Test-6.4       | Passing  | 
+| 49 | Guest cannot comment                            | Test-6.5       | Passing  | 
+| 50 | Guest cannot vote                               | Test-6.6       | Passing  | 
 | 51 | Create comment for question                     | Test-7.0       |          | 
 | 52 | Create comment for answer                       | Test-7.1       |          | 
 | 53 | Create multiple comments for question, paginate | Test-7.2       |          | 

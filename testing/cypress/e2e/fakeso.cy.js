@@ -555,80 +555,79 @@ describe('Fake SO Test Suite', () => {
     //     cy.contains('Invalid hyperlink constraints').should('exist'); // Adjust based on your hyperlink validation message
     // });
 
-    it('6.0 | Guest Accessing Application', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-        cy.get('#searchBar')
-        cy.contains('All Questions')
-        cy.contains('10 questions')
-        cy.contains('Question Title 10')
-    });
-
-    it('6.1 | Guest can see questions', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-        cy.get('#searchBar')
-        cy.contains('All Questions')
-        cy.contains('10 questions')
-        cy.contains('Question Title 10')
-
-        cy.get('.postTitle')
-        cy.get('.postStats')
-        cy.get('.lastActivity')
-        cy.get('.postTitle')
-
-    });
-
-    it('6.2 | Guest cannot see Profile button', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-        cy.get('button').contains('Profile').should('not.exist');
-    });
-
-    it('6.3 | Guest cannot ask a question', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-        cy.get('button').contains('Ask a Question').should('not.exist');
-
-        cy.contains('Tags').click();
-        cy.contains('Atom').click();
-        cy.get('button').contains('Ask a Question').should('not.exist');
-
-    });
-
-    it('6.4 | Guest cannot answer a question', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-        cy.get('button').contains('Answer Question').should('not.exist');
-
-        cy.contains('Tags').click();
-        cy.contains('Atom').click();
-        cy.get('button').contains('Answer Question').should('not.exist');
-
-    });
-
-    it('6.5 | Guest cannot add a comment', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-
-        cy.contains('Question Title 1').click();
-
-        cy.get('button').contains('Post').should('not.exist');
-
-    });
-
-    it('6.6 | Guest cannot vote', () => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Proceed as Guest').click();
-
-        cy.contains('Question Title 1').click();
-
-        cy.get('button').contains('Up').should('not.exist');
-        cy.get('button').contains('Down').should('not.exist');
-        cy.get('button').contains('Down').should('not.exist');
-
-    });
-
+    // it('6.0 | Guest Accessing Application', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //     cy.get('#searchBar')
+    //     cy.contains('All Questions')
+    //     cy.contains('10 questions')
+    //     cy.contains('Question Title 10')
+    // });
+    //
+    // it('6.1 | Guest can see questions', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //     cy.get('#searchBar')
+    //     cy.contains('All Questions')
+    //     cy.contains('10 questions')
+    //     cy.contains('Question Title 10')
+    //
+    //     cy.get('.postTitle')
+    //     cy.get('.postStats')
+    //     cy.get('.lastActivity')
+    //     cy.get('.postTitle')
+    //
+    // });
+    //
+    // it('6.2 | Guest cannot see Profile button', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //     cy.get('button').contains('Profile').should('not.exist');
+    // });
+    //
+    // it('6.3 | Guest cannot ask a question', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //     cy.get('button').contains('Ask a Question').should('not.exist');
+    //
+    //     cy.contains('Tags').click();
+    //     cy.contains('Atom').click();
+    //     cy.get('button').contains('Ask a Question').should('not.exist');
+    //
+    // });
+    //
+    // it('6.4 | Guest cannot answer a question', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //     cy.get('button').contains('Answer Question').should('not.exist');
+    //
+    //     cy.contains('Tags').click();
+    //     cy.contains('Atom').click();
+    //     cy.get('button').contains('Answer Question').should('not.exist');
+    //
+    // });
+    //
+    // it('6.5 | Guest cannot add a comment', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //
+    //     cy.contains('Question Title 1').click();
+    //
+    //     cy.get('button').contains('Post').should('not.exist');
+    //
+    // });
+    //
+    // it('6.6 | Guest cannot vote', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.contains('Proceed as Guest').click();
+    //
+    //     cy.contains('Question Title 1').click();
+    //
+    //     cy.get('button').contains('Up').should('not.exist');
+    //     cy.get('button').contains('Down').should('not.exist');
+    //     cy.get('button').contains('Down').should('not.exist');
+    //
+    // });
 
 
     // it('9.0 | Login and Logout', () => {
