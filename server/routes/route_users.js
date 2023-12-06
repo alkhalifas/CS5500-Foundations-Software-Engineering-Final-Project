@@ -177,6 +177,8 @@ Method to get all questions for the logged-in user
 */
 router.get('/user/questions', async (req, res) => {
     try {
+        const page = req.query.page || 1;
+
         // getting the user ID from the sesion
         const userId = req.session.userId;
         if (!userId) {
@@ -189,8 +191,29 @@ router.get('/user/questions', async (req, res) => {
             return res.status(404).json({'message': 'User not valid'});
         }
 
-        const questions = await Question.find({ asked_by: user.username });
-        res.json(questions);
+        let questions = await Question.find({ asked_by: user.username }).populate('tags');
+        questions.sort((a, b) => b.ask_date_time - a.ask_date_time);
+
+        // Map the tags to their names in each question
+        questions = questions.map(question => ({
+            ...question.toObject(),
+            tags: question.tags.map(tag => tag.name)
+        }));
+
+        // Determine the start and end indices based on the page number
+        const questionsPerPage = 5;
+        const startIndex = (page - 1) * questionsPerPage;
+        const endIndex = startIndex + questionsPerPage;
+
+        // Extract the subset of questions for the specified page
+        const paginatedQuestions = questions.slice(startIndex, endIndex);
+
+        res.json({
+            totalQuestions: questions.length,
+            questions: paginatedQuestions,
+            currentPage: page,
+            totalPages: Math.ceil(questions.length / questionsPerPage)
+        });
     } catch (error) {
         res.status(500).json({'message': 'Error fetching questions for the user'});
         console.error("Error: ", error);

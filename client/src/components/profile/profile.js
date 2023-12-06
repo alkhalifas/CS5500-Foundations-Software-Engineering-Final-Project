@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import QuestionsList from "./questionsList";
+import TagsList from "./tagsList/tagsList";
+//import AnswersList from "../main/Answers/AnswersPage";
 import "./profile.css"
 
 const calculateDaysSinceCreation = (createdOn) => {
@@ -10,9 +13,17 @@ const calculateDaysSinceCreation = (createdOn) => {
     return differenceInDays;
 };
 
-
 export default function Profile() {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
+    const [selectedComponent, setSelectedComponent] = useState('tags');
+    const [componentKey, setComponentKey] = useState(0);
+    const [selectedProfileComponent, setSelectedProfileComponent] = useState('questions');
+
+    const handleSelectedProfileComponent = (status) => {
+        setSelectedProfileComponent(status);
+        console.log("setSelectedProfileComponent: ", status);
+    }
+
 
     const fetchUserData = async () => {
         try {
@@ -40,6 +51,37 @@ export default function Profile() {
         fetchUserData();
     }, []);
 
+    const handleComponentSelect = (component) => {
+        if (selectedComponent !== component) {
+            setSelectedComponent(component);
+        }
+        setComponentKey(prevKey => prevKey + 1);
+    };
+
+    const renderSelectedComponent = () => {
+        switch (selectedComponent) {
+            case 'questions':
+                return <QuestionsList key={componentKey} />;
+            case 'tags':
+                return <TagsList key={componentKey} />;
+//            case 'answers':
+//                return <AnswersList key={componentKey} />;
+            default:
+                return null;
+        }
+    };
+
+    const renderContent = () => {
+        return (
+            <>
+                <profileMenu onSelect={handleComponentSelect}/>
+                <div className="main-content">
+                    {renderSelectedComponent()}
+                </div>
+            </>
+        );
+    };
+
     return (
         <div className="profile-container">
             <h1>Welcome, {userData.username}</h1>
@@ -60,65 +102,10 @@ export default function Profile() {
                         Reputation Points
                     </div>
                 </div>
-                <div className="card">
-                    <div className="card-value">
-                        0
-                    </div>
-                    <div className="card-description">
-                        Questions Asked
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="card-value">
-                        0
-                    </div>
-                    <div className="card-description">
-                        Questions Answered
-                    </div>
-                </div>
             </div>
-
-
-
-            {/*<form>*/}
-            {/*    <div className="form-group">*/}
-            {/*        <label htmlFor="username">Username:</label>*/}
-            {/*        <input*/}
-            {/*            type="text"*/}
-            {/*            id="username"*/}
-            {/*            value={userData.username}*/}
-            {/*            disabled*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*    <div className="form-group">*/}
-            {/*        <label htmlFor="email">Email:</label>*/}
-            {/*        <input*/}
-            {/*            type="email"*/}
-            {/*            id="email"*/}
-            {/*            value={userData.email}*/}
-            {/*            disabled*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*    <div className="form-group">*/}
-            {/*        <label htmlFor="reputation">Reputation:</label>*/}
-            {/*        <input*/}
-            {/*            type="text"*/}
-            {/*            id="reputation"*/}
-            {/*            value={userData.reputation}*/}
-            {/*            disabled*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*    <div className="form-group">*/}
-            {/*        <label htmlFor="createdOn">Days Since Account Creation:</label>*/}
-            {/*        <input*/}
-            {/*            type="text"*/}
-            {/*            id="createdOn"*/}
-            {/*            value={calculateDaysSinceCreation(userData.createdOn)}*/}
-            {/*            disabled*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*</form>*/}
+            <div className="content-container">
+                {renderContent()}
+            </div>
         </div>
     );
-
 }
