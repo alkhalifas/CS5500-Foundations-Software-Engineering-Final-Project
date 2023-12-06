@@ -7,9 +7,6 @@ import axios from "axios";
 export default function AnswersList() {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [answers, setAnswers] = useState([]);
-    const [totalResults, setTotalResults] = useState();
-    const [totalPages, setTotalPages] = useState();
-    const [currentPage, setCurrentPage] = useState(1);
 
     const fetchAnswers = async (page) => {
         try {
@@ -27,9 +24,6 @@ export default function AnswersList() {
 
             const responseData = await response.json();
             setAnswers(responseData.answers);
-            setCurrentPage(responseData.currentPage);
-            setTotalResults(responseData.totalAnswers);
-            setTotalPages(responseData.totalPages);
         } catch (error) {
             console.error('Error fetching answers:', error);
         }
@@ -69,20 +63,6 @@ export default function AnswersList() {
         fetchAnswers(1);
     }, []);
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            fetchAnswers(parseInt(currentPage) + 1);
-        } else if (currentPage == totalPages) {
-            fetchAnswers(1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            fetchAnswers(parseInt(currentPage) - 1);
-        }
-    };
-
     function truncateAnswerText(text, maxLength) {
         if (text.length > maxLength) {
             return text.substring(0, maxLength) + "...";
@@ -97,7 +77,7 @@ export default function AnswersList() {
             ) : (
                 <>
                     <div className="header-container">
-                        <h3>{totalResults} Answers</h3>
+                        <h3>{answers.length} Answers</h3>
                     </div>
                     <div className="answer-cards scrollable-container">
                         {answers.map((answer, index) => (
@@ -113,19 +93,6 @@ export default function AnswersList() {
                             </div>
                         ))}
                     </div>
-                    {totalPages > 1 && (
-                        <div className="pagination-buttons">
-                            {
-                                (parseInt(currentPage) === 1) &&
-                                <button className="page-button" disabled={true}>Prev</button>
-                            }
-                            {
-                                (parseInt(currentPage) != 1) &&
-                                <button onClick={handlePrevPage} className="page-button">Prev</button>
-                            }
-                            <button onClick={handleNextPage} className="page-button">Next</button>
-                        </div>
-                    )}
                 </>
             )}
         </div>

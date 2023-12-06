@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import "./questionList.css";
 import QuestionForm from "../questionForm/questionForm";
-import formatQuestionText from "../../main/utils"
 import axios from "axios";
 
 export default function QuestionsList() {
@@ -83,13 +82,6 @@ export default function QuestionsList() {
         fetchQuestions(1);
     }, []);
 
-    function truncateQuestionText(text, maxLength) {
-        if (text.length > maxLength) {
-            return text.substring(0, maxLength) + "...";
-        }
-        return text;
-    }
-
     return (
         <div>
             {selectedQuestion ? (
@@ -113,12 +105,6 @@ export default function QuestionsList() {
                                             onClick={() => handleQuestionClick(question)}
                                         >{question.title}
                                         </h4>
-                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(truncateQuestionText(question.text, 100))} />
-                                        <div className="tags">
-                                            {question.tags.map(tag => (
-                                                <span key={tag} className="badge">{tag}</span>
-                                            ))}
-                                        </div>
                                     </div>
                                 </div>
                                 {index !== sortedQuestions.length - 1 && <div className="dotted-line" />}
