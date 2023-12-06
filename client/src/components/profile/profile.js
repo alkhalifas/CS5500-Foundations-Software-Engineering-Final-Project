@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import QuestionsList from "./questionsList";
-import TagsList from "./tagsList/tagsList";
-//import AnswersList from "../main/Answers/AnswersPage";
+import QuestionsList from "./questions/questionsList";
+import TagsList from "./tags/tagsList";
+import AnswersList from "./answers/answersList";
 import "./profile.css"
 
 const calculateDaysSinceCreation = (createdOn) => {
@@ -17,7 +17,6 @@ export default function Profile() {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [selectedComponent, setSelectedComponent] = useState('questions');
     const [componentKey, setComponentKey] = useState(0);
-
 
     const fetchUserData = async () => {
         try {
@@ -57,15 +56,13 @@ export default function Profile() {
             case 'questions':
                 return (
                     <>
-                        <h3>Questions:</h3>
                         <QuestionsList key={componentKey} />
                     </>
                         )
             case 'tags':
                 return (
                     <>
-                        <h3>Tags:</h3>
-                        <TagsList key={componentKey} />;
+                        <TagsList key={componentKey} />
                     </>
                 )
 
@@ -73,9 +70,7 @@ export default function Profile() {
             case 'answers':
                 return (
                     <>
-                        <h3>Answers:</h3>
-                        {/*<AnswersList key={componentKey} />;*/}
-
+                        <AnswersList key={componentKey} />
                     </>
                 )
             default:

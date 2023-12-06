@@ -5,12 +5,7 @@ import axios from "axios";
 
 export default function QuestionForm({ question, onSubmit, onDelete }) {
 
-    const [formData, setFormData] = useState({
-      title: '',
-      text: '',
-      tags: ''
-    });
-
+    const [formData, setFormData] = useState({ title: '', text: '', tags: ''});
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [validationErrors, setValidationErrors] = useState({});
     const [existingTags, setExistingTags] = useState([]);
@@ -65,7 +60,6 @@ export default function QuestionForm({ question, onSubmit, onDelete }) {
         e.preventDefault();
         const errors = validateForm(formData);
         if (Object.keys(errors).length === 0) {
-            // Set asked_by to userData.username before submitting
             onSubmit(formData);
         } else {
             setValidationErrors(errors);

@@ -226,6 +226,8 @@ Method to get all answers for the logged-in user
 */
 router.get('/user/answers', async (req, res) => {
     try {
+        const page = req.query.page || 1;
+
         // get user ID from the session
         const userId = req.session.userId;
         if (!userId) {
@@ -239,8 +241,22 @@ router.get('/user/answers', async (req, res) => {
         }
 
         const answers = await Answer.find({ ans_by: user.username });
+        answers.sort((a, b) => b.ans_date_time - a.ans_date_time);
 
-        res.json(answers);
+        // Determine the start and end indices based on the page number
+        const answersPerPage = 5;
+        const startIndex = (page - 1) * answersPerPage;
+        const endIndex = startIndex + answersPerPage;
+
+        // Extract the subset of answers for the specified page
+        const paginatedAnswers = answers.slice(startIndex, endIndex);
+
+        res.json({
+            totalAnswers: answers.length,
+            answers: paginatedAnswers,
+            currentPage: page,
+            totalPages: Math.ceil(answers.length / answersPerPage)
+        });
     } catch (error) {
         res.status(500).json({'message': 'Error fetching answers for the user'});
         console.error("Error: ", error);
