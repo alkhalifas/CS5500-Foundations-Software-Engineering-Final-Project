@@ -100,15 +100,20 @@ Detailed instructions with all relevant commands go here.
 | 60 | Authentication Logout                           | Test-9.0       | Passing  | 
 | 61 | Authentication Logout then try to ask question  | Test-9.1       | Passing  | 
 | 62 | Authentication Logout then try to see profile   | Test-9.2       | Passing  | 
-| 63 | Profile See Content                             | Test-10.0      |          | 
-| 64 | Profile, See Reputation and Days on FSO         | Test-10.1      |          | 
-| 65 | Profile, See Questions, Tags, Answers           | Test-10.2      |          | 
+| 63 | Profile See Content                             | Test-10.0      | Passing  | 
+| 64 | Profile, See Reputation and Days on FSO         | Test-10.1      | Passing  | 
+| 65 | Profile, See Questions, Tags, Answers           | Test-10.2      | Passing  | 
 | 66 | Profile, Edit Question and see Changes          | Test-10.3      |          | 
 | 67 | Profile, Edit Answer and see Changes            | Test-10.4      |          | 
 | 68 | Profile, Edit Tag and see Changes               | Test-10.5      |          | 
 | 69 | Profile, Delete Question and see Changes        | Test-10.6      |          | 
 | 70 | Profile, Delete Answer and see Changes          | Test-10.7      |          | 
 | 71 | Profile, Delete Tag and see Changes             | Test-10.8      |          | 
+| 72 | Security, User can only get their data          | Test-11.0      | Passing  | 
+| 72 | Security, Editing questions, answers, or tags   | Test-11.1      |          | 
+| 72 | Security, Session Persisting on refresh         | Test-11.2      | Passing  | 
+| 72 | Security, Unsecure URLs are managed correctly   | Test-11.3      |          | 
+| 72 | Security, Code injection in text is managed     | Test-11.4      |          | 
 
 ## Design Patterns Used
 
