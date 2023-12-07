@@ -71,12 +71,17 @@ Method to edit a tag name by ID
 */
 router.put('/tags/:tagId', async (req, res) => {
     const { tagId } = req.params;
+    const userId = req.session.userId;
     const { name } = req.body;
 
-    console.error("name: ", name)
-
     try {
-        const updatedTag = await Tag.findByIdAndUpdate(tagId, { name: name }, { new: true });
+        // Check if the tag is being used in questions by other users
+        const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: userId } });
+        if (questionUsingTag) {
+            return res.status(400).json({'message': 'Cannot edit tag, it is being used in questions by other users'});
+        }
+
+        const updatedTag = await Tag.findByIdAndUpdate(tagId, { name }, { new: true });
 
         if (!updatedTag) {
             return res.status(404).json({'message': 'Tag not found'});
@@ -94,18 +99,22 @@ Method to delete a tag by ID
 */
 router.delete('/tags/:tagId', async (req, res) => {
     const { tagId } = req.params;
+    const userId = req.session.userId;
 
     try {
-        // Check if the tag is being used in any questions
-        const questionUsingTag = await Question.findOne({ tags: tagId });
-        if (questionUsingTag) {
-            return res.status(400).json({'message': 'Cannot delete tag, it is being used in questions'});
-        }
+        const tag = await Tag.findById(tagId);
 
-        const deletedTag = await Tag.findByIdAndDelete(tagId);
-        if (!deletedTag) {
+        if (!tag) {
             return res.status(404).json({'message': 'Tag not found'});
         }
+
+        // Check if the tag is being used in questions by other users
+        const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: userId } });
+        if (questionUsingTag) {
+            return res.status(400).json({'message': 'Cannot delete tag, it is being used in questions by other users'});
+        }
+
+        await Tag.findByIdAndDelete(tagId);
 
         res.json({'message': 'Tag deleted successfully'});
     } catch (error) {
@@ -113,6 +122,7 @@ router.delete('/tags/:tagId', async (req, res) => {
         console.error("Error: ", error);
     }
 });
+
 
 
 /*
