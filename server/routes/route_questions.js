@@ -354,9 +354,16 @@ router.delete('/questions/:questionId', async (req, res) => {
             return res.status(404).json({ error: 'Question not found' });
         }
 
+        // Delete comments of question
+        await Comment.deleteMany({ question: questionId });
+
+        // Also delete comments of answers
+        for (const answerId of question.answers) {
+            await Comment.deleteMany({ answer: answerId });
+        }
+
         // Delete answers of the question
         await Answer.deleteMany({ _id: { $in: question.answers } });
-
 
         // delete the question obj
         await Question.findByIdAndRemove(questionId);
