@@ -5,6 +5,7 @@ const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const User = require("../models/users");
 const Tag = require("../models/tags");
+const isAuthenticated = require("./isAuthenticated");
 
 
 /*
@@ -60,7 +61,7 @@ router.get('/tags-with-count', async (req, res) => {
 /*
 Method to edit a tag name by ID
 */
-router.put('/tags/:tagId', async (req, res) => {
+router.put('/tags/:tagId', isAuthenticated,  async (req, res) => {
     const { tagId } = req.params;
     const userId = req.session.userId;
     const { name } = req.body;
@@ -88,7 +89,7 @@ router.put('/tags/:tagId', async (req, res) => {
 /*
 Method to delete a tag by ID
 */
-router.delete('/tags/:tagId', async (req, res) => {
+router.delete('/tags/:tagId', isAuthenticated, async (req, res) => {
     const { tagId } = req.params;
     const userId = req.session.userId;
 
