@@ -831,6 +831,159 @@ describe('Fake SO Test Suite', () => {
         cy.contains('Logout').click();
     });
 
+    it('9.1 | Authentication Logout then try to ask question', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+        cy.get('button').contains('Ask a Question').should('exist');
+        cy.contains('Question Title 1').click();
+        cy.contains('Logout').click();
+
+        cy.visit('http://localhost:3000');
+        cy.contains('Proceed as Guest').click();
+        cy.get('button').contains('Ask a Question').should('not.exist');
+    });
+
+    it('9.2 | Authentication Logout then try to see profile', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+        cy.contains('Question Title 1').click();
+        cy.contains('Logout').click();
+
+        cy.visit('http://localhost:3000');
+        cy.contains('Proceed as Guest').click();
+        cy.get('button').contains('Profile').should('not.exist');
+    });
+
+    it('10.0 | Profile See Content ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('#fso-days-val').should('be.visible');
+        cy.get('#fso-days-text').contains('Days on FSO').should('be.visible');
+
+        cy.get('#fso-rep-val').should('be.visible');
+        cy.get('#fso-rep-text').contains('Reputation Points').should('be.visible');
+
+        cy.contains('2 Questions')
+
+        cy.get('button').contains('Questions').should('exist');
+        cy.get('button').contains('Tags').should('exist');
+        cy.get('button').contains('Answers').should('exist');
+
+    });
+
+    it('10.1 | Profile, See Reputation and Days on FSO', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('#fso-days-val').should('be.visible');
+        cy.get('#fso-days-text').contains('Days on FSO').should('be.visible');
+
+        cy.get('#fso-rep-val').should('be.visible');
+        cy.get('#fso-rep-text').contains('Reputation Points').should('be.visible');
+    });
+
+
+    it('10.2 | Profile, See Questions, Tags, Answers', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('#fso-days-val').should('be.visible');
+        cy.get('#fso-days-text').contains('Days on FSO').should('be.visible');
+
+        cy.get('#fso-rep-val').should('be.visible');
+        cy.get('#fso-rep-text').contains('Reputation Points').should('be.visible');
+
+        cy.contains('2 Questions')
+
+        cy.get('.profile-container').contains('Questions').click();
+        cy.contains('2 Questions')
+        cy.contains('Question Title 8')
+        cy.contains('Question Title 1').click()
+        cy.get('button').contains('Save')
+        cy.get('button').contains('Delete')
+
+        cy.visit('http://localhost:3000');
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is bubble sort?');
+        cy.get('#formTextInput').type('What exactly is bubble sort?');
+        cy.get('#formTagInput').type('sorting');
+        cy.contains('Post Question').click();
+
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Tags').click();
+        cy.contains('sorting')
+
+        cy.get('.profile-container').contains('Answers').click();
+        cy.contains('Answer 1 for question 8');
+        cy.contains('Answer 2 for question 8');
+        cy.contains('Answer 2 for question 1');
+        cy.contains('Answer 1 for question 1').click();
+        cy.get('button').contains('Save')
+        cy.get('button').contains('Delete')
+    });
+
+    it('11.0 | Security, User can only get their data', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('#fso-days-val').should('be.visible');
+        cy.get('#fso-days-text').contains('Days on FSO').should('be.visible');
+
+        cy.get('#fso-rep-val').should('be.visible');
+        cy.get('#fso-rep-text').contains('Reputation Points').should('be.visible');
+
+        cy.contains('wheisenberg')
+        cy.contains('nbohr').should('not.exist');
+        cy.contains('aeinstein').should('not.exist');
+        cy.contains('eschrod').should('not.exist');
+
+    });
+
+    it('11.2 | Security, User can only get their data', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+        cy.contains('Profile').click();
+
+        cy.visit('http://localhost:3000');
+
+        cy.contains('Profile').click();
+
+        cy.get('#fso-days-val').should('be.visible');
+        cy.get('#fso-days-text').contains('Days on FSO').should('be.visible');
+
+        cy.get('#fso-rep-val').should('be.visible');
+        cy.get('#fso-rep-text').contains('Reputation Points').should('be.visible');
+
+
+        cy.contains('wheisenberg')
+        cy.contains('nbohr').should('not.exist');
+        cy.contains('aeinstein').should('not.exist');
+        cy.contains('eschrod').should('not.exist');
+
+    });
+
+
+
 
 })
 

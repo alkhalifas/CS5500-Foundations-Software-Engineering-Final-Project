@@ -83,18 +83,18 @@ export default function Profile() {
             <h1>Welcome, {userData.username}</h1>
             <div className="cards-container">
                 <div className="card">
-                    <div className="card-value">
+                    <div id={"fso-days-val"} className="card-value">
                         {calculateDaysSinceCreation(userData.createdOn)}
                     </div>
-                    <div className="card-description">
+                    <div id={"fso-days-text"} className="card-description">
                         Days on FSO
                     </div>
                 </div>
                 <div className="card">
-                    <div className="card-value">
+                    <div id={"fso-rep-val"} className="card-value">
                         {userData.reputation}
                     </div>
-                    <div className="card-description">
+                    <div id={"fso-rep-text"} className="card-description">
                         Reputation Points
                     </div>
                 </div>
@@ -102,19 +102,19 @@ export default function Profile() {
             <div>
                 <div className={"horizontal-menu"}>
                     <button
-                        className={selectedComponent === "questions" ? "menu-btn dark-active" : "menu-btn"}
+                        className={selectedComponent === "questions" ? "profile-menu-button" : "menu-btn"}
                         onClick={() => handleComponentSelect("questions")}
                     >
                         Questions
                     </button>
                     <button
-                        className={selectedComponent === "tags" ? "menu-btn dark-active" : "menu-btn"}
+                        className={selectedComponent === "tags" ? "profile-menu-button" : "menu-btn"}
                         onClick={() => handleComponentSelect("tags")}
                     >
                         Tags
                     </button>
                     <button
-                        className={selectedComponent === "answers" ? "menu-btn dark-active" : "menu-btn"}
+                        className={selectedComponent === "answers" ? "profile-menu-button" : "menu-btn"}
                         onClick={() => handleComponentSelect("answers")}
                     >
                         Answers
