@@ -266,13 +266,22 @@ router.get('/user/tags', async (req, res) => {
             return res.status(404).json({'message': 'User not found'});
         }
 
-        res.json(user.posted_tags);
+        const userTagsWithCount = await Promise.all(user.posted_tags.map(async (tag) => {
+            const questionCount = await Question.countDocuments({ tags: tag._id });
+
+            return {
+                _id: tag._id,
+                name: tag.name,
+                count: questionCount
+            };
+        }));
+
+        res.json(userTagsWithCount);
     } catch (error) {
-        res.status(500).json({'message': 'Error fetching tags created by the user'});
-        console.error("Error: ", error);
+        console.error(error);
+        res.status(500).json({ error: 'Error getting user tags with counts' });
     }
 });
-
 
 
 

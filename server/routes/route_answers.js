@@ -168,9 +168,10 @@ router.delete('/answers/:answerId', async (req, res) => {
             return res.status(404).json({'message': 'Answer not found'});
         }
 
+        // Delete answers comments
         await Comment.deleteMany({ answer: answerId });
 
-
+        // Delete the answer
         await Answer.findByIdAndRemove(answerId);
 
         res.json({'message': 'Answer deleted successfully'});
