@@ -83,18 +83,18 @@ export default function Profile() {
             <h1>Welcome, {userData.username}</h1>
             <div className="cards-container">
                 <div className="card">
-                    <div className="card-value">
+                    <div id={"fso-days-val"} className="card-value">
                         {calculateDaysSinceCreation(userData.createdOn)}
                     </div>
-                    <div className="card-description">
+                    <div id={"fso-days-text"} className="card-description">
                         Days on FSO
                     </div>
                 </div>
                 <div className="card">
-                    <div className="card-value">
+                    <div id={"fso-rep-val"} className="card-value">
                         {userData.reputation}
                     </div>
-                    <div className="card-description">
+                    <div id={"fso-rep-text"} className="card-description">
                         Reputation Points
                     </div>
                 </div>
