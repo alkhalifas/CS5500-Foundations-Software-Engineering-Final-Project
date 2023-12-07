@@ -4,11 +4,12 @@ const Comment = require("../models/comment");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const User = require("../models/users");
+const isAuthenticated = require("./isAuthenticated");
 
 /*
 Method to upvote or downvote a answer
  */
-router.post('/vote/answer', async (req, res) => {
+router.post('/vote/answer',isAuthenticated,  async (req, res) => {
     try {
         const { answerId, voteType } = req.body;
 
@@ -46,7 +47,7 @@ router.post('/vote/answer', async (req, res) => {
 /*
 Method to upvote or downvote a comment
  */
-router.post('/vote/comment', async (req, res) => {
+router.post('/vote/comment', isAuthenticated, async (req, res) => {
     try {
         const { commentId, voteType } = req.body;
 
@@ -74,7 +75,7 @@ router.post('/vote/comment', async (req, res) => {
 /*
 Method to upvote or downvote a question
  */
-router.post('/vote/question', async (req, res) => {
+router.post('/vote/question',isAuthenticated,  async (req, res) => {
     try {
         const { questionId, voteType } = req.body;
 
