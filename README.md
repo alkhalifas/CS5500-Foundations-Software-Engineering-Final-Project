@@ -77,8 +77,8 @@ Detailed instructions with all relevant commands go here.
 | 37 | Search Tags and Text, No results found              | Test-4.2       |          | 
 | 38 | View Questions, Sort by Newest                      | Test-5.1       |          | 
 | 39 | View Questions, Sort by Active                      | Test-5.1.1     |          | 
-| 40 | View Questions, Sort by Unanswered                  | Test-5.1.2     |          | 
-| 41 | View Answers to question                            | Test-5.2       |          | 
+| 40 | View Questions, Sort by Unanswered                  | Test-5.1.2     | Passing  | 
+| 41 | View Answers to question                            | Test-5.2       | Passing  | 
 | 42 | Add Answer to question, Success                     | Test-5.3       | Passing  | 
 | 43 | Add Answer to question, Missing Text                | Test-5.3.1     | Passing  | 
 | 44 | Add Answer to Question, Invalid Hyperlink           | Test-5.3.2     | Passing  | 
@@ -103,7 +103,7 @@ Detailed instructions with all relevant commands go here.
 | 63 | Profile See Content                                 | Test-10.0      | Passing  | 
 | 64 | Profile, See Reputation and Days on FSO             | Test-10.1      | Passing  | 
 | 65 | Profile, See Questions, Tags, Answers               | Test-10.2      | Passing  | 
-| 66 | Profile, Edit Question and see Changes              | Test-10.3      |          | 
+| 66 | Profile, Edit Question and see Changes              | Test-10.3      | Passing  | 
 | 67 | Profile, Edit Answer and see Changes                | Test-10.4      |          | 
 | 68 | Profile, Edit Tag and see Changes                   | Test-10.5      |          | 
 | 69 | Profile, Delete Question and see Changes            | Test-10.6      |          | 

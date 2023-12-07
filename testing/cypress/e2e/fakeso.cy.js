@@ -512,6 +512,47 @@ describe('Fake SO Test Suite', () => {
     //     cy.contains('Profile').click();
     //     cy.contains('90');
     // });
+
+    // it('5.1.1 | View Questions, Sort by Unanswered', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('jdalt')
+    //     cy.get('#password').type('Password_123')
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Unanswered').click();
+    //     cy.contains('0 questions').should('exist');
+    //
+    //     cy.contains('Ask a Question').click();
+    //     cy.get('#formTitleInput').type('What is Schrodingers cat?');
+    //     cy.get('#formTextInput').type('What is Schrodingers cat?');
+    //     cy.get('#formTagInput').type('schrodinger cat');
+    //     cy.get('button').contains('Post Question').click();
+    //
+    //     cy.contains('Unanswered').click();
+    //     cy.contains('1 questions').should('exist');
+    //
+    // });
+
+    // it('5.2 | View Answers to question  ', () => {
+    //     cy.visit('http://localhost:3000');
+    //     cy.get('#username').type('jdalt')
+    //     cy.get('#password').type('Password_123')
+    //     cy.contains('Log In').click();
+    //
+    //     cy.contains('Unanswered').click();
+    //     cy.contains('0 questions').should('exist');
+    //
+    //
+    //     cy.contains('Newest').click();
+    //     cy.contains('10 questions').should('exist');
+    //
+    //     cy.contains('Question Title 10').click();
+    //     cy.contains('2 answers').should('exist');
+    //     cy.contains('Answer 2 for question 10').should('exist');
+    //     cy.contains('Answer 1 for question 10').should('exist');
+    //
+    // });
+
     //
     //
     // it('5.3 | Add Answer to Question, Success', () => {
