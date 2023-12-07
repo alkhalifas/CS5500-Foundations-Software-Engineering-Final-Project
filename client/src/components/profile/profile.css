@@ -68,17 +68,25 @@
     margin: 2%;
 }
 
-.dark-profile-active {
-    background-color: #333;
-    color: white;
-}
 
 .menu-btn {
     display: block;
     width: 100%;
-    margin-bottom: 10px;
+    margin: 3%;
     padding: 10px;
     background-color: #f2f2f2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-menu-button {
+    display: block;
+    width: 100%;
+    margin: 3%;
+    padding: 10px;
+    background-color: #9a9a9a;
     border: none;
     border-radius: 4px;
     cursor: pointer;

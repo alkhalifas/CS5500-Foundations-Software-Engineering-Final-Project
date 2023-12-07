@@ -102,19 +102,19 @@ export default function Profile() {
             <div>
                 <div className={"horizontal-menu"}>
                     <button
-                        className={selectedComponent === "questions" ? "menu-btn dark-active" : "menu-btn"}
+                        className={selectedComponent === "questions" ? "profile-menu-button" : "menu-btn"}
                         onClick={() => handleComponentSelect("questions")}
                     >
                         Questions
                     </button>
                     <button
-                        className={selectedComponent === "tags" ? "menu-btn dark-active" : "menu-btn"}
+                        className={selectedComponent === "tags" ? "profile-menu-button" : "menu-btn"}
                         onClick={() => handleComponentSelect("tags")}
                     >
                         Tags
                     </button>
                     <button
-                        className={selectedComponent === "answers" ? "menu-btn dark-active" : "menu-btn"}
+                        className={selectedComponent === "answers" ? "profile-menu-button" : "menu-btn"}
                         onClick={() => handleComponentSelect("answers")}
                     >
                         Answers
