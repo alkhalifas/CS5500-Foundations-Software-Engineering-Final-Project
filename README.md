@@ -38,7 +38,7 @@ Run Tests:
 - [X] New Answer
 - [X] Answers
 - [X] User Profile
-- [ ] Active Filter
+- [X] Active Filter
 
 ## Test cases
 
