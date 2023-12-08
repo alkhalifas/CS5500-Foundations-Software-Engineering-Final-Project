@@ -43,7 +43,7 @@ app.use(
     session({
         secret: process.env.SERVER_SECRET,
         cookie: {
-            secure: false, // keep false
+            secure: false,
             httpOnly: 'None',
             sameSite: true,
             maxAge: 3600000 // 1 hour limit
@@ -52,7 +52,6 @@ app.use(
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/fake_so' })
-
     })
 )
 
@@ -67,7 +66,6 @@ app.use(userRoutes);
 app.use(answerRoutes);
 app.use(voteRoutes);
 app.use(tagRoutes);
-
 
 /*
 Method that returns homepage message

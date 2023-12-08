@@ -52,7 +52,6 @@ router.post('/vote/answer',isAuthenticated,  async (req, res) => {
     }
 });
 
-
 /*
 Method to upvote a comment
  */
@@ -105,7 +104,6 @@ router.post('/vote/comment', isAuthenticated, async (req, res) => {
         console.error("Vote error: ", error);
     }
 });
-
 
 /*
 Method to upvote or downvote a question

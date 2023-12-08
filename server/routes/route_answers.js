@@ -93,7 +93,6 @@ router.post('/answers/:answerId/comments',isAuthenticated,  async (req, res) => 
             return res.status(403).json({'message': 'User does not have enough reputation'});
         }
 
-
         const newComment = new Comment({
             text: text,
             commented_by: user,
@@ -187,7 +186,6 @@ router.delete('/answers/:answerId', isAuthenticated, async (req, res) => {
 
         // Delete the answer
         await Answer.findByIdAndRemove(answerId);
-
 
         const question = await Question.findOne({
             $or: [
