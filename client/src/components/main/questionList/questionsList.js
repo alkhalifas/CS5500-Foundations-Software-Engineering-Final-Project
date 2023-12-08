@@ -149,7 +149,12 @@ export default function QuestionsList() {
                                     <div className={"question-left postStats"}>
                                         <p>{question.views} views</p>
                                         <p>{question.votes} votes</p>
-                                        <p>{question.answers.length} answers</p>
+                                        <p>
+                                            {question.accepted
+                                                ? question.answers.length + 1
+                                                : question.answers.length
+                                            } answers
+                                        </p>
                                     </div>
                                     <div className={"question-mid"}>
                                         <h4 className={"postTitle"}
