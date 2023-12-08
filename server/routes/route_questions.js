@@ -204,30 +204,7 @@ router.get('/questions', async (req, res) => {
         if (sortType === 'newest') {
             questions.sort((a, b) => b.ask_date_time - a.ask_date_time);
         } else if (sortType === 'active') {
-            // Create a function to get the latest answer date for a question
-            const getLatestAnswerDate = async (question) => {
-                const answers = await Answer.find({ _id: { $in: question.answers } });
-                if (answers.length === 0) {
-                    return null;
-                }
-                return Math.max(...answers.map(answer => answer.ans_date_time));
-            };
-
-            const latestAnswerDates = await Promise.all(questions.map(getLatestAnswerDate));
-            questions.sort((a, b) => {
-                const aLatestAnswerDate = latestAnswerDates[questions.indexOf(a)];
-                const bLatestAnswerDate = latestAnswerDates[questions.indexOf(b)];
-
-                if (!aLatestAnswerDate && !bLatestAnswerDate) {
-                    return b.ask_date_time - a.ask_date_time;
-                }
-
-                if (aLatestAnswerDate && bLatestAnswerDate) {
-                    return bLatestAnswerDate - aLatestAnswerDate;
-                }
-
-                return bLatestAnswerDate ? 1 : -1;
-            });
+            questions.sort((a, b) => b.updatedAt - a.updatedAt);
         } else if (sortType === 'unanswered') {
             questions = questions.filter(
                 (question) => question.answers.length === 0
