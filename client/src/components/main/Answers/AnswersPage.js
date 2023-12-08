@@ -183,7 +183,12 @@ export default function AnswersPage({question}) {
             {!showAnswerForm ? (
                 <>
                     <div className="header-container">
-                        <h3>{totalResults} answers</h3>
+                        <h3>
+                            {answer
+                                ? totalResults + 1
+                                : totalResults
+                            } answers
+                        </h3>
                         <h3>{question.title}</h3>
                         <h3> </h3>
                     </div>
