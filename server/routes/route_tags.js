@@ -7,7 +7,6 @@ const User = require("../models/users");
 const Tag = require("../models/tags");
 const isAuthenticated = require("./isAuthenticated");
 
-
 /*
 Method that returns all tags and their IDs
  */
@@ -57,7 +56,6 @@ router.get('/tags-with-count', async (req, res) => {
     }
 });
 
-
 /*
 Method to edit a tag name by ID
 */
@@ -67,7 +65,6 @@ router.put('/tags/:tagId', isAuthenticated,  async (req, res) => {
     const { name } = req.body;
 
     try {
-
         const user = await User.findById(userId);
 
         // Check if the tag is being used in questions by other users
@@ -76,7 +73,6 @@ router.put('/tags/:tagId', isAuthenticated,  async (req, res) => {
         if (questionUsingTag) {
             return res.status(400).json({'message': 'Cannot edit tag, it is being used in questions by other users'});
         }
-
 
         const updatedTag = await Tag.findByIdAndUpdate(tagId, { name }, { new: true });
 
@@ -101,8 +97,6 @@ router.delete('/tags/:tagId', isAuthenticated, async (req, res) => {
     try {
 
         const user = await User.findById(userId);
-
-
         const tag = await Tag.findById(tagId);
 
         if (!tag) {
@@ -124,8 +118,6 @@ router.delete('/tags/:tagId', isAuthenticated, async (req, res) => {
     }
 });
 
-
-
 /*
 Method to get a tag by ID
 */
@@ -145,15 +137,5 @@ router.get('/tags/:tagId', async (req, res) => {
         console.error("Error: ", error);
     }
 });
-
-
-// /*
-// Method that returns tagName for a given tag id
-//  */
-// app.get('/tags/tag-id/:tagId', async (req, res) => {
-//     const { tagId } = req.params;
-//     await get_tag_name_by_tag_id_function.get_tag_name_by_tag_id(res, tagId);
-// });
-
 
 module.exports = router;

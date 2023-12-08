@@ -9,4 +9,3 @@ exports.create_element = function(type, parameters) {
 
     return new ElementType(parameters);
 }
-

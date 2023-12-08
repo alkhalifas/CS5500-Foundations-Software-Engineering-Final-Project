@@ -40,7 +40,6 @@ export default function AnswerForm({ onSubmit }) {
                 console.log("data: ", data)
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                // setError(error.message);
             }
         };
 
@@ -80,7 +79,6 @@ export default function AnswerForm({ onSubmit }) {
                 }
             }
         }
-
         return errors;
     };
 

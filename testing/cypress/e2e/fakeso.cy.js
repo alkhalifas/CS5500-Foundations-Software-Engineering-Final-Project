@@ -1173,11 +1173,4 @@ describe('Fake SO Test Suite', () => {
             expect(response.body).to.have.property('message', 'No user is currently logged in.');
         });
     });
-
-
 })
-
-
-
-
-

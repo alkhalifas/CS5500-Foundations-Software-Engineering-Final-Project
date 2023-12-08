@@ -8,10 +8,8 @@ export default function Welcome({setIsLoggedIn, setIsGuest}) {
     const [userSelection, setUserSelection] = useState("log-in");
     const [registerSuccess, setRegisterSuccess] = useState(false);
 
-
     const handleUserChoice = (status) => {
         setUserSelection(status);
-        // console.log("userSelection: ", userSelection)
     };
 
     const handleGuestUser = () => {
@@ -42,13 +40,6 @@ export default function Welcome({setIsLoggedIn, setIsGuest}) {
                     <span className="welcome-link" onClick={() => handleGuestUser()}>Proceed as Guest</span>
                 </div>
             </div>
-            {/*<div className="button-row">*/}
-            {/*    <div className="button-container">*/}
-            {/*        <button className="welcome-button" onClick={() => handleUserChoice('log-in')}>Log In</button>*/}
-            {/*        <button className="welcome-button" onClick={() => handleUserChoice('register')}>Register</button>*/}
-            {/*        <button className="welcome-button" onClick={() => handleUserChoice('guest')}>Proceed as Guest</button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </div>
     );
 }

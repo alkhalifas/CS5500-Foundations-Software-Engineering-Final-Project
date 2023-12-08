@@ -8,7 +8,6 @@ const Answer = require("../models/answers");
 const isAuthenticated = require("./isAuthenticated");
 const router = express.Router();
 
-
 async function questionCreate(title, text, tags, answers, asked_by, ask_date_time, views) {
     try {
         const qstn = elementFactory.create_element('Question', {

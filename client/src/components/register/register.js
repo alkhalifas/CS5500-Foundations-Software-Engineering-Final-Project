@@ -31,15 +31,8 @@ export default function Register({ setRegisterSuccess, setUserSelection}) {
             console.log(response.data);
             setRegisterSuccess(true)
             setUserSelection("log-in")
-            // localStorage.setItem('token', response.data.token)
-
-            // const token = localStorage.getItem('token');
-            // console.log("localStorage.getItem('token'): ", token)
-
-            // setUserSession(token)
         } catch (error) {
             setFeedbackMessage(error.response?.data?.message || 'Registration failed');
-
             console.error('Registration error:', error.response?.data?.message || error.message);
         }
     };
@@ -69,9 +62,6 @@ export default function Register({ setRegisterSuccess, setUserSelection}) {
                     (formRegisterData.password === formRegisterData.confirmPassword && formRegisterData.password.length > 5) &&
                     <button id={"registerSubmit"} type="submit">Register </button>
                 }
-                {/*<button type="submit" disabled={formRegisterData.password !== formRegisterData.confirmPassword}>*/}
-                {/*    Register*/}
-                {/*</button>*/}
             </form>
         </div>
     );

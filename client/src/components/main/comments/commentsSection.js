@@ -55,11 +55,8 @@ const CommentsSection = ({ type, typeId, userData }) => {
     };
 
     useEffect(() => {
-        console.log('useEffect is running');
         fetchUserData();
         fetchComments();
-
-
     }, [type, typeId, currentPage]);
 
 
@@ -90,8 +87,6 @@ const CommentsSection = ({ type, typeId, userData }) => {
     };
 
     const handleSubmitComment = async () => {
-        console.log('Submit button pressed or Enter key pressed');
-
         // Reset error message
         setErrorMessage('');
 

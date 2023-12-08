@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*height: 100vh;*/
     text-align: center;
 }
 
@@ -39,7 +38,7 @@
 
 .cards-container {
     display: flex;
-    justify-content: space-around; /* Adjust as needed */
+    justify-content: space-around;
 }
 
 .card {
@@ -67,7 +66,6 @@
     align-items: center;
     margin: 2%;
 }
-
 
 .menu-btn {
     display: block;

@@ -27,7 +27,6 @@ export default function TagsList({isGuest}) {
 
     const handleTagClick = (tag) => {
         setSelectedTag(tag);
-        console.log("handleTagClick: ", tag)
     };
 
     const handleFormSubmit = async (formData) => {
@@ -74,7 +73,6 @@ export default function TagsList({isGuest}) {
                             </div>
                         </div>
                     )
-
             )}
         </div>
     );

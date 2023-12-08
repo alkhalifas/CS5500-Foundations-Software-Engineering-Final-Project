@@ -20,8 +20,6 @@ export default function AnswersPage({question}) {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [isGuest, setIsGuest] = useState(true);
 
-    console.log("AnswersPage: question: ", question)
-
     const fetchUserData = async () => {
         try {
             const response = await fetch(`http://localhost:8000/user`, {
