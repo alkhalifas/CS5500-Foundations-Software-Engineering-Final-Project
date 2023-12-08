@@ -116,12 +116,11 @@ Run Tests:
 | 70 | Profile, Delete Answer and see Changes              | Test-10.7      |          | 
 | 71 | Profile, Delete Tag and see Changes                 | Test-10.8      |          | 
 | 72 | Security, User can only get their data              | Test-11.0      | Passing  | 
-| 72 | Security, Editing questions, answers, or tags       | Test-11.1      |          | 
-| 72 | Security, Session Persisting on refresh             | Test-11.2      | Passing  | 
-| 72 | Security, Unsecure URLs are managed correctly       | Test-11.3      | Passing  | 
-| 72 | Security, Code injection in text is managed         | Test-11.4      |          | 
-| 72 | Security, Guest cannot access user data             | Test-11.5      | Passing  | 
-| 72 | Security, Guest cannot access session status        | Test-11.6      | Passing  | 
+| 73 | Security, Editing questions, answers, or tags       | Test-11.1      |          | 
+| 74 | Security, Session Persisting on refresh             | Test-11.2      | Passing  | 
+| 75 | Security, Unsecure URLs are managed correctly       | Test-11.3      | Passing  | 
+| 76 | Security, Code injection in text is managed         | Test-11.4      |          | 
+| 77 | Security, Guest cannot access user data             | Test-11.5      | Passing  | 
 
 
  7, 701 702, 7.1

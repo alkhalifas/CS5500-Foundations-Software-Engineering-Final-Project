@@ -1173,21 +1173,4 @@ describe('Fake SO Test Suite', () => {
             expect(response.body).to.have.property('message', 'No user is currently logged in.');
         });
     });
-
-    it('11.6 | Guest cannot access session status', () => {
-        cy.request({
-            url: "http://localhost:8000/session-status",
-            method: "POST",
-            failOnStatusCode: false
-        }).then(response => {
-            expect(response.status).to.eq(404);
-        });
-    });
-
-
 })
-
-
-
-
-

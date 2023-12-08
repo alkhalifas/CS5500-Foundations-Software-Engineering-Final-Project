@@ -65,11 +65,11 @@ router.put('/tags/:tagId', isAuthenticated,  async (req, res) => {
     const { name } = req.body;
 
     try {
-
-        const user = await User.findOne({ id: userId });
+        const user = await User.findById(userId);
 
         // Check if the tag is being used in questions by other users
         const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: user.username } });
+
         if (questionUsingTag) {
             return res.status(400).json({'message': 'Cannot edit tag, it is being used in questions by other users'});
         }
@@ -95,6 +95,8 @@ router.delete('/tags/:tagId', isAuthenticated, async (req, res) => {
     const userId = req.session.userId;
 
     try {
+
+        const user = await User.findById(userId);
         const tag = await Tag.findById(tagId);
 
         if (!tag) {
@@ -102,7 +104,7 @@ router.delete('/tags/:tagId', isAuthenticated, async (req, res) => {
         }
 
         // Check if the tag is being used in questions by other users
-        const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: userId } });
+        const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: user.username } });
         if (questionUsingTag) {
             return res.status(400).json({'message': 'Cannot delete tag, it is being used in questions by other users'});
         }
