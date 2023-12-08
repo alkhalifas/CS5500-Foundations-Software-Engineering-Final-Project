@@ -27,17 +27,13 @@ export default function FakeStackOverflow() {
                 if (response.data.isLoggedIn) {
                     setIsLoggedIn(true);
                     setUserData(response.data.user);
-                    console.log("USER LOGGED IN")
                 } else {
                     setIsLoggedIn(false);
                     setUserData(null);
-
-                    console.log("NOT LOGGED IN")
                 }
             })
             .catch(error => {
                 console.error('Error checking session status:', error);
-                // Handle error appropriately
             });
     };
 
@@ -47,10 +43,7 @@ export default function FakeStackOverflow() {
     };
 
     useEffect(() => {
-
         checkSessionStatus();
-
-
     }, []);
 
     const handleComponentSelect = (component, tagId = null) => {
