@@ -31,7 +31,7 @@ export default function TagsList() {
     const handleDelete = async (tagId) => {
         const apiUrl = `http://localhost:8000/tags/${tagId}`;
         try {
-            const response = await axios.delete(apiUrl);
+            const response = await axios.delete(apiUrl, {withCredentials: true});
             console.log('Tag deleted successfully:', response.data);
 
             fetchTags();
@@ -49,7 +49,7 @@ export default function TagsList() {
     const handleSaveEdit = async () => {
         const apiUrl = `http://localhost:8000/tags/${editingTagId}`;
         try {
-            const response = await axios.put(apiUrl, {name: editedTagName});
+            const response = await axios.put(apiUrl, {name: editedTagName}, {withCredentials: true});
             console.log('Tag edited successfully:', response.data);
 
             // Update the tags list after editing

@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3204676-46a1-427e-a353-a2e0cf2cf608" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/cypress.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/testing/cypress.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/cypress/e2e/fakeso.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/testing/cypress/e2e/fakeso.cy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/cypress/support/e2e.js" beforeDir="false" afterPath="$PROJECT_DIR$/testing/cypress/support/e2e.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/profile/tags/tagsList.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/profile/tags/tagsList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/route_tags.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/route_tags.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +89,7 @@
       <workItem from="1701464931461" duration="12135000" />
       <workItem from="1701533743361" duration="74790000" />
       <workItem from="1701951013107" duration="18249000" />
-      <workItem from="1702070291268" duration="488000" />
+      <workItem from="1702070291268" duration="1871000" />
     </task>
     <servers />
   </component>
