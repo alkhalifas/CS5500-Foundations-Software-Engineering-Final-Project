@@ -7,7 +7,6 @@ const Tag = require("../models/tags");
 const Answer = require("../models/answers");
 const isAuthenticated = require("./isAuthenticated");
 
-
 /*
 method that lets user register account
  */
@@ -68,24 +67,15 @@ router.post('/login', async (req, res) => {
         }
 
         // Check password matches
-        console.log("password: ", password)
-        console.log("user.password: ", user.password)
-        console.log("bcrypt.compare(password, user.password): ", await bcrypt.compare(password, user.password))
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
         // Login successful, update session
-        // req.session.user = { id: user._id, username: user.username };
         req.session.userId = user._id;  // Storing user ID in session
         req.session.isLoggedIn = true;
-
-        console.log("req.session: ", req.session)
-
         res.cookie('session.userId', req.session.userId, { maxAge: 900000, httpOnly: true });
-        // res.send(req.session.sessionID)
-        // res.json({ message: 'Login successful' });
         res.json({ message: 'Login successful' });
 
     } catch (error) {
@@ -98,8 +88,6 @@ router.post('/login', async (req, res) => {
 Method that checks current session
  */
 router.get('/session-status', isAuthenticated, (req, res) => {
-
-    console.log("req.session: ", req.session)
     if (req.session.userId) {
         res.json({ isLoggedIn: true, userId: req.session.userId });
     } else {
@@ -221,7 +209,6 @@ router.get('/user/questions', isAuthenticated, async (req, res) => {
     }
 });
 
-
 /*
 Method to get all answers for the logged-in user
 */
@@ -283,7 +270,5 @@ router.get('/user/tags', isAuthenticated, async (req, res) => {
         res.status(500).json({ error: 'Error getting user tags with counts' });
     }
 });
-
-
 
 module.exports = router;
