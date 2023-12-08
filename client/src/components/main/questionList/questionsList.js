@@ -116,7 +116,6 @@ export default function QuestionsList() {
                             !isGuest &&
                             <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
                         }
-                        {/*<button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>*/}
                     </div>
                     <AnswersPage question={selectedQuestion} />
 

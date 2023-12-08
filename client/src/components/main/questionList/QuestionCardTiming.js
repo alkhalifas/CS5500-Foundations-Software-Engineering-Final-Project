@@ -54,7 +54,6 @@ export default function QuestionCardTiming({ question }) {
     );
 }
 
-
 QuestionCardTiming.propTypes = {
     question: PropTypes.object
 };

@@ -36,7 +36,6 @@ export default function QuestionForm({ onSubmit }) {
                 console.log("data: ", data)
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                // setError(error.message);
             }
         };
 
@@ -128,7 +127,6 @@ export default function QuestionForm({ onSubmit }) {
                 }
             }
         }
-
         return errors;
     };
 
@@ -171,17 +169,14 @@ export default function QuestionForm({ onSubmit }) {
                     value={formData.tags}
                     onChange={handleInputChange}
                     placeholder="Add keywords separated by whitespace"
-                    //required
                 />
                 {validationErrors.tags && (
                     <div className="error-message">{validationErrors.tags}</div>
                 )}
             </label>
-
             <div className="button-container">
                 <button type="submit" className="submit-button">Post Question</button>
             </div>
-
             <div className="mandatory-text">* indicates mandatory fields</div>
         </form>
     );
