@@ -207,7 +207,7 @@ router.get('/questions', async (req, res) => {
             questions.sort((a, b) => b.updatedAt - a.updatedAt);
         } else if (sortType === 'unanswered') {
             questions = questions.filter(
-                (question) => question.answers.length === 0
+                (question) => question.answers.length === 0 && question.accepted.length === 0
             ).sort((a, b) => b.ask_date_time - a.ask_date_time);
         }
 
