@@ -513,6 +513,70 @@ describe('Fake SO Test Suite', () => {
         cy.contains('90');
     });
 
+    it('5.1 | View Questions, Sort by Newest', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Newest').click();
+        cy.contains('10 questions').should('exist');
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is Schrodingers cat?');
+        cy.get('#formTextInput').type('What is Schrodingers cat?');
+        cy.get('#formTagInput').type('schrodinger cat');
+        cy.get('button').contains('Post Question').click();
+
+        cy.contains('Newest').click();
+
+        cy.contains('wheisenberg asked 0 seconds ago').should('exist');
+        cy.contains('What is Schrodingers cat?').should('exist');
+        cy.contains('11 questions').should('exist');
+
+    });
+
+    it('5.1.1 | View Questions, Sort by Unanswered', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('jdalt')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Unanswered').click();
+        cy.contains('0 questions').should('exist');
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is Schrodingers cat?');
+        cy.get('#formTextInput').type('What is Schrodingers cat?');
+        cy.get('#formTagInput').type('schrodinger cat');
+        cy.get('button').contains('Post Question').click();
+
+        cy.contains('Unanswered').click();
+        cy.contains('1 questions').should('exist');
+
+    });
+
+    it('5.2 | View Answers to question  ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('jdalt')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Unanswered').click();
+        cy.contains('0 questions').should('exist');
+
+
+        cy.contains('Newest').click();
+        cy.contains('10 questions').should('exist');
+
+        cy.contains('Question Title 10').click();
+        cy.contains('2 answers').should('exist');
+        cy.contains('Answer 2 for question 10').should('exist');
+        cy.contains('Answer 1 for question 10').should('exist');
+
+    });
+
+
 
     it('5.3 | Add Answer to Question, Success', () => {
         cy.visit('http://localhost:3000');
@@ -937,6 +1001,82 @@ describe('Fake SO Test Suite', () => {
         cy.get('button').contains('Delete')
     });
 
+    it('10.3 | Profile, See Questions, Tags, Answers', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Questions').click();
+        cy.contains('2 Questions')
+        cy.contains('Question Title 1').click()
+
+        cy.get('#formTitleInput').type('01');
+        cy.get('#formTextInput').type('01');
+        cy.get('#formTagInput').type(' 101');
+
+        cy.get('button').contains('Save').click()
+
+        cy.contains('Question Title 101').click()
+
+        cy.get('#formTitleInput').should('have.value', 'Question Title 101');
+        cy.get('#formTextInput').should('have.value', 'Question Text 101');
+        cy.get('#formTagInput').should('have.value', 'quantum relativity 101');
+
+    });
+
+
+    it('10.4 | Edit Answer and see Changes ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Answers').click();
+        cy.contains('4 Answers')
+        cy.contains('Answer 1 for question 8').click()
+
+        cy.get('#answerTextInput').type('8');
+
+        cy.get('button').contains('Save').click()
+
+        cy.contains('Answer 1 for question 88').click()
+
+        cy.get('#answerTextInput').should('have.value', 'Answer 1 for question 88');
+
+    });
+
+    it('10.5 | Edit Tag and see Changes ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is bubble sort?');
+        cy.get('#formTextInput').type('What exactly is bubble sort?');
+        cy.get('#formTagInput').type('sort');
+        cy.contains('Post Question').click();
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Tags').click();
+        cy.contains('1 Tags')
+        cy.get('button').contains('Edit').click()
+
+        cy.get('#tagInputField').type('ing');
+
+        cy.get('button').contains('Save').click()
+
+        cy.contains('sorting')
+        cy.get('button').contains('Tags').click();
+        cy.contains('sorting')
+
+
+    });
+
+
     it('11.0 | Security, User can only get their data', () => {
         cy.visit('http://localhost:3000');
         cy.get('#username').type('wheisenberg');
@@ -1034,14 +1174,13 @@ describe('Fake SO Test Suite', () => {
         });
     });
 
-    it('11.5 | Guest cannot access PUT, POST or DELETE routes', () => {
+    it('11.6 | Guest cannot access session status', () => {
         cy.request({
-            url: "http://localhost:8000/user",
+            url: "http://localhost:8000/session-status",
+            method: "POST",
             failOnStatusCode: false
         }).then(response => {
-            expect(response.status).to.eq(401);
-
-            expect(response.body).to.have.property('message', 'No user is currently logged in.');
+            expect(response.status).to.eq(404);
         });
     });
 

@@ -80,6 +80,7 @@ export default function TagsList() {
                         {editingTagId === tag._id ? (
                             <>
                                 <input
+                                    id={"tagInputField"}
                                     type="text"
                                     value={editedTagName}
                                     onChange={(e) => setEditedTagName(e.target.value)}
