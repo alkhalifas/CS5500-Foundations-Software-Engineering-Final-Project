@@ -175,6 +175,8 @@ Method to delete an answer by ID
 router.delete('/answers/:answerId', isAuthenticated, async (req, res) => {
     const { answerId } = req.params;
 
+    console.log("answerId: ", answerId)
+
     try {
         const answer = await Answer.findById(answerId);
 

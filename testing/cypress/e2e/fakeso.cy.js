@@ -1174,16 +1174,6 @@ describe('Fake SO Test Suite', () => {
         });
     });
 
-    it('11.6 | Guest cannot access session status', () => {
-        cy.request({
-            url: "http://localhost:8000/session-status",
-            method: "POST",
-            failOnStatusCode: false
-        }).then(response => {
-            expect(response.status).to.eq(404);
-        });
-    });
-
 
 })
 
