@@ -18,6 +18,15 @@ router.post('/vote/answer',isAuthenticated,  async (req, res) => {
             return res.status(404).json({'message': 'Answer not found'});
         }
 
+        const question = await Question.findOne({ 'answers': answer._id });
+        if (!question) {
+            return res.status(404).json({ 'message': 'Question not found' });
+        } else {
+            // Update the updatedAt field to the current date
+            question.updatedAt = new Date();
+            await question.save();
+        }
+
         let reputationChange = 0;
         if (voteType === 'upvote') {
             answer.votes += 1;
@@ -45,11 +54,12 @@ router.post('/vote/answer',isAuthenticated,  async (req, res) => {
 
 
 /*
-Method to upvote or downvote a comment
+Method to upvote a comment
  */
 router.post('/vote/comment', isAuthenticated, async (req, res) => {
     try {
         const { commentId, voteType } = req.body;
+        const type = req.query.type;
 
         const comment = await Comment.findById(commentId);
         if (!comment) {
@@ -63,6 +73,31 @@ router.post('/vote/comment', isAuthenticated, async (req, res) => {
         }
 
         await comment.save();
+
+        if (type === 'questions') {
+            const question = await Question.findOne({ 'comments': comment._id });
+            if (!question) {
+                return res.status(404).json({ 'message': 'Question not found' });
+            } else {
+                // Update the updatedAt field to the current date
+                question.updatedAt = new Date();
+                await question.save();
+            }
+        } else if (type === 'answers') {
+            const answer = await Answer.findOne({ 'comments': comment._id });
+            if (!answer) {
+                return res.status(404).json({ 'message': 'Answer not found' });
+            } else {
+                const question = await Question.findOne({ 'answers': answer._id });
+                if (!question) {
+                    return res.status(404).json({ 'message': 'Question not found' });
+                } else {
+                    // Update the updatedAt field to the current date
+                    question.updatedAt = new Date();
+                    await question.save();
+                }
+            }
+        }
 
         res.status(200).json({'message': 'Vote updated successfully', 'newVotes': comment.votes});
     } catch (error) {
@@ -93,6 +128,9 @@ router.post('/vote/question',isAuthenticated,  async (req, res) => {
             reputationChange = -10;
         }
 
+        // Update the updatedAt field to the current date
+        question.updatedAt = new Date();
+
         await question.save();
 
         const author = await User.findOne({ username: question.asked_by });
@@ -107,7 +145,5 @@ router.post('/vote/question',isAuthenticated,  async (req, res) => {
         console.error("Vote and reputation update error: ", error);
     }
 });
-
-
 
 module.exports = router;
