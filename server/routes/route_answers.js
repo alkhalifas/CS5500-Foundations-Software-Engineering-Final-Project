@@ -147,6 +147,20 @@ router.put('/answers/:answerId', isAuthenticated, async (req, res) => {
             return res.status(404).json({'message': 'Answer not found'});
         }
 
+        const question = await Question.findOne({
+            $or: [
+                { 'answers': updatedAnswer._id },
+                { 'accepted': updatedAnswer._id }
+            ]
+        });
+        if (!question) {
+            return res.status(404).json({ 'message': 'Question not found' });
+        } else {
+            // Update the updatedAt field to the current date
+            question.updatedAt = new Date();
+            await question.save();
+        }
+
         res.json({'message': 'Answer updated successfully', 'updatedAnswer': updatedAnswer});
     } catch (error) {
         res.status(500).json({'message': 'Error updating answer'});
@@ -174,6 +188,31 @@ router.delete('/answers/:answerId', isAuthenticated, async (req, res) => {
         // Delete the answer
         await Answer.findByIdAndRemove(answerId);
 
+
+        const question = await Question.findOne({
+            $or: [
+                { 'answers': answerId },
+                { 'accepted': answerId }
+            ]
+        });
+        if (!question) {
+            return res.status(404).json({ 'message': 'Question not found' });
+        } else {
+            // Remove answerId from the 'answers' array if it exists
+            if (question.answers.includes(answerId)) {
+                question.answers.pull(answerId);
+            }
+
+            // Remove answerId from the 'accepted' field if it exists
+            if (question.accepted && question.accepted.equals(answerId)) {
+                question.accepted = undefined;
+            }
+
+            // Update the updatedAt field to the current date
+            question.updatedAt = new Date();
+            await question.save();
+        }
+
         res.json({'message': 'Answer deleted successfully'});
     } catch (error) {
         res.status(500).json({'message': 'Error deleting answer'});
@@ -182,4 +221,3 @@ router.delete('/answers/:answerId', isAuthenticated, async (req, res) => {
 });
 
 module.exports = router;
-
