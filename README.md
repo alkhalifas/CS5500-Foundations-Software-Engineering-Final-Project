@@ -7,32 +7,24 @@ Add design docs in *images/*
 
 Detailed instructions with all relevant commands go here.
 
-## Team Member 1 Contribution
+## Team Member 1 Contribution -  Saleh
 - [X] Create Account
 - [X] Welcome Page
 - [X] Login
 - [X] Logout
-- [X] Server Routes
+- [X] Server Routes + Schemas
 - [X] All Tags
-- [X] User Schema
-- [X] Comment Schema
 - [X] Comments
-- [X] PUT and DELETE for Q/A/T
 - [ ] Testing
 
-## Team Member 2 Contribution
+## Team Member 2 Contribution - Vidhi
 - [X] Homepage
 - [X] New Question
 - [X] Searching
 - [X] New Answer
 - [X] Answers
-- [ ] User Profile
+- [X] User Profile
 - [ ] Active Filter
-
-## Backlog
-
-
-
 
 ## Test cases
 
