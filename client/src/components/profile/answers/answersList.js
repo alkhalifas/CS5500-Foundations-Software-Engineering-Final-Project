@@ -36,7 +36,7 @@ export default function AnswersList() {
     const handleAnswerEdit = async (formData) => {
         const apiUrl = `http://localhost:8000/answers/${selectedAnswer._id}`;
         try {
-            const response = await axios.put(apiUrl, formData);
+            const response = await axios.put(apiUrl, formData, {withCredentials: true});
             console.log('Answer edited successfully:', response.data);
 
             fetchAnswers(1);
@@ -49,7 +49,7 @@ export default function AnswersList() {
     const handleAnswerDelete = async () => {
         const apiUrl = `http://localhost:8000/answers/${selectedAnswer._id}`;
         try {
-            const response = await axios.delete(apiUrl);
+            const response = await axios.delete(apiUrl, {withCredentials: true});
             console.log('Answer deleted successfully:', response.data);
 
             fetchAnswers(1);

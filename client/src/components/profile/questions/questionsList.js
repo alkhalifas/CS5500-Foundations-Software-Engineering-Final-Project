@@ -17,7 +17,7 @@ export default function QuestionsList() {
     const handleQuestionEdit = async (formData) => {
         const apiUrl = `http://localhost:8000/questions/${selectedQuestion._id}`;
         try {
-            const response = await axios.put(apiUrl, formData);
+            const response = await axios.put(apiUrl, formData, {withCredentials: true});
             console.log('Question edited successfully:', response.data);
 
             fetchQuestions(1);
@@ -30,7 +30,7 @@ export default function QuestionsList() {
     const handleQuestionDelete = async () => {
         const apiUrl = `http://localhost:8000/questions/${selectedQuestion._id}`;
         try {
-            const response = await axios.delete(apiUrl);
+            const response = await axios.delete(apiUrl, {withCredentials: true});
             console.log('Question deleted successfully:', response.data);
 
             fetchQuestions(1);
