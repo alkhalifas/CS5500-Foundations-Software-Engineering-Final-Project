@@ -5,6 +5,7 @@ const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const User = require("../models/users");
 const Tag = require("../models/tags");
+const isAuthenticated = require("./isAuthenticated");
 
 
 /*
@@ -60,17 +61,25 @@ router.get('/tags-with-count', async (req, res) => {
 /*
 Method to edit a tag name by ID
 */
-router.put('/tags/:tagId', async (req, res) => {
+router.put('/tags/:tagId', isAuthenticated,  async (req, res) => {
     const { tagId } = req.params;
     const userId = req.session.userId;
     const { name } = req.body;
 
     try {
+
+        const user = await User.findOne({ id: userId });
+        console.log("userId: ", userId)
+        console.log("user.username: ", user.username)
+
         // Check if the tag is being used in questions by other users
-        const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: userId } });
+        const questionUsingTag = await Question.findOne({ tags: tagId, asked_by: { $ne: user.username } });
+        console.log("questionUsingTag: ", questionUsingTag)
+
         if (questionUsingTag) {
             return res.status(400).json({'message': 'Cannot edit tag, it is being used in questions by other users'});
         }
+
 
         const updatedTag = await Tag.findByIdAndUpdate(tagId, { name }, { new: true });
 
@@ -88,7 +97,7 @@ router.put('/tags/:tagId', async (req, res) => {
 /*
 Method to delete a tag by ID
 */
-router.delete('/tags/:tagId', async (req, res) => {
+router.delete('/tags/:tagId', isAuthenticated, async (req, res) => {
     const { tagId } = req.params;
     const userId = req.session.userId;
 

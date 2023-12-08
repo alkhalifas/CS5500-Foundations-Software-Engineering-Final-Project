@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const Question = require("../models/questions");
 const Tag = require("../models/tags");
 const Answer = require("../models/answers");
+const isAuthenticated = require("./isAuthenticated");
 
 
 /*
@@ -96,7 +97,7 @@ router.post('/login', async (req, res) => {
 /*
 Method that checks current session
  */
-router.get('/session-status', (req, res) => {
+router.get('/session-status', isAuthenticated, (req, res) => {
 
     console.log("req.session: ", req.session)
     if (req.session.userId) {
@@ -123,7 +124,7 @@ router.post('/logout', (req, res) => {
 /*
 Method to update a users reputation
  */
-router.post('/update-reputation', async (req, res) => {
+router.post('/update-reputation', isAuthenticated, async (req, res) => {
     try {
         const { username, reputationChange } = req.body;
 
@@ -175,7 +176,7 @@ router.get('/user', async (req, res) => {
 /*
 Method to get all questions for the logged-in user
 */
-router.get('/user/questions', async (req, res) => {
+router.get('/user/questions', isAuthenticated, async (req, res) => {
     try {
         const page = req.query.page || 1;
 
@@ -224,7 +225,7 @@ router.get('/user/questions', async (req, res) => {
 /*
 Method to get all answers for the logged-in user
 */
-router.get('/user/answers', async (req, res) => {
+router.get('/user/answers', isAuthenticated, async (req, res) => {
     try {
         const page = req.query.page || 1;
 
@@ -253,7 +254,7 @@ router.get('/user/answers', async (req, res) => {
 /*
 Method to get all tags created by the logged-in user
 */
-router.get('/user/tags', async (req, res) => {
+router.get('/user/tags', isAuthenticated, async (req, res) => {
     try {
         // Fetch user ID from the session
         const userId = req.session.userId;

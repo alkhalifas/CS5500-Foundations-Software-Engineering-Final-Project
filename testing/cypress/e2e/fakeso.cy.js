@@ -513,6 +513,70 @@ describe('Fake SO Test Suite', () => {
         cy.contains('90');
     });
 
+    it('5.1 | View Questions, Sort by Newest', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Newest').click();
+        cy.contains('10 questions').should('exist');
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is Schrodingers cat?');
+        cy.get('#formTextInput').type('What is Schrodingers cat?');
+        cy.get('#formTagInput').type('schrodinger cat');
+        cy.get('button').contains('Post Question').click();
+
+        cy.contains('Newest').click();
+
+        cy.contains('wheisenberg asked 0 seconds ago').should('exist');
+        cy.contains('What is Schrodingers cat?').should('exist');
+        cy.contains('11 questions').should('exist');
+
+    });
+
+    it('5.1.1 | View Questions, Sort by Unanswered', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('jdalt')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Unanswered').click();
+        cy.contains('0 questions').should('exist');
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is Schrodingers cat?');
+        cy.get('#formTextInput').type('What is Schrodingers cat?');
+        cy.get('#formTagInput').type('schrodinger cat');
+        cy.get('button').contains('Post Question').click();
+
+        cy.contains('Unanswered').click();
+        cy.contains('1 questions').should('exist');
+
+    });
+
+    it('5.2 | View Answers to question  ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('jdalt')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Unanswered').click();
+        cy.contains('0 questions').should('exist');
+
+
+        cy.contains('Newest').click();
+        cy.contains('10 questions').should('exist');
+
+        cy.contains('Question Title 10').click();
+        cy.contains('2 answers').should('exist');
+        cy.contains('Answer 2 for question 10').should('exist');
+        cy.contains('Answer 1 for question 10').should('exist');
+
+    });
+
+
 
     it('5.3 | Add Answer to Question, Success', () => {
         cy.visit('http://localhost:3000');
@@ -592,7 +656,7 @@ describe('Fake SO Test Suite', () => {
         cy.get('button').contains('Ask a Question').should('not.exist');
 
         cy.contains('Tags').click();
-        cy.contains('Atom').click();
+        cy.contains('atom').click();
         cy.get('button').contains('Ask a Question').should('not.exist');
 
     });
@@ -603,7 +667,7 @@ describe('Fake SO Test Suite', () => {
         cy.get('button').contains('Answer Question').should('not.exist');
 
         cy.contains('Tags').click();
-        cy.contains('Atom').click();
+        cy.contains('atom').click();
         cy.get('button').contains('Answer Question').should('not.exist');
 
     });
@@ -638,8 +702,8 @@ describe('Fake SO Test Suite', () => {
 
         cy.contains('Question Title 10').click();
 
-        cy.get('#commentInput').type('Redox reactions are complex')
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('Redox reactions are complex{enter}')
+        // cy.get('#commentSubmit').click();
         cy.contains('Redox reactions are complex');
         cy.contains('jdalt');
 
@@ -653,8 +717,8 @@ describe('Fake SO Test Suite', () => {
 
         cy.contains('Question Title 10').click();
 
-        cy.get('#commentInput').type('Redox reactions are complex')
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('Redox reactions are complex{enter}')
+        // cy.get('#commentSubmit').click();
         cy.contains('User does not have enough reputation');
 
     });
@@ -667,14 +731,14 @@ describe('Fake SO Test Suite', () => {
 
         cy.contains('Question Title 10').click();
 
-        cy.get('#commentInput').type('x'.repeat(138))
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('x'.repeat(138)).type('{enter}')
+        // cy.get('#commentSubmit').click();
 
         cy.contains('x'.repeat(138));
 
 
-        cy.get('#commentInput').type('y'.repeat(142))
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('y'.repeat(142)).type('{enter}')
+        // cy.get('#commentSubmit').click();
         cy.contains('Comment must be less than 140 characters.');
 
     });
@@ -689,8 +753,8 @@ describe('Fake SO Test Suite', () => {
 
         // Target the first '.vertical-stacking' element
         cy.get('.vertical-stacking').eq(0).within(() => {
-            cy.get('#commentInput').type('Redox reactions are complex');
-            cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Redox reactions are complex{enter}');
+            // cy.get('#commentSubmit').click();
         });
 
         cy.contains('Redox reactions are complex');
@@ -705,22 +769,22 @@ describe('Fake SO Test Suite', () => {
 
         cy.contains('Question Title 10').click();
 
-        cy.get('#commentInput').type('Test comment 1')
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('Test comment 1{enter}')
+        // cy.get('#commentSubmit').click();
 
-        cy.get('#commentInput').type('Test comment 2')
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('Test comment 2{enter}')
+        // cy.get('#commentSubmit').click();
 
-        cy.get('#commentInput').type('Test comment 3')
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('Test comment 3{enter}')
+        // cy.get('#commentSubmit').click();
 
 
         cy.contains('Test comment 1');
         cy.contains('Test comment 2');
         cy.contains('Test comment 3');
 
-        cy.get('#commentInput').type('Test comment 4')
-        cy.get('#commentSubmit').click();
+        cy.get('#commentInput').type('Test comment 4{enter}')
+        // cy.get('#commentSubmit').click();
 
         cy.contains('Test comment 1').should('not.exist');
         cy.contains('Test comment 2').should('exist');
@@ -739,14 +803,14 @@ describe('Fake SO Test Suite', () => {
 
         // Target the first '.vertical-stacking' element
         cy.get('.vertical-stacking').eq(0).within(() => {
-            cy.get('#commentInput').type('Test comment 1');
-            cy.get('#commentSubmit').click();
-            cy.get('#commentInput').type('Test comment 2');
-            cy.get('#commentSubmit').click();
-            cy.get('#commentInput').type('Test comment 3');
-            cy.get('#commentSubmit').click();
-            cy.get('#commentInput').type('Test comment 4');
-            cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Test comment 1{enter}');
+            // cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Test comment 2{enter}');
+            // cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Test comment 3{enter}');
+            // cy.get('#commentSubmit').click();
+            cy.get('#commentInput').type('Test comment 4{enter}');
+            // cy.get('#commentSubmit').click();
 
             cy.contains('Test comment 1').should('not.exist');
             cy.contains('Test comment 2').should('exist');
@@ -771,7 +835,7 @@ describe('Fake SO Test Suite', () => {
         cy.contains('All Tags');
         cy.contains('8 Tags');
 
-        cy.get('.tagNode').contains('Atom').parents('.tagNode').contains('3 questions');
+        cy.get('.tagNode').contains('atom').parents('.tagNode').contains('3 questions');
 
 
     });
@@ -786,7 +850,7 @@ describe('Fake SO Test Suite', () => {
         cy.contains('All Tags');
         cy.contains('8 Tags');
 
-        cy.get('.tagNode').contains('Atom').click();
+        cy.get('.tagNode').contains('atom').click();
 
         cy.contains('3 questions').should('exist');
 
@@ -814,9 +878,9 @@ describe('Fake SO Test Suite', () => {
         cy.contains('All Tags');
         cy.contains('8 Tags');
 
-        cy.get('.tagNode').contains('Atom').parents('.tagNode').contains('3 questions');
+        cy.get('.tagNode').contains('atom').parents('.tagNode').contains('3 questions');
 
-        cy.contains('Atom').click();
+        cy.contains('atom').click();
         cy.contains('3 questions').should('exist');
 
     });
@@ -937,6 +1001,82 @@ describe('Fake SO Test Suite', () => {
         cy.get('button').contains('Delete')
     });
 
+    it('10.3 | Profile, See Questions, Tags, Answers', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Questions').click();
+        cy.contains('2 Questions')
+        cy.contains('Question Title 1').click()
+
+        cy.get('#formTitleInput').type('01');
+        cy.get('#formTextInput').type('01');
+        cy.get('#formTagInput').type(' 101');
+
+        cy.get('button').contains('Save').click()
+
+        cy.contains('Question Title 101').click()
+
+        cy.get('#formTitleInput').should('have.value', 'Question Title 101');
+        cy.get('#formTextInput').should('have.value', 'Question Text 101');
+        cy.get('#formTagInput').should('have.value', 'quantum relativity 101');
+
+    });
+
+
+    it('10.4 | Edit Answer and see Changes ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Answers').click();
+        cy.contains('4 Answers')
+        cy.contains('Answer 1 for question 8').click()
+
+        cy.get('#answerTextInput').type('8');
+
+        cy.get('button').contains('Save').click()
+
+        cy.contains('Answer 1 for question 88').click()
+
+        cy.get('#answerTextInput').should('have.value', 'Answer 1 for question 88');
+
+    });
+
+    it('10.5 | Edit Tag and see Changes ', () => {
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg');
+        cy.get('#password').type('Password_123');
+        cy.contains('Log In').click();
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('What is bubble sort?');
+        cy.get('#formTextInput').type('What exactly is bubble sort?');
+        cy.get('#formTagInput').type('sort');
+        cy.contains('Post Question').click();
+
+        cy.contains('Profile').click();
+        cy.get('.profile-container').contains('Tags').click();
+        cy.contains('1 Tags')
+        cy.get('button').contains('Edit').click()
+
+        cy.get('#tagInputField').type('ing');
+
+        cy.get('button').contains('Save').click()
+
+        cy.contains('sorting')
+        cy.get('button').contains('Tags').click();
+        cy.contains('sorting')
+
+
+    });
+
+
     it('11.0 | Security, User can only get their data', () => {
         cy.visit('http://localhost:3000');
         cy.get('#username').type('wheisenberg');
@@ -982,7 +1122,67 @@ describe('Fake SO Test Suite', () => {
 
     });
 
+    it('11.3 | Security, Unsecure URLs are managed correctly', () => {
 
+        cy.visit('http://localhost:3000');
+        cy.get('#username').type('wheisenberg')
+        cy.get('#password').type('Password_123')
+        cy.contains('Log In').click();
+
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('UNIT TEST Question BAD');
+        cy.get('#formTextInput').type('Bad URL:  [LINK](http//:www.google.com)');
+        cy.get('#formTagInput').type('bad');
+        cy.get('button').contains('Post Question').click();
+        cy.contains('Invalid hyperlink');
+
+        cy.contains('Questions').click();
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('UNIT TEST Question BAD');
+        cy.get('#formTextInput').type('Bad URL:  [LINK](https//:www.google.com)');
+        cy.get('#formTagInput').type('bad');
+        cy.get('button').contains('Post Question').click();
+        cy.contains('Invalid hyperlink');
+
+        cy.contains('Questions').click();
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('UNIT TEST Question BAD');
+        cy.get('#formTextInput').type('bad one:  [LINK](http://www.google.com)');
+        cy.get('#formTagInput').type('bad');
+        cy.get('button').contains('Post Question').click();
+        cy.contains('Invalid hyperlink');
+
+        cy.contains('Questions').click();
+        cy.contains('Ask a Question').click();
+        cy.get('#formTitleInput').type('UNIT TEST Question GOOD');
+        cy.get('#formTextInput').type('bad one:  [LINK](https://www.google.com)');
+        cy.get('#formTagInput').type('bad');
+        cy.get('button').contains('Post Question').click();
+        cy.contains('UNIT TEST Question GOOD').should('be.visible');
+        cy.contains('bad one: LINK').should('be.visible');
+
+    })
+
+    it('11.5 | Security, Guest cannot access user data', () => {
+        cy.request({
+            url: "http://localhost:8000/user",
+            failOnStatusCode: false
+        }).then(response => {
+            expect(response.status).to.eq(401);
+
+            expect(response.body).to.have.property('message', 'No user is currently logged in.');
+        });
+    });
+
+    it('11.6 | Guest cannot access session status', () => {
+        cy.request({
+            url: "http://localhost:8000/session-status",
+            method: "POST",
+            failOnStatusCode: false
+        }).then(response => {
+            expect(response.status).to.eq(404);
+        });
+    });
 
 
 })

@@ -4,7 +4,7 @@ const Comment = require("../models/comment");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const router = express.Router();
-
+const isAuthenticated = require("./isAuthenticated")
 
 /*
 Method to get comments for an answer
@@ -36,7 +36,7 @@ router.get('/answers/:answerId/comments', async (req, res) => {
     }
 });
 
-router.post('/accept-answer', async (req, res) => {
+router.post('/accept-answer', isAuthenticated, async (req, res) => {
     try {
         const { questionId, answerId } = req.body;
 
@@ -70,7 +70,7 @@ router.post('/accept-answer', async (req, res) => {
 });
 
 
-router.post('/answers/:answerId/comments', async (req, res) => {
+router.post('/answers/:answerId/comments',isAuthenticated,  async (req, res) => {
     try {
         const { answerId } = req.params;
         const { text, commented_by } = req.body;
@@ -136,7 +136,7 @@ router.get('/answers/:answerId', async (req, res) => {
 /*
 Method to update an answer by ID
 */
-router.put('/answers/:answerId', async (req, res) => {
+router.put('/answers/:answerId', isAuthenticated, async (req, res) => {
     const { answerId } = req.params;
     const { text } = req.body;
 
@@ -158,7 +158,7 @@ router.put('/answers/:answerId', async (req, res) => {
 /*
 Method to delete an answer by ID
 */
-router.delete('/answers/:answerId', async (req, res) => {
+router.delete('/answers/:answerId', isAuthenticated, async (req, res) => {
     const { answerId } = req.params;
 
     try {

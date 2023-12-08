@@ -5,6 +5,7 @@ const User = require("../models/users");
 const Tag = require("../models/tags");
 const elementFactory = require("../models/elementFactory");
 const Answer = require("../models/answers");
+const isAuthenticated = require("./isAuthenticated");
 const router = express.Router();
 
 
@@ -253,7 +254,7 @@ router.get('/questions', async (req, res) => {
 /*
 Method that posts a new question
  */
-router.post('/questions', async (req, res) => {
+router.post('/questions', isAuthenticated, async (req, res) => {
     const { title, text, tags, asked_by } = req.body;
 
     const tagNames = tags.split(/\s+/).map(tagName => tagName.trim());
@@ -283,7 +284,7 @@ router.post('/questions', async (req, res) => {
 /*
 A method that allows a user to edit a question
  */
-router.put('/questions/:questionId', async (req, res) => {
+router.put('/questions/:questionId', isAuthenticated, async (req, res) => {
     const questionId = req.params.questionId;
     const { title, text, tags } = req.body;
 
@@ -322,7 +323,7 @@ router.put('/questions/:questionId', async (req, res) => {
 /*
 Method that posts a new answer to a given question
  */
-router.post('/questions/:questionId/answers', async (req, res) => {
+router.post('/questions/:questionId/answers', isAuthenticated, async (req, res) => {
     const { questionId } = req.params;
     const { text, ans_by } = req.body;
     try {
@@ -345,7 +346,7 @@ router.post('/questions/:questionId/answers', async (req, res) => {
 /*
 Method that deletes a question, its answer, and tags
  */
-router.delete('/questions/:questionId', async (req, res) => {
+router.delete('/questions/:questionId', isAuthenticated, async (req, res) => {
     const questionId = req.params.questionId;
 
     try {
