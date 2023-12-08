@@ -41,7 +41,6 @@ export default function QuestionForm({ question, onSubmit, onDelete }) {
                 console.log("data: ", data)
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                // setError(error.message);
             }
         };
 
@@ -134,7 +133,6 @@ export default function QuestionForm({ question, onSubmit, onDelete }) {
                 }
             }
         }
-
         return errors;
     };
 
