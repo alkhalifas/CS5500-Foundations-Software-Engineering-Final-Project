@@ -5,34 +5,40 @@ Add design docs in *images/*
 
 ## Instructions to setup and run project
 
-Detailed instructions with all relevant commands go here.
+Run Mongod:
 
-## Team Member 1 Contribution
+    brew services start mongodb-community@7.0
+
+Run Server:
+
+    SERVER_SECRET=webdev nodemon server.js
+
+Run Client:
+
+    npm start
+
+Run Tests:
+
+    npx cypress open
+
+## Team Member 1 Contribution -  Saleh
 - [X] Create Account
 - [X] Welcome Page
 - [X] Login
 - [X] Logout
-- [X] Server Routes
+- [X] Server Routes + Schemas
 - [X] All Tags
-- [X] User Schema
-- [X] Comment Schema
 - [X] Comments
-- [X] PUT and DELETE for Q/A/T
 - [ ] Testing
 
-## Team Member 2 Contribution
+## Team Member 2 Contribution - Vidhi
 - [X] Homepage
 - [X] New Question
 - [X] Searching
 - [X] New Answer
 - [X] Answers
-- [ ] User Profile
+- [X] User Profile
 - [ ] Active Filter
-
-## Backlog
-
-
-
 
 ## Test cases
 
@@ -141,23 +147,3 @@ Detailed instructions with all relevant commands go here.
 - Design Pattern Name: Factory Pattern
 - Problem Solved: The Factory Pattern provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. It's particularly useful when the system needs to be independent of how its objects are created. The `elementFactory` module is where the Factory Pattern is implemented. This module's `create_element` function acts as a factory, creating different elements like `Question`, `Answer`, and `Tag`. This pattern abstracts the creation logic, making the process of object instantiation more flexible and maintainable.
 - Location in code where pattern is used: `elementFactory.js`,`route_questions.js`
-
-
-
-## Instructions to run:
-
-Run Mongod:
-
-    brew services start mongodb-community@7.0
-
-Run Server:
-
-    SERVER_SECRET=webdev nodemon server.js
-
-Run Client:
-
-    npm start
-
-Run Tests:
-
-    npx cypress open

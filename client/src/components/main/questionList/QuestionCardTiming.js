@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -52,3 +53,8 @@ export default function QuestionCardTiming({ question }) {
         </div>
     );
 }
+
+
+QuestionCardTiming.propTypes = {
+    question: PropTypes.object
+};

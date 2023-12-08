@@ -19,25 +19,6 @@
     margin-bottom: 2%;
 }
 
-.question-left {
-    font-size: 14px;
-    width: 15%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.question-right {
-    margin-left: 3%;
-    font-size: 14px;
-    width: 20%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
 .question-mid {
     width: 65%;
     display: flex;

@@ -66,7 +66,7 @@ const CommentsSection = ({ type, typeId, userData }) => {
 
     const handleUpvote = async (commentId) => {
         try {
-            const response = await fetch('http://localhost:8000/vote/comment', {
+            const response = await fetch(`http://localhost:8000/vote/comment?type=${type}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
