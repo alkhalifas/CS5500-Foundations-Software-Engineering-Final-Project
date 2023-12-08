@@ -85,7 +85,8 @@ export default function AnswersList() {
                                 <div className={"vertical-stacking"}>
                                     <div key={answer._id} className="answer-card">
                                         <div className={"answer-mid"}>
-                                            <p style={{"fontSize":"12px"}} onClick={() => handleAnswerClick(answer)} dangerouslySetInnerHTML={formatQuestionText(truncateAnswerText(answer.text, 50))} />
+                                            <p className={"postTitle"} onClick={() => handleAnswerClick(answer)}
+                                                dangerouslySetInnerHTML={formatQuestionText(truncateAnswerText(answer.text, 50))} />
                                         </div>
                                     </div>
                                 </div>

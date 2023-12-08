@@ -101,10 +101,10 @@ export default function QuestionsList() {
                                     className="question-card"
                                 >
                                     <div className={"question-mid"}>
-                                        <h4 className={"postTitle"}
+                                        <p className={"postTitle"}
                                             onClick={() => handleQuestionClick(question)}
                                         >{question.title}
-                                        </h4>
+                                        </p>
                                     </div>
                                 </div>
                                 {index !== sortedQuestions.length - 1 && <div className="dotted-line" />}
