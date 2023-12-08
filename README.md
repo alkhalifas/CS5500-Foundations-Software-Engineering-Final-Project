@@ -75,7 +75,7 @@ Detailed instructions with all relevant commands go here.
 | 35 | Search Text, Check Responses                        | Test-4.1       |          | 
 | 36 | Search Tags and Text, Check Responses               | Test-4.2       |          | 
 | 37 | Search Tags and Text, No results found              | Test-4.2       |          | 
-| 38 | View Questions, Sort by Newest                      | Test-5.1       |          | 
+| 38 | View Questions, Sort by Newest                      | Test-5.1       | Passing  | 
 | 39 | View Questions, Sort by Active                      | Test-5.1.1     |          | 
 | 40 | View Questions, Sort by Unanswered                  | Test-5.1.2     | Passing  | 
 | 41 | View Answers to question                            | Test-5.2       | Passing  | 
@@ -104,7 +104,7 @@ Detailed instructions with all relevant commands go here.
 | 64 | Profile, See Reputation and Days on FSO             | Test-10.1      | Passing  | 
 | 65 | Profile, See Questions, Tags, Answers               | Test-10.2      | Passing  | 
 | 66 | Profile, Edit Question and see Changes              | Test-10.3      | Passing  | 
-| 67 | Profile, Edit Answer and see Changes                | Test-10.4      |          | 
+| 67 | Profile, Edit Answer and see Changes                | Test-10.4      | Passing  | 
 | 68 | Profile, Edit Tag and see Changes                   | Test-10.5      |          | 
 | 69 | Profile, Delete Question and see Changes            | Test-10.6      |          | 
 | 70 | Profile, Delete Answer and see Changes              | Test-10.7      |          | 
@@ -122,11 +122,27 @@ Detailed instructions with all relevant commands go here.
 
 ## Design Patterns Used
 
-- Design Pattern Name:
+#### 1. Facade Pattern:
+- Design Pattern Name: Facade Pattern
+- Problem Solved: The Facade Pattern in our application simplifies complex operations by providing a more direct interface. It hides the intricate underlying logic of various operations, thereby simplifying the interaction for other parts of the application. We can see examples of this in React as well as the server endpoints.
+- Location in code where pattern is used: `route_questions.js`, `route_answers.js`, `AnswerCardTiming.js`, `QuestionCardTiming.js`
 
-- Problem Solved:
+#### 2. Observer Pattern:
+- Design Pattern Name: Facade Pattern
+- Problem Solved: The Observer Pattern allows for a subscription-like mechanism where objects (observers) watch for changes in another object (subject). In the context of our FSO application, it's used for monitoring database connection states. We specifically see this for MongoDB, and can be thought of as a form of an observer pattern in the sense that our database connection maintains a list of listeners, specifically to notify of a state change.
+- Location in code where pattern is used: `server.js`
 
-- Location in code where pattern is used:
+#### 3. Singleton Pattern:
+- Design Pattern Name: Singleton Pattern
+- Problem Solved: The Singleton Pattern ensures that a class has only one instance and provides a global point of access to it. We found this pattern to be useful when exactly one object is needed to coordinate actions across the system. We specifically use the Singleton Pattern in our application with the mongoose connection. This single instance of the mongoose connection is used throughout the application to interact with the MongoDB database. By ensuring only one connection instance is created and used, the site maintains a consistent state and efficient resource usage.
+- Location in code where pattern is used: `server.js`
+
+#### 4. Factory Pattern:
+- Design Pattern Name: Factory Pattern
+- Problem Solved: The Factory Pattern provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. It's particularly useful when the system needs to be independent of how its objects are created. The `elementFactory` module is where the Factory Pattern is implemented. This module's `create_element` function acts as a factory, creating different elements like `Question`, `Answer`, and `Tag`. This pattern abstracts the creation logic, making the process of object instantiation more flexible and maintainable.
+- Location in code where pattern is used: `elementFactory.js`,`route_questions.js`
+
+
 
 ## Instructions to run:
 
