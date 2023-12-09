@@ -120,7 +120,6 @@ Run Tests:
 | 74 | Security, Session Persisting on refresh             | Test-11.2      | Passing  | 
 | 75 | Security, Unsecure URLs are managed correctly       | Test-11.3      | Passing  | 
 | 76 | Security, Code injection in text is managed         | Test-11.4      |          | 
-| 77 | Security, Guest cannot access user data             | Test-11.5      | Passing  | 
 
 
  7, 701 702, 7.1

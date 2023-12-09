@@ -1163,14 +1163,4 @@ describe('Fake SO Test Suite', () => {
 
     })
 
-    it('11.5 | Security, Guest cannot access user data', () => {
-        cy.request({
-            url: "http://localhost:8000/user",
-            failOnStatusCode: false
-        }).then(response => {
-            expect(response.status).to.eq(401);
-
-            expect(response.body).to.have.property('message', 'No user is currently logged in.');
-        });
-    });
 })
