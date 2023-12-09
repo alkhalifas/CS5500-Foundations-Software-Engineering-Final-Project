@@ -1,0 +1,30 @@
+.vertical-stacking {
+    display: flex;
+    background-color: white;
+    flex-direction: column;
+    box-shadow: 0 4px 8px 0 rgba(0.1, 0.1, 0.1, 0.2);
+    border-radius: 8px;
+    padding: 1%;
+    margin: 1% auto;
+    max-width: 90%;
+    height: 10%;
+    width: 100%;
+}
+
+.answer-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.postTitle {
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    cursor: pointer;
+}
+
+.postTitle:hover {
+    text-decoration: underline;
+    color: blue;
+}

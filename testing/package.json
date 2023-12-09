@@ -1,0 +1,15 @@
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cypress/code-coverage": "^3.12.13",
+    "mongoose": "^8.0.1"
+  }
+}
