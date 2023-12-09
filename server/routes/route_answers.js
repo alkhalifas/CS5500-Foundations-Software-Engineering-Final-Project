@@ -4,7 +4,7 @@ const Comment = require("../models/comment");
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
 const router = express.Router();
-
+const isAuthenticated = require("./isAuthenticated")
 
 /*
 Method to get comments for an answer
@@ -36,7 +36,7 @@ router.get('/answers/:answerId/comments', async (req, res) => {
     }
 });
 
-router.post('/accept-answer', async (req, res) => {
+router.post('/accept-answer', isAuthenticated, async (req, res) => {
     try {
         const { questionId, answerId } = req.body;
 
@@ -70,7 +70,7 @@ router.post('/accept-answer', async (req, res) => {
 });
 
 
-router.post('/answers/:answerId/comments', async (req, res) => {
+router.post('/answers/:answerId/comments',isAuthenticated,  async (req, res) => {
     try {
         const { answerId } = req.params;
         const { text, commented_by } = req.body;
@@ -92,7 +92,6 @@ router.post('/answers/:answerId/comments', async (req, res) => {
         if (user.reputation < 50) {
             return res.status(403).json({'message': 'User does not have enough reputation'});
         }
-
 
         const newComment = new Comment({
             text: text,
@@ -136,7 +135,7 @@ router.get('/answers/:answerId', async (req, res) => {
 /*
 Method to update an answer by ID
 */
-router.put('/answers/:answerId', async (req, res) => {
+router.put('/answers/:answerId', isAuthenticated, async (req, res) => {
     const { answerId } = req.params;
     const { text } = req.body;
 
@@ -145,6 +144,20 @@ router.put('/answers/:answerId', async (req, res) => {
 
         if (!updatedAnswer) {
             return res.status(404).json({'message': 'Answer not found'});
+        }
+
+        const question = await Question.findOne({
+            $or: [
+                { 'answers': updatedAnswer._id },
+                { 'accepted': updatedAnswer._id }
+            ]
+        });
+        if (!question) {
+            return res.status(404).json({ 'message': 'Question not found' });
+        } else {
+            // Update the updatedAt field to the current date
+            question.updatedAt = new Date();
+            await question.save();
         }
 
         res.json({'message': 'Answer updated successfully', 'updatedAnswer': updatedAnswer});
@@ -158,8 +171,10 @@ router.put('/answers/:answerId', async (req, res) => {
 /*
 Method to delete an answer by ID
 */
-router.delete('/answers/:answerId', async (req, res) => {
+router.delete('/answers/:answerId', isAuthenticated, async (req, res) => {
     const { answerId } = req.params;
+
+    console.log("answerId: ", answerId)
 
     try {
         const answer = await Answer.findById(answerId);
@@ -168,10 +183,35 @@ router.delete('/answers/:answerId', async (req, res) => {
             return res.status(404).json({'message': 'Answer not found'});
         }
 
+        // Delete answers comments
         await Comment.deleteMany({ answer: answerId });
 
-
+        // Delete the answer
         await Answer.findByIdAndRemove(answerId);
+
+        const question = await Question.findOne({
+            $or: [
+                { 'answers': answerId },
+                { 'accepted': answerId }
+            ]
+        });
+        if (!question) {
+            return res.status(404).json({ 'message': 'Question not found' });
+        } else {
+            // Remove answerId from the 'answers' array if it exists
+            if (question.answers.includes(answerId)) {
+                question.answers.pull(answerId);
+            }
+
+            // Remove answerId from the 'accepted' field if it exists
+            if (question.accepted && question.accepted.equals(answerId)) {
+                question.accepted = undefined;
+            }
+
+            // Update the updatedAt field to the current date
+            question.updatedAt = new Date();
+            await question.save();
+        }
 
         res.json({'message': 'Answer deleted successfully'});
     } catch (error) {
@@ -181,4 +221,3 @@ router.delete('/answers/:answerId', async (req, res) => {
 });
 
 module.exports = router;
-

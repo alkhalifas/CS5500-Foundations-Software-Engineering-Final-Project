@@ -29,11 +29,6 @@ const tags = [
 ];
 
 async function createUser(userData) {
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(userData.password, 10);
-    // console.log("userData.username: ", userData.username)
-    // console.log("hashedPassword: ", hashedPassword)
-    // console.log("userData.password: ", userData.password)
     let user = new User({ ...userData, password: userData.password });
     return user.save();
 }

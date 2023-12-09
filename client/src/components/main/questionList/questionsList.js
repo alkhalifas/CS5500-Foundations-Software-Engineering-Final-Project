@@ -59,8 +59,6 @@ export default function QuestionsList() {
 
     const handleQuestionClick = (question) => {
         setSelectedQuestion(question);
-        console.log("QL question: ", question)
-
     };
 
     const fetchQuestions = async (sortType, page) => {
@@ -99,6 +97,13 @@ export default function QuestionsList() {
         fetchUserData();
     }, []);
 
+    function truncateQuestionText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    }
+
     return (
         <div>
             {showForm ? (
@@ -111,7 +116,6 @@ export default function QuestionsList() {
                             !isGuest &&
                             <button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>
                         }
-                        {/*<button className={"ask-question-button"} onClick={handleAskQuestion}>Ask a Question</button>*/}
                     </div>
                     <AnswersPage question={selectedQuestion} />
 
@@ -144,14 +148,19 @@ export default function QuestionsList() {
                                     <div className={"question-left postStats"}>
                                         <p>{question.views} views</p>
                                         <p>{question.votes} votes</p>
-                                        <p>{question.answers.length} answers</p>
+                                        <p>
+                                            {question.accepted
+                                                ? question.answers.length + 1
+                                                : question.answers.length
+                                            } answers
+                                        </p>
                                     </div>
                                     <div className={"question-mid"}>
                                         <h4 className={"postTitle"}
                                             onClick={() => handleQuestionClick(question)}
                                         >{question.title}
                                         </h4>
-                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(question.text)} />
+                                        <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(truncateQuestionText(question.text, 100))} />
                                         <div className="tags">
                                             {question.tags.map(tag => (
                                                 <span key={tag} className="badge">{tag}</span>

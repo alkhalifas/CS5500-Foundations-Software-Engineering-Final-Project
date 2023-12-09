@@ -4,5 +4,4 @@
     return { __html: formattedText };
 };
 
-
  module.exports = formatQuestionText;

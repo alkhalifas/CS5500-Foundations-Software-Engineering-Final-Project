@@ -20,8 +20,6 @@ export default function AnswersPage({question}) {
     const [userData, setUserData] = useState({ username: '', email: '', reputation: 0, createdOn: ''});
     const [isGuest, setIsGuest] = useState(true);
 
-    console.log("AnswersPage: question: ", question)
-
     const fetchUserData = async () => {
         try {
             const response = await fetch(`http://localhost:8000/user`, {
@@ -183,7 +181,12 @@ export default function AnswersPage({question}) {
             {!showAnswerForm ? (
                 <>
                     <div className="header-container">
-                        <h3>{totalResults} answers</h3>
+                        <h3>
+                            {answer
+                                ? totalResults + 1
+                                : totalResults
+                            } answers
+                        </h3>
                         <h3>{question.title}</h3>
                         <h3> </h3>
                     </div>
@@ -231,7 +234,6 @@ export default function AnswersPage({question}) {
                     <div className="answerText">
                         {answer && (
                             <div key={answer._id}>
-
                                 <div className={"vertical-stacking"}>
                                     <div key={answer._id} className="answer-card" id={"questionBody"}>
                                         <div className="answer-votes-column centered">
@@ -262,9 +264,9 @@ export default function AnswersPage({question}) {
                                             )}
                                         </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
+                                    <div>
+                                        <CommentsSection type="answers" typeId={answer._id} userData={userData} isGuest={isGuest}/>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -279,9 +281,9 @@ export default function AnswersPage({question}) {
                                             <span className="answer-votes-count">{answer.votes} votes</span>
                                         </div>
                                         <div className="answer-text-column">
-                                        <span className="answer-text">
-                                            <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
-                                        </span>
+                                            <span className="answer-text">
+                                                <p style={{"fontSize":"12px"}} dangerouslySetInnerHTML={formatQuestionText(answer.text)} />
+                                            </span>
                                         </div>
                                         <div className="asked-by-column answerAuthor">
                                             <span className="asked-data"><AnswerCardTiming answer={answer} /></span>

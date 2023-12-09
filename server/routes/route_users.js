@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const Question = require("../models/questions");
 const Tag = require("../models/tags");
 const Answer = require("../models/answers");
-
+const isAuthenticated = require("./isAuthenticated");
 
 /*
 method that lets user register account
@@ -63,28 +63,19 @@ router.post('/login', async (req, res) => {
         // Get current user
         const user = await User.findOne({ username });
         if (!user) {
-            return res.status(401).json({'message': 'Username not found.'});
+            return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
         // Check password matches
-        console.log("password: ", password)
-        console.log("user.password: ", user.password)
-        console.log("bcrypt.compare(password, user.password): ", await bcrypt.compare(password, user.password))
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({'message': 'Invalid username or password.'});
         }
 
         // Login successful, update session
-        // req.session.user = { id: user._id, username: user.username };
         req.session.userId = user._id;  // Storing user ID in session
         req.session.isLoggedIn = true;
-
-        console.log("req.session: ", req.session)
-
         res.cookie('session.userId', req.session.userId, { maxAge: 900000, httpOnly: true });
-        // res.send(req.session.sessionID)
-        // res.json({ message: 'Login successful' });
         res.json({ message: 'Login successful' });
 
     } catch (error) {
@@ -96,9 +87,7 @@ router.post('/login', async (req, res) => {
 /*
 Method that checks current session
  */
-router.get('/session-status', (req, res) => {
-
-    console.log("req.session: ", req.session)
+router.get('/session-status', isAuthenticated, (req, res) => {
     if (req.session.userId) {
         res.json({ isLoggedIn: true, userId: req.session.userId });
     } else {
@@ -123,7 +112,7 @@ router.post('/logout', (req, res) => {
 /*
 Method to update a users reputation
  */
-router.post('/update-reputation', async (req, res) => {
+router.post('/update-reputation', isAuthenticated, async (req, res) => {
     try {
         const { username, reputationChange } = req.body;
 
@@ -175,8 +164,10 @@ router.get('/user', async (req, res) => {
 /*
 Method to get all questions for the logged-in user
 */
-router.get('/user/questions', async (req, res) => {
+router.get('/user/questions', isAuthenticated, async (req, res) => {
     try {
+        const page = req.query.page || 1;
+
         // getting the user ID from the sesion
         const userId = req.session.userId;
         if (!userId) {
@@ -189,20 +180,42 @@ router.get('/user/questions', async (req, res) => {
             return res.status(404).json({'message': 'User not valid'});
         }
 
-        const questions = await Question.find({ asked_by: user.username });
-        res.json(questions);
+        let questions = await Question.find({ asked_by: user.username }).populate('tags');
+        questions.sort((a, b) => b.ask_date_time - a.ask_date_time);
+
+        // Map the tags to their names in each question
+        questions = questions.map(question => ({
+            ...question.toObject(),
+            tags: question.tags.map(tag => tag.name)
+        }));
+
+        // Determine the start and end indices based on the page number
+        const questionsPerPage = 5;
+        const startIndex = (page - 1) * questionsPerPage;
+        const endIndex = startIndex + questionsPerPage;
+
+        // Extract the subset of questions for the specified page
+        const paginatedQuestions = questions.slice(startIndex, endIndex);
+
+        res.json({
+            totalQuestions: questions.length,
+            questions: paginatedQuestions,
+            currentPage: page,
+            totalPages: Math.ceil(questions.length / questionsPerPage)
+        });
     } catch (error) {
         res.status(500).json({'message': 'Error fetching questions for the user'});
         console.error("Error: ", error);
     }
 });
 
-
 /*
 Method to get all answers for the logged-in user
 */
-router.get('/user/answers', async (req, res) => {
+router.get('/user/answers', isAuthenticated, async (req, res) => {
     try {
+        const page = req.query.page || 1;
+
         // get user ID from the session
         const userId = req.session.userId;
         if (!userId) {
@@ -216,8 +229,9 @@ router.get('/user/answers', async (req, res) => {
         }
 
         const answers = await Answer.find({ ans_by: user.username });
+        answers.sort((a, b) => b.ans_date_time - a.ans_date_time);
 
-        res.json(answers);
+        res.json({answers: answers});
     } catch (error) {
         res.status(500).json({'message': 'Error fetching answers for the user'});
         console.error("Error: ", error);
@@ -227,7 +241,7 @@ router.get('/user/answers', async (req, res) => {
 /*
 Method to get all tags created by the logged-in user
 */
-router.get('/user/tags', async (req, res) => {
+router.get('/user/tags', isAuthenticated, async (req, res) => {
     try {
         // Fetch user ID from the session
         const userId = req.session.userId;
@@ -240,14 +254,21 @@ router.get('/user/tags', async (req, res) => {
             return res.status(404).json({'message': 'User not found'});
         }
 
-        res.json(user.posted_tags);
+        const userTagsWithCount = await Promise.all(user.posted_tags.map(async (tag) => {
+            const questionCount = await Question.countDocuments({ tags: tag._id });
+
+            return {
+                _id: tag._id,
+                name: tag.name,
+                count: questionCount
+            };
+        }));
+
+        res.json(userTagsWithCount);
     } catch (error) {
-        res.status(500).json({'message': 'Error fetching tags created by the user'});
-        console.error("Error: ", error);
+        console.error(error);
+        res.status(500).json({ error: 'Error getting user tags with counts' });
     }
 });
-
-
-
 
 module.exports = router;

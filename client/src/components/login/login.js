@@ -18,9 +18,7 @@ export default function Login({setIsLoggedIn, registerSuccess}) {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/login', credentials, { withCredentials: true });
-            console.log("response:", response);
             console.log("response.data:", response.data);
-
             setIsLoggedIn(true)
         } catch (error) {
             setFeedbackMessage(error.response?.data?.message || 'Unknown Error. Contact Admin.');

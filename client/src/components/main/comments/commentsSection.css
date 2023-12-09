@@ -2,16 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /*height: 100vh; !* This will take the full height of the viewport *!*/
 }
 
 .comments-container {
     margin: 20px;
     padding: 10px;
     width: 60%;
-    /*background-color: #f9f9f9;*/
-    /*border-radius: 8px;*/
-    /*box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
 }
 
 .comment {
@@ -52,7 +48,6 @@
     margin: 4px 50px 4px 2px;
     cursor: pointer;
     border-radius: 4px;
-
 }
 
 .vote-button:hover {

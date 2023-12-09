@@ -5,8 +5,8 @@ const User = require("../models/users");
 const Tag = require("../models/tags");
 const elementFactory = require("../models/elementFactory");
 const Answer = require("../models/answers");
+const isAuthenticated = require("./isAuthenticated");
 const router = express.Router();
-
 
 async function questionCreate(title, text, tags, answers, asked_by, ask_date_time, views) {
     try {
@@ -203,33 +203,10 @@ router.get('/questions', async (req, res) => {
         if (sortType === 'newest') {
             questions.sort((a, b) => b.ask_date_time - a.ask_date_time);
         } else if (sortType === 'active') {
-            // Create a function to get the latest answer date for a question
-            const getLatestAnswerDate = async (question) => {
-                const answers = await Answer.find({ _id: { $in: question.answers } });
-                if (answers.length === 0) {
-                    return null;
-                }
-                return Math.max(...answers.map(answer => answer.ans_date_time));
-            };
-
-            const latestAnswerDates = await Promise.all(questions.map(getLatestAnswerDate));
-            questions.sort((a, b) => {
-                const aLatestAnswerDate = latestAnswerDates[questions.indexOf(a)];
-                const bLatestAnswerDate = latestAnswerDates[questions.indexOf(b)];
-
-                if (!aLatestAnswerDate && !bLatestAnswerDate) {
-                    return b.ask_date_time - a.ask_date_time;
-                }
-
-                if (aLatestAnswerDate && bLatestAnswerDate) {
-                    return bLatestAnswerDate - aLatestAnswerDate;
-                }
-
-                return bLatestAnswerDate ? 1 : -1;
-            });
+            questions.sort((a, b) => b.updatedAt - a.updatedAt);
         } else if (sortType === 'unanswered') {
             questions = questions.filter(
-                (question) => question.answers.length === 0
+                (question) => question.answers.length === 0 && question.accepted.length === 0
             ).sort((a, b) => b.ask_date_time - a.ask_date_time);
         }
 
@@ -253,7 +230,7 @@ router.get('/questions', async (req, res) => {
 /*
 Method that posts a new question
  */
-router.post('/questions', async (req, res) => {
+router.post('/questions', isAuthenticated, async (req, res) => {
     const { title, text, tags, asked_by } = req.body;
 
     const tagNames = tags.split(/\s+/).map(tagName => tagName.trim());
@@ -283,7 +260,7 @@ router.post('/questions', async (req, res) => {
 /*
 A method that allows a user to edit a question
  */
-router.put('/questions/:questionId', async (req, res) => {
+router.put('/questions/:questionId', isAuthenticated, async (req, res) => {
     const questionId = req.params.questionId;
     const { title, text, tags } = req.body;
 
@@ -322,7 +299,7 @@ router.put('/questions/:questionId', async (req, res) => {
 /*
 Method that posts a new answer to a given question
  */
-router.post('/questions/:questionId/answers', async (req, res) => {
+router.post('/questions/:questionId/answers', isAuthenticated, async (req, res) => {
     const { questionId } = req.params;
     const { text, ans_by } = req.body;
     try {
@@ -345,7 +322,7 @@ router.post('/questions/:questionId/answers', async (req, res) => {
 /*
 Method that deletes a question, its answer, and tags
  */
-router.delete('/questions/:questionId', async (req, res) => {
+router.delete('/questions/:questionId', isAuthenticated, async (req, res) => {
     const questionId = req.params.questionId;
 
     try {
@@ -354,16 +331,16 @@ router.delete('/questions/:questionId', async (req, res) => {
             return res.status(404).json({ error: 'Question not found' });
         }
 
-        // Delete  answers
-        await Answer.deleteMany({ _id: { $in: question.answers } });
+        // Delete comments of question
+        await Comment.deleteMany({ question: questionId });
 
-        // Check each tag to see if other Qs have that tag
-        for (const tagId of question.tags) {
-            const isTagUsedElsewhere = await Question.findOne({ tags: tagId, _id: { $ne: questionId } });
-            if (!isTagUsedElsewhere) {
-                await Tag.findByIdAndDelete(tagId);
-            }
+        // Also delete comments of answers
+        for (const answerId of question.answers) {
+            await Comment.deleteMany({ answer: answerId });
         }
+
+        // Delete answers of the question
+        await Answer.deleteMany({ _id: { $in: question.answers } });
 
         // delete the question obj
         await Question.findByIdAndRemove(questionId);

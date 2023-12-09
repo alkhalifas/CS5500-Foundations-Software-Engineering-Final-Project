@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*height: 100vh;*/
     text-align: center;
 }
 
@@ -39,7 +38,7 @@
 
 .cards-container {
     display: flex;
-    justify-content: space-around; /* Adjust as needed */
+    justify-content: space-around;
 }
 
 .card {
@@ -60,3 +59,50 @@
     font-size: 14px; /* Smaller font size for the description */
 }
 
+.horizontal-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 2%;
+}
+
+.menu-btn {
+    display: block;
+    width: 100%;
+    margin: 3%;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-menu-button {
+    display: block;
+    width: 100%;
+    margin: 3%;
+    padding: 10px;
+    background-color: #9a9a9a;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-btn:hover {
+    background-color: #ddd;
+}
+
+.active {
+    background-color: #ccc;
+}
+
+.dark-active {
+    background-color: #999;
+}
+
+button {
+    font-size: 18px;
+}

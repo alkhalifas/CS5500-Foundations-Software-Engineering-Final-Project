@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import axios from "axios";
 
 export default function Header({
-                                   setSearchInput,
-                                   setSearchActive,
-                                   // userData,
-                                   isLoggedIn,
-                                   setIsLoggedIn,
-                                   isGuest,
-                                   handleSignIn
+   setSearchInput,
+   setSearchActive,
+   isLoggedIn,
+   setIsLoggedIn,
+   isGuest,
+   handleSignIn
 }) {
     const [searchInput, setSearchInputState] = useState('');
     const [userData, setUserData] =useState("");
@@ -26,12 +25,10 @@ export default function Header({
                 } else {
                     setIsLoggedIn(false);
                     setUserData('');
-                    console.log("NOT LOGGED IN")
                 }
             })
             .catch(error => {
                 console.error('Error checking session status:', error);
-                // Handle error appropriately
             });
     };
 
@@ -46,7 +43,6 @@ export default function Header({
             .then(() => {
                 setIsLoggedIn(false);
                 console.log("Logged out successfully");
-                // Perform any additional actions on logout
             })
             .catch(error => {
                 console.error('Logout error:', error);
@@ -54,10 +50,7 @@ export default function Header({
     };
 
     useEffect(() => {
-
         checkSessionStatus();
-
-
     }, []);
 
     return (
@@ -65,7 +58,7 @@ export default function Header({
             <div className="header">
                 Fake Stack Overflow
                 {
-                    isGuest || isLoggedIn &&
+                    (isGuest || isLoggedIn) &&
                     <div className="search-bar">
                         <input
                             type="text"
@@ -85,7 +78,6 @@ export default function Header({
                 {
                     isLoggedIn &&
                     <>
-                        {/*<p style={{"fontSize":"16px"}}>Welcome, {userData}</p>*/}
                         <button className="welcome-button" onClick={() => handleLogout()}>Logout</button>
                     </>
                 }
