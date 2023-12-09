@@ -80,7 +80,7 @@ Run Tests:
 | 34 | Search Tags, Check Responses                        | Test-4.0       |          | 
 | 35 | Search Text, Check Responses                        | Test-4.1       |          | 
 | 36 | Search Tags and Text, Check Responses               | Test-4.2       |          | 
-| 37 | Search Tags and Text, No results found              | Test-4.2       |          | 
+| 37 | Search, No results found                            | Test-4.3       |          | 
 | 38 | View Questions, Sort by Newest                      | Test-5.1       | Passing  | 
 | 39 | View Questions, Sort by Active                      | Test-5.1.1     |          | 
 | 40 | View Questions, Sort by Unanswered                  | Test-5.1.2     | Passing  | 
