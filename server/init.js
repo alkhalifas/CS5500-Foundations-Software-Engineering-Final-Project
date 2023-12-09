@@ -24,8 +24,8 @@ const sampleUsers = [
 ];
 
 const tags = [
-    'Quantum', 'Relativity', 'Atom', 'Electrons',
-    'Particles', 'Theory', 'Physics', 'Mathematics'
+    'quantum', 'relativity', 'atom', 'electrons',
+    'particles', 'theory', 'physics', 'mathematics'
 ];
 
 async function createUser(userData) {
