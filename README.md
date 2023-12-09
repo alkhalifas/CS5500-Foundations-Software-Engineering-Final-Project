@@ -149,5 +149,5 @@ Run Tests:
 
 ## Coverage:
 - Coverage was completed in this assignment for extra credit.
-![Coverage Results](testing/Coverage Results.png)
+- Please see `design/coverage_results.png`
 
