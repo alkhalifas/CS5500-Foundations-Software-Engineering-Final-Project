@@ -40,7 +40,6 @@ Run Tests:
 - [X] Active Filter
 
 ## Test cases
-
 | #   | Use-case Name                                       | Test case Name | Status   |
 |-----|-----------------------------------------------------|----------------|----------|
 | 1   | Welcome Page Content Check                          | Test-1.1       | Passing  |
