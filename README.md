@@ -1,8 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/hxTav0v1)
 Login with your Northeastern credentials and read the Project Specifications [here](https://northeastern-my.sharepoint.com/:w:/g/personal/j_mitra_northeastern_edu/EcUflH7GXMBEjXGjx-qRQMkB7cfHNaHk9LYqeHRm7tgrKg?e=oZEef3).
 
-Add design docs in *images/*
-
 ## Instructions to setup and run project
 
 Run Mongod:
@@ -119,14 +117,15 @@ Run Tests:
 | 75  | Profile, Delete Answer and see Changes              | Test-10.7      | Passing  | 
 | 76  | Profile, Delete Tag and see Changes                 | Test-10.8      | Passing  | 
 | 77  | Security, User can only get their data              | Test-11.0      | Passing  | 
-| 78  | Security, Editing questions, answers, or tags       | Test-11.1      |          | 
+| 78  | Security, Editing questions, answers, or tags       | Test-11.1      | Passing  | 
 | 79  | Security, Session Persisting on refresh             | Test-11.2      | Passing  | 
 | 80  | Security, Unsecure URLs are managed correctly       | Test-11.3      | Passing  | 
-| 81  | Security, Code injection in text is managed         | Test-11.4      |          | 
+| 81  | Security, Code injection in text is managed         | Test-11.4      | Passing  | 
 | 82  | Security, Guest cannot access user data             | Test-11.5      | Passing  | 
 | 83  | Accept an answer                                    | Test-12.0      | Passing  | 
 
 ## Design Patterns Used
+- Four design patterns were implemented in this project for extra credit.
 
 #### 1. Facade Pattern:
 - Design Pattern Name: Facade Pattern
@@ -147,3 +146,8 @@ Run Tests:
 - Design Pattern Name: Factory Pattern
 - Problem Solved: The Factory Pattern provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. It's particularly useful when the system needs to be independent of how its objects are created. The `elementFactory` module is where the Factory Pattern is implemented. This module's `create_element` function acts as a factory, creating different elements like `Question`, `Answer`, and `Tag`. This pattern abstracts the creation logic, making the process of object instantiation more flexible and maintainable.
 - Location in code where pattern is used: `elementFactory.js`,`route_questions.js`
+
+## Coverage:
+- Coverage was completed in this assignment for extra credit.
+![Coverage Results](testing/Coverage Results.png)
+
