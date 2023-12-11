@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1702126586193" clover="3.2.0">
-  <project timestamp="1702126586193" name="All files">
+<coverage generated="1702257239798" clover="3.2.0">
+  <project timestamp="1702257239798" name="All files">
     <metrics statements="903" coveredstatements="724" conditionals="399" coveredconditionals="250" methods="212" coveredmethods="174" elements="1514" coveredelements="1148" complexity="0" loc="903" ncloc="903" packages="22" files="25" classes="25"/>
     <package name="src">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -18,15 +18,15 @@
       <metrics statements="39" coveredstatements="34" conditionals="18" coveredconditionals="14" methods="11" coveredmethods="8"/>
       <file name="fakestackoverflow.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/fakestackoverflow.js">
         <metrics statements="39" coveredstatements="34" conditionals="18" coveredconditionals="14" methods="11" coveredmethods="8"/>
-        <line num="14" count="471" type="stmt"/>
-        <line num="15" count="464" type="stmt"/>
-        <line num="16" count="464" type="stmt"/>
-        <line num="17" count="464" type="stmt"/>
-        <line num="18" count="464" type="stmt"/>
-        <line num="19" count="464" type="stmt"/>
-        <line num="20" count="464" type="stmt"/>
-        <line num="21" count="464" type="stmt"/>
-        <line num="24" count="464" type="stmt"/>
+        <line num="14" count="475" type="stmt"/>
+        <line num="15" count="468" type="stmt"/>
+        <line num="16" count="468" type="stmt"/>
+        <line num="17" count="468" type="stmt"/>
+        <line num="18" count="468" type="stmt"/>
+        <line num="19" count="468" type="stmt"/>
+        <line num="20" count="468" type="stmt"/>
+        <line num="21" count="468" type="stmt"/>
+        <line num="24" count="468" type="stmt"/>
         <line num="25" count="172" type="stmt"/>
         <line num="27" count="172" type="cond" truecount="2" falsecount="0"/>
         <line num="28" count="4" type="stmt"/>
@@ -34,29 +34,29 @@
         <line num="31" count="168" type="stmt"/>
         <line num="32" count="168" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="40" count="464" type="stmt"/>
+        <line num="40" count="468" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="45" count="464" type="stmt"/>
+        <line num="45" count="468" type="stmt"/>
         <line num="46" count="172" type="stmt"/>
-        <line num="49" count="464" type="cond" truecount="1" falsecount="0"/>
+        <line num="49" count="468" type="cond" truecount="1" falsecount="0"/>
         <line num="50" count="39" type="cond" truecount="2" falsecount="0"/>
         <line num="51" count="31" type="stmt"/>
         <line num="52" count="31" type="stmt"/>
         <line num="54" count="39" type="stmt"/>
         <line num="55" count="70" type="stmt"/>
-        <line num="58" count="464" type="stmt"/>
-        <line num="59" count="266" type="cond" truecount="3" falsecount="2"/>
-        <line num="61" count="192" type="stmt"/>
+        <line num="58" count="468" type="stmt"/>
+        <line num="59" count="270" type="cond" truecount="3" falsecount="2"/>
+        <line num="61" count="196" type="stmt"/>
         <line num="63" count="22" type="stmt"/>
         <line num="65" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="67" count="52" type="stmt"/>
         <line num="69" count="0" type="stmt"/>
-        <line num="73" count="464" type="stmt"/>
-        <line num="74" count="464" type="cond" truecount="4" falsecount="0"/>
-        <line num="75" count="274" type="stmt"/>
+        <line num="73" count="468" type="stmt"/>
+        <line num="74" count="468" type="cond" truecount="4" falsecount="0"/>
+        <line num="75" count="278" type="stmt"/>
         <line num="85" count="190" type="stmt"/>
-        <line num="89" count="464" type="stmt"/>
+        <line num="89" count="468" type="stmt"/>
       </file>
     </package>
     <package name="src.components.header">
@@ -118,9 +118,9 @@
       <file name="utils.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/main/utils.js">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="86" type="stmt"/>
-        <line num="2" count="3848" type="stmt"/>
-        <line num="3" count="3848" type="cond" truecount="1" falsecount="1"/>
-        <line num="4" count="3848" type="stmt"/>
+        <line num="2" count="3878" type="stmt"/>
+        <line num="3" count="3878" type="cond" truecount="1" falsecount="1"/>
+        <line num="4" count="3878" type="stmt"/>
         <line num="7" count="86" type="stmt"/>
       </file>
     </package>
@@ -135,12 +135,12 @@
         <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="23" count="570" type="stmt"/>
-        <line num="24" count="570" type="stmt"/>
-        <line num="26" count="570" type="stmt"/>
-        <line num="28" count="570" type="stmt"/>
-        <line num="29" count="570" type="cond" truecount="1" falsecount="1"/>
-        <line num="30" count="570" type="stmt"/>
+        <line num="23" count="546" type="stmt"/>
+        <line num="24" count="546" type="stmt"/>
+        <line num="26" count="546" type="stmt"/>
+        <line num="28" count="546" type="stmt"/>
+        <line num="29" count="546" type="cond" truecount="1" falsecount="1"/>
+        <line num="30" count="546" type="stmt"/>
         <line num="31" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="32" count="0" type="stmt"/>
         <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -157,22 +157,22 @@
         <line num="45" count="0" type="stmt"/>
         <line num="46" count="0" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="50" count="570" type="stmt"/>
+        <line num="50" count="546" type="stmt"/>
         <line num="57" count="86" type="stmt"/>
       </file>
       <file name="AnswersPage.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/main/Answers/AnswersPage.js">
         <metrics statements="101" coveredstatements="89" conditionals="50" coveredconditionals="43" methods="29" coveredmethods="24"/>
-        <line num="12" count="342" type="stmt"/>
-        <line num="13" count="342" type="stmt"/>
-        <line num="14" count="342" type="stmt"/>
-        <line num="15" count="342" type="stmt"/>
-        <line num="16" count="342" type="stmt"/>
-        <line num="17" count="342" type="stmt"/>
-        <line num="18" count="342" type="stmt"/>
-        <line num="19" count="342" type="stmt"/>
-        <line num="20" count="342" type="stmt"/>
-        <line num="21" count="342" type="stmt"/>
-        <line num="23" count="342" type="stmt"/>
+        <line num="12" count="336" type="stmt"/>
+        <line num="13" count="336" type="stmt"/>
+        <line num="14" count="336" type="stmt"/>
+        <line num="15" count="336" type="stmt"/>
+        <line num="16" count="336" type="stmt"/>
+        <line num="17" count="336" type="stmt"/>
+        <line num="18" count="336" type="stmt"/>
+        <line num="19" count="336" type="stmt"/>
+        <line num="20" count="336" type="stmt"/>
+        <line num="21" count="336" type="stmt"/>
+        <line num="23" count="336" type="stmt"/>
         <line num="24" count="54" type="stmt"/>
         <line num="25" count="54" type="stmt"/>
         <line num="33" count="54" type="cond" truecount="2" falsecount="0"/>
@@ -182,7 +182,7 @@
         <line num="39" count="50" type="stmt"/>
         <line num="41" count="4" type="stmt"/>
         <line num="42" count="4" type="stmt"/>
-        <line num="46" count="342" type="stmt"/>
+        <line num="46" count="336" type="stmt"/>
         <line num="47" count="64" type="stmt"/>
         <line num="48" count="64" type="stmt"/>
         <line num="50" count="64" type="stmt"/>
@@ -190,12 +190,12 @@
         <line num="52" count="64" type="stmt"/>
         <line num="53" count="64" type="stmt"/>
         <line num="56" count="0" type="stmt"/>
-        <line num="60" count="342" type="stmt"/>
+        <line num="60" count="336" type="stmt"/>
         <line num="61" count="59" type="stmt"/>
         <line num="62" count="59" type="stmt"/>
         <line num="64" count="1" type="stmt"/>
         <line num="67" count="58" type="stmt"/>
-        <line num="71" count="342" type="stmt"/>
+        <line num="71" count="336" type="stmt"/>
         <line num="73" count="54" type="stmt"/>
         <line num="74" count="54" type="stmt"/>
         <line num="76" count="54" type="stmt"/>
@@ -205,9 +205,9 @@
         <line num="84" count="54" type="stmt"/>
         <line num="85" count="54" type="stmt"/>
         <line num="86" count="54" type="stmt"/>
-        <line num="90" count="342" type="stmt"/>
+        <line num="90" count="336" type="stmt"/>
         <line num="91" count="12" type="stmt"/>
-        <line num="94" count="342" type="stmt"/>
+        <line num="94" count="336" type="stmt"/>
         <line num="95" count="8" type="stmt"/>
         <line num="96" count="8" type="stmt"/>
         <line num="97" count="8" type="stmt"/>
@@ -215,28 +215,28 @@
         <line num="100" count="8" type="stmt"/>
         <line num="101" count="8" type="stmt"/>
         <line num="103" count="0" type="stmt"/>
-        <line num="107" count="342" type="stmt"/>
+        <line num="107" count="336" type="stmt"/>
         <line num="108" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="109" count="1" type="stmt"/>
         <line num="110" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="111" count="0" type="stmt"/>
-        <line num="115" count="342" type="stmt"/>
+        <line num="115" count="336" type="stmt"/>
         <line num="116" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="117" count="0" type="stmt"/>
-        <line num="121" count="342" type="stmt"/>
+        <line num="121" count="336" type="stmt"/>
         <line num="122" count="3" type="stmt"/>
         <line num="123" count="3" type="stmt"/>
         <line num="124" count="3" type="stmt"/>
         <line num="128" count="3" type="stmt"/>
         <line num="129" count="3" type="stmt"/>
         <line num="131" count="0" type="stmt"/>
-        <line num="135" count="342" type="stmt"/>
+        <line num="135" count="336" type="stmt"/>
         <line num="136" count="4" type="stmt"/>
         <line num="137" count="8" type="cond" truecount="2" falsecount="0"/>
         <line num="138" count="4" type="stmt"/>
         <line num="143" count="4" type="stmt"/>
         <line num="145" count="4" type="stmt"/>
-        <line num="148" count="342" type="stmt"/>
+        <line num="148" count="336" type="stmt"/>
         <line num="149" count="4" type="stmt"/>
         <line num="150" count="4" type="stmt"/>
         <line num="151" count="4" type="stmt"/>
@@ -244,7 +244,7 @@
         <line num="156" count="4" type="stmt"/>
         <line num="157" count="4" type="stmt"/>
         <line num="159" count="0" type="stmt"/>
-        <line num="163" count="342" type="stmt"/>
+        <line num="163" count="336" type="stmt"/>
         <line num="164" count="1" type="stmt"/>
         <line num="165" count="1" type="stmt"/>
         <line num="166" count="1" type="stmt"/>
@@ -252,13 +252,13 @@
         <line num="172" count="1" type="stmt"/>
         <line num="173" count="1" type="stmt"/>
         <line num="175" count="0" type="stmt"/>
-        <line num="179" count="342" type="stmt"/>
-        <line num="206" count="636" type="stmt"/>
+        <line num="179" count="336" type="stmt"/>
+        <line num="206" count="624" type="stmt"/>
         <line num="224" count="2" type="stmt"/>
         <line num="225" count="1" type="stmt"/>
         <line num="259" count="0" type="stmt"/>
         <line num="260" count="0" type="stmt"/>
-        <line num="277" count="566" type="stmt"/>
+        <line num="277" count="542" type="stmt"/>
         <line num="300" count="3" type="stmt"/>
         <line num="301" count="1" type="stmt"/>
         <line num="306" count="1" type="stmt"/>
@@ -306,15 +306,15 @@
       <metrics statements="42" coveredstatements="40" conditionals="13" coveredconditionals="11" methods="6" coveredmethods="6"/>
       <file name="answerForm.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/main/answerForm/answerForm.js">
         <metrics statements="42" coveredstatements="40" conditionals="13" coveredconditionals="11" methods="6" coveredmethods="6"/>
-        <line num="7" count="496" type="stmt"/>
-        <line num="12" count="496" type="stmt"/>
-        <line num="13" count="496" type="stmt"/>
-        <line num="14" count="496" type="stmt"/>
-        <line num="16" count="496" type="stmt"/>
+        <line num="7" count="498" type="stmt"/>
+        <line num="12" count="498" type="stmt"/>
+        <line num="13" count="498" type="stmt"/>
+        <line num="14" count="498" type="stmt"/>
+        <line num="16" count="498" type="stmt"/>
         <line num="17" count="203" type="stmt"/>
         <line num="18" count="203" type="stmt"/>
         <line num="20" count="203" type="stmt"/>
-        <line num="23" count="496" type="stmt"/>
+        <line num="23" count="498" type="stmt"/>
         <line num="24" count="24" type="stmt"/>
         <line num="25" count="24" type="stmt"/>
         <line num="26" count="24" type="stmt"/>
@@ -325,7 +325,7 @@
         <line num="40" count="24" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
         <line num="46" count="24" type="stmt"/>
-        <line num="49" count="496" type="stmt"/>
+        <line num="49" count="498" type="stmt"/>
         <line num="50" count="10" type="stmt"/>
         <line num="51" count="10" type="stmt"/>
         <line num="52" count="10" type="cond" truecount="2" falsecount="0"/>
@@ -333,7 +333,7 @@
         <line num="55" count="8" type="stmt"/>
         <line num="56" count="8" type="stmt"/>
         <line num="58" count="2" type="stmt"/>
-        <line num="62" count="496" type="stmt"/>
+        <line num="62" count="498" type="stmt"/>
         <line num="63" count="10" type="stmt"/>
         <line num="66" count="10" type="cond" truecount="2" falsecount="0"/>
         <line num="67" count="1" type="stmt"/>
@@ -346,7 +346,7 @@
         <line num="77" count="1" type="stmt"/>
         <line num="78" count="1" type="stmt"/>
         <line num="82" count="10" type="stmt"/>
-        <line num="85" count="496" type="stmt"/>
+        <line num="85" count="498" type="stmt"/>
         <line num="111" count="86" type="stmt"/>
       </file>
     </package>
@@ -355,14 +355,14 @@
       <file name="commentsSection.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/main/comments/commentsSection.js">
         <metrics statements="77" coveredstatements="58" conditionals="38" coveredconditionals="25" methods="12" coveredmethods="9"/>
         <line num="5" count="86" type="stmt"/>
-        <line num="6" count="2598" type="stmt"/>
-        <line num="7" count="2598" type="stmt"/>
-        <line num="8" count="2598" type="stmt"/>
-        <line num="9" count="2598" type="stmt"/>
-        <line num="10" count="2598" type="stmt"/>
-        <line num="11" count="2598" type="stmt"/>
-        <line num="12" count="2598" type="stmt"/>
-        <line num="14" count="2598" type="stmt"/>
+        <line num="6" count="2546" type="stmt"/>
+        <line num="7" count="2546" type="stmt"/>
+        <line num="8" count="2546" type="stmt"/>
+        <line num="9" count="2546" type="stmt"/>
+        <line num="10" count="2546" type="stmt"/>
+        <line num="11" count="2546" type="stmt"/>
+        <line num="12" count="2546" type="stmt"/>
+        <line num="14" count="2546" type="stmt"/>
         <line num="15" count="278" type="stmt"/>
         <line num="16" count="278" type="stmt"/>
         <line num="17" count="278" type="stmt"/>
@@ -372,11 +372,11 @@
         <line num="21" count="278" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="25" count="278" type="stmt"/>
-        <line num="29" count="2598" type="stmt"/>
+        <line num="29" count="2546" type="stmt"/>
         <line num="30" count="486" type="cond" truecount="4" falsecount="0"/>
         <line num="31" count="13" type="stmt"/>
         <line num="32" count="13" type="stmt"/>
-        <line num="36" count="2598" type="stmt"/>
+        <line num="36" count="2546" type="stmt"/>
         <line num="37" count="267" type="stmt"/>
         <line num="38" count="267" type="stmt"/>
         <line num="46" count="267" type="cond" truecount="2" falsecount="0"/>
@@ -384,10 +384,10 @@
         <line num="50" count="255" type="stmt"/>
         <line num="52" count="12" type="stmt"/>
         <line num="53" count="12" type="stmt"/>
-        <line num="57" count="2598" type="stmt"/>
+        <line num="57" count="2546" type="stmt"/>
         <line num="58" count="267" type="stmt"/>
         <line num="59" count="267" type="stmt"/>
-        <line num="64" count="2598" type="stmt"/>
+        <line num="64" count="2546" type="stmt"/>
         <line num="65" count="0" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
@@ -396,7 +396,7 @@
         <line num="82" count="0" type="stmt"/>
         <line num="84" count="0" type="stmt"/>
         <line num="85" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="89" count="2598" type="stmt"/>
+        <line num="89" count="2546" type="stmt"/>
         <line num="91" count="13" type="stmt"/>
         <line num="93" count="13" type="cond" truecount="1" falsecount="1"/>
         <line num="94" count="0" type="stmt"/>
@@ -417,16 +417,16 @@
         <line num="128" count="11" type="stmt"/>
         <line num="130" count="0" type="stmt"/>
         <line num="131" count="0" type="stmt"/>
-        <line num="135" count="2598" type="stmt"/>
+        <line num="135" count="2546" type="stmt"/>
         <line num="136" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="137" count="1" type="stmt"/>
         <line num="138" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="139" count="0" type="stmt"/>
-        <line num="143" count="2598" type="stmt"/>
+        <line num="143" count="2546" type="stmt"/>
         <line num="144" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="145" count="0" type="stmt"/>
-        <line num="149" count="2598" type="cond" truecount="2" falsecount="0"/>
-        <line num="151" count="1882" type="stmt"/>
+        <line num="149" count="2546" type="cond" truecount="2" falsecount="0"/>
+        <line num="151" count="1850" type="stmt"/>
         <line num="157" count="696" type="stmt"/>
         <line num="161" count="0" type="stmt"/>
         <line num="181" count="473" type="stmt"/>
@@ -437,12 +437,12 @@
       <metrics statements="69" coveredstatements="66" conditionals="31" coveredconditionals="29" methods="8" coveredmethods="8"/>
       <file name="questionForm.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/main/questionForm/questionForm.js">
         <metrics statements="69" coveredstatements="66" conditionals="31" coveredconditionals="29" methods="8" coveredmethods="8"/>
-        <line num="8" count="3412" type="stmt"/>
-        <line num="14" count="3412" type="stmt"/>
-        <line num="15" count="3412" type="stmt"/>
-        <line num="16" count="3412" type="stmt"/>
-        <line num="17" count="3412" type="stmt"/>
-        <line num="19" count="3412" type="stmt"/>
+        <line num="8" count="3418" type="stmt"/>
+        <line num="14" count="3418" type="stmt"/>
+        <line num="15" count="3418" type="stmt"/>
+        <line num="16" count="3418" type="stmt"/>
+        <line num="17" count="3418" type="stmt"/>
+        <line num="19" count="3418" type="stmt"/>
         <line num="20" count="48" type="stmt"/>
         <line num="21" count="48" type="stmt"/>
         <line num="22" count="48" type="stmt"/>
@@ -454,11 +454,11 @@
         <line num="38" count="0" type="stmt"/>
         <line num="42" count="48" type="stmt"/>
         <line num="43" count="48" type="stmt"/>
-        <line num="46" count="3412" type="stmt"/>
+        <line num="46" count="3418" type="stmt"/>
         <line num="47" count="1578" type="stmt"/>
         <line num="48" count="1578" type="stmt"/>
         <line num="50" count="1578" type="stmt"/>
-        <line num="53" count="3412" type="stmt"/>
+        <line num="53" count="3418" type="stmt"/>
         <line num="54" count="24" type="stmt"/>
         <line num="55" count="24" type="stmt"/>
         <line num="56" count="24" type="cond" truecount="2" falsecount="0"/>
@@ -466,14 +466,14 @@
         <line num="59" count="13" type="stmt"/>
         <line num="60" count="13" type="stmt"/>
         <line num="62" count="11" type="stmt"/>
-        <line num="66" count="3412" type="stmt"/>
+        <line num="66" count="3418" type="stmt"/>
         <line num="67" count="48" type="stmt"/>
         <line num="68" count="48" type="stmt"/>
         <line num="69" count="48" type="stmt"/>
         <line num="70" count="384" type="stmt"/>
         <line num="71" count="48" type="stmt"/>
         <line num="73" count="0" type="stmt"/>
-        <line num="77" count="3412" type="stmt"/>
+        <line num="77" count="3418" type="stmt"/>
         <line num="78" count="24" type="stmt"/>
         <line num="81" count="24" type="cond" truecount="2" falsecount="0"/>
         <line num="82" count="1" type="stmt"/>
@@ -504,7 +504,7 @@
         <line num="124" count="1" type="stmt"/>
         <line num="125" count="1" type="stmt"/>
         <line num="130" count="24" type="stmt"/>
-        <line num="133" count="3412" type="stmt"/>
+        <line num="133" count="3418" type="stmt"/>
         <line num="185" count="86" type="stmt"/>
       </file>
     </package>
@@ -519,12 +519,12 @@
         <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="23" count="3176" type="stmt"/>
-        <line num="24" count="3176" type="stmt"/>
-        <line num="26" count="3176" type="stmt"/>
-        <line num="28" count="3176" type="stmt"/>
-        <line num="29" count="3176" type="cond" truecount="1" falsecount="1"/>
-        <line num="30" count="3176" type="stmt"/>
+        <line num="23" count="3230" type="stmt"/>
+        <line num="24" count="3230" type="stmt"/>
+        <line num="26" count="3230" type="stmt"/>
+        <line num="28" count="3230" type="stmt"/>
+        <line num="29" count="3230" type="cond" truecount="1" falsecount="1"/>
+        <line num="30" count="3230" type="stmt"/>
         <line num="31" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="32" count="0" type="stmt"/>
         <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -541,7 +541,7 @@
         <line num="45" count="0" type="stmt"/>
         <line num="46" count="0" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="50" count="3176" type="stmt"/>
+        <line num="50" count="3230" type="stmt"/>
         <line num="57" count="86" type="stmt"/>
       </file>
       <file name="questionsList.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/main/questionList/questionsList.js">
@@ -599,16 +599,16 @@
         <line num="95" count="858" type="stmt"/>
         <line num="96" count="168" type="stmt"/>
         <line num="97" count="168" type="stmt"/>
-        <line num="101" count="2796" type="cond" truecount="1" falsecount="1"/>
+        <line num="101" count="2856" type="cond" truecount="1" falsecount="1"/>
         <line num="102" count="0" type="stmt"/>
-        <line num="104" count="2796" type="stmt"/>
+        <line num="104" count="2856" type="stmt"/>
         <line num="107" count="858" type="stmt"/>
         <line num="135" count="4" type="stmt"/>
         <line num="136" count="2" type="stmt"/>
         <line num="137" count="6" type="stmt"/>
-        <line num="143" count="2796" type="stmt"/>
+        <line num="143" count="2856" type="stmt"/>
         <line num="160" count="27" type="stmt"/>
-        <line num="166" count="5572" type="stmt"/>
+        <line num="166" count="5692" type="stmt"/>
       </file>
     </package>
     <package name="src.components.main.searchResults">
@@ -713,16 +713,16 @@
       <file name="profile.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/profile/profile.js">
         <metrics statements="35" coveredstatements="32" conditionals="16" coveredconditionals="14" methods="10" coveredmethods="10"/>
         <line num="7" count="86" type="stmt"/>
-        <line num="8" count="152" type="cond" truecount="2" falsecount="0"/>
-        <line num="9" count="108" type="stmt"/>
-        <line num="10" count="108" type="stmt"/>
-        <line num="11" count="108" type="stmt"/>
-        <line num="12" count="108" type="stmt"/>
-        <line num="13" count="108" type="stmt"/>
-        <line num="17" count="152" type="stmt"/>
-        <line num="18" count="152" type="stmt"/>
-        <line num="19" count="152" type="stmt"/>
-        <line num="21" count="152" type="stmt"/>
+        <line num="8" count="154" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="110" type="stmt"/>
+        <line num="10" count="110" type="stmt"/>
+        <line num="11" count="110" type="stmt"/>
+        <line num="12" count="110" type="stmt"/>
+        <line num="13" count="110" type="stmt"/>
+        <line num="17" count="154" type="stmt"/>
+        <line num="18" count="154" type="stmt"/>
+        <line num="19" count="154" type="stmt"/>
+        <line num="21" count="154" type="stmt"/>
         <line num="22" count="44" type="stmt"/>
         <line num="23" count="44" type="stmt"/>
         <line num="31" count="44" type="cond" truecount="1" falsecount="1"/>
@@ -731,19 +731,19 @@
         <line num="36" count="44" type="stmt"/>
         <line num="37" count="44" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
-        <line num="43" count="152" type="stmt"/>
+        <line num="43" count="154" type="stmt"/>
         <line num="44" count="44" type="stmt"/>
-        <line num="47" count="152" type="stmt"/>
+        <line num="47" count="154" type="stmt"/>
         <line num="48" count="9" type="cond" truecount="2" falsecount="0"/>
         <line num="49" count="6" type="stmt"/>
-        <line num="51" count="16" type="stmt"/>
-        <line num="54" count="152" type="stmt"/>
-        <line num="55" count="152" type="cond" truecount="3" falsecount="1"/>
-        <line num="57" count="140" type="stmt"/>
+        <line num="51" count="15" type="stmt"/>
+        <line num="54" count="154" type="stmt"/>
+        <line num="55" count="154" type="cond" truecount="3" falsecount="1"/>
+        <line num="57" count="142" type="stmt"/>
         <line num="63" count="6" type="stmt"/>
         <line num="71" count="6" type="stmt"/>
         <line num="77" count="0" type="stmt"/>
-        <line num="81" count="152" type="stmt"/>
+        <line num="81" count="154" type="stmt"/>
         <line num="106" count="3" type="stmt"/>
         <line num="112" count="3" type="stmt"/>
         <line num="118" count="3" type="stmt"/>
@@ -833,14 +833,14 @@
       <metrics statements="71" coveredstatements="51" conditionals="39" coveredconditionals="16" methods="10" coveredmethods="10"/>
       <file name="questionForm.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/profile/questionForm/questionForm.js">
         <metrics statements="71" coveredstatements="51" conditionals="39" coveredconditionals="16" methods="10" coveredmethods="10"/>
-        <line num="8" count="56" type="stmt"/>
-        <line num="9" count="56" type="stmt"/>
-        <line num="10" count="56" type="stmt"/>
-        <line num="11" count="56" type="stmt"/>
-        <line num="13" count="56" type="stmt"/>
+        <line num="8" count="58" type="stmt"/>
+        <line num="9" count="58" type="stmt"/>
+        <line num="10" count="58" type="stmt"/>
+        <line num="11" count="58" type="stmt"/>
+        <line num="13" count="58" type="stmt"/>
         <line num="15" count="8" type="cond" truecount="1" falsecount="1"/>
         <line num="16" count="8" type="stmt"/>
-        <line num="24" count="56" type="stmt"/>
+        <line num="24" count="58" type="stmt"/>
         <line num="25" count="8" type="stmt"/>
         <line num="26" count="8" type="stmt"/>
         <line num="27" count="8" type="stmt"/>
@@ -852,26 +852,26 @@
         <line num="43" count="0" type="stmt"/>
         <line num="47" count="8" type="stmt"/>
         <line num="48" count="8" type="stmt"/>
-        <line num="51" count="56" type="stmt"/>
+        <line num="51" count="58" type="stmt"/>
         <line num="52" count="8" type="stmt"/>
         <line num="53" count="8" type="stmt"/>
         <line num="55" count="8" type="stmt"/>
-        <line num="58" count="56" type="stmt"/>
+        <line num="58" count="58" type="stmt"/>
         <line num="59" count="2" type="stmt"/>
         <line num="60" count="2" type="stmt"/>
         <line num="61" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="62" count="2" type="stmt"/>
         <line num="64" count="0" type="stmt"/>
-        <line num="68" count="56" type="stmt"/>
+        <line num="68" count="58" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
-        <line num="72" count="56" type="stmt"/>
+        <line num="72" count="58" type="stmt"/>
         <line num="73" count="8" type="stmt"/>
         <line num="74" count="8" type="stmt"/>
         <line num="75" count="8" type="stmt"/>
         <line num="76" count="66" type="stmt"/>
         <line num="77" count="8" type="stmt"/>
         <line num="79" count="0" type="stmt"/>
-        <line num="83" count="56" type="stmt"/>
+        <line num="83" count="58" type="stmt"/>
         <line num="84" count="2" type="stmt"/>
         <line num="87" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="88" count="0" type="stmt"/>
@@ -902,7 +902,7 @@
         <line num="130" count="0" type="stmt"/>
         <line num="131" count="0" type="stmt"/>
         <line num="136" count="2" type="stmt"/>
-        <line num="139" count="56" type="stmt"/>
+        <line num="139" count="58" type="stmt"/>
         <line num="195" count="86" type="stmt"/>
       </file>
     </package>
@@ -910,14 +910,14 @@
       <metrics statements="47" coveredstatements="37" conditionals="18" coveredconditionals="6" methods="10" coveredmethods="8"/>
       <file name="questionsList.js" path="/Users/alkhalifas/Documents/Github/cs5500-final-project-saleh-vidhi/client/src/components/profile/questions/questionsList.js">
         <metrics statements="47" coveredstatements="37" conditionals="18" coveredconditionals="6" methods="10" coveredmethods="8"/>
-        <line num="7" count="230" type="stmt"/>
-        <line num="8" count="230" type="stmt"/>
-        <line num="9" count="230" type="stmt"/>
-        <line num="10" count="230" type="stmt"/>
-        <line num="11" count="230" type="stmt"/>
-        <line num="13" count="230" type="stmt"/>
+        <line num="7" count="240" type="stmt"/>
+        <line num="8" count="240" type="stmt"/>
+        <line num="9" count="240" type="stmt"/>
+        <line num="10" count="240" type="stmt"/>
+        <line num="11" count="240" type="stmt"/>
+        <line num="13" count="240" type="stmt"/>
         <line num="14" count="4" type="stmt"/>
-        <line num="17" count="230" type="stmt"/>
+        <line num="17" count="240" type="stmt"/>
         <line num="18" count="2" type="stmt"/>
         <line num="19" count="2" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
@@ -925,7 +925,7 @@
         <line num="23" count="2" type="stmt"/>
         <line num="24" count="2" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
-        <line num="30" count="230" type="stmt"/>
+        <line num="30" count="240" type="stmt"/>
         <line num="31" count="1" type="stmt"/>
         <line num="32" count="1" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
@@ -933,7 +933,7 @@
         <line num="36" count="1" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
-        <line num="43" count="230" type="stmt"/>
+        <line num="43" count="240" type="stmt"/>
         <line num="44" count="53" type="stmt"/>
         <line num="45" count="53" type="stmt"/>
         <line num="53" count="53" type="cond" truecount="1" falsecount="1"/>
@@ -944,18 +944,18 @@
         <line num="60" count="53" type="stmt"/>
         <line num="61" count="53" type="stmt"/>
         <line num="63" count="0" type="stmt"/>
-        <line num="67" count="230" type="stmt"/>
+        <line num="67" count="240" type="stmt"/>
         <line num="68" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="69" count="0" type="stmt"/>
         <line num="70" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="71" count="0" type="stmt"/>
-        <line num="75" count="230" type="stmt"/>
+        <line num="75" count="240" type="stmt"/>
         <line num="76" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="77" count="0" type="stmt"/>
-        <line num="81" count="230" type="stmt"/>
+        <line num="81" count="240" type="stmt"/>
         <line num="82" count="50" type="stmt"/>
-        <line num="85" count="230" type="stmt"/>
-        <line num="98" count="266" type="stmt"/>
+        <line num="85" count="240" type="stmt"/>
+        <line num="98" count="276" type="stmt"/>
         <line num="105" count="4" type="stmt"/>
       </file>
     </package>
