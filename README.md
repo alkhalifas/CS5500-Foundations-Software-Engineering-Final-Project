@@ -149,5 +149,7 @@ Run Tests:
 
 ## Coverage:
 - Coverage was completed in this assignment for extra credit.
-- Please see `design/coverage_results.png`
+- You can run coverage by running the tests `npx cypress open`
+- The results can be seen in `testing/coverage/lcov-report/index.html`
+- Please see a screen shot of the diagram in `design/coverage_results.png`
 
