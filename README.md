@@ -133,7 +133,7 @@ Run Tests:
 - Location in code where pattern is used: `route_questions.js`, `route_answers.js`, `AnswerCardTiming.js`, `QuestionCardTiming.js`
 
 #### 2. Observer Pattern:
-- Design Pattern Name: Facade Pattern
+- Design Pattern Name: Observer Pattern
 - Problem Solved: The Observer Pattern allows for a subscription-like mechanism where objects (observers) watch for changes in another object (subject). In the context of our FSO application, it's used for monitoring database connection states. We specifically see this for MongoDB, and can be thought of as a form of an observer pattern in the sense that our database connection maintains a list of listeners, specifically to notify of a state change.
 - Location in code where pattern is used: `server.js`
 
@@ -149,5 +149,7 @@ Run Tests:
 
 ## Coverage:
 - Coverage was completed in this assignment for extra credit.
-- Please see `design/coverage_results.png`
+- You can run coverage by running the tests `npx cypress open`
+- The results can be seen in `testing/coverage/lcov-report/index.html`
+- Please see a screenshot of the diagram in `artifacts/coverage_results.png`
 
